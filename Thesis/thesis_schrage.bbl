@@ -1,0 +1,29 @@
+\begin{thebibliography}{1}
+
+\bibitem{kukelova2016efficient}
+Z.~Kukelova, J.~Heller, and A.~Fitzgibbon, ``Efficient intersection of three
+  quadrics and applications in computer vision,'' in {\em Proceedings of the
+  IEEE Conference on Computer Vision and Pattern Recognition}, pp.~1799--1808,
+  2016.
+
+\bibitem{bai2009modelling}
+S.~Bai, M.~R. Hansen, and T.~O. Andersen, ``Modelling of a special class of
+  spherical parallel manipulators with euler parameters,'' {\em Robotica},
+  vol.~27, no.~2, pp.~161--170, 2009.
+
+\bibitem{gosselin1993kinematic}
+C.~M. Gosselin and E.~Lavoie, ``On the kinematic design of spherical
+  three-degree-of-freedom parallel manipulators,'' {\em The International
+  Journal of Robotics Research}, vol.~12, no.~4, pp.~394--402, 1993.
+
+\bibitem{gosselin1994direct}
+C.~Gosselin, J.~Sefrioui, and M.~J. Richard, ``On the direct kinematics of
+  spherical three-degree-of-freedom parallel manipulators of general
+  architecture,'' 1994.
+
+\bibitem{alizade1994forward}
+R.~I. Alizade, N.~R. Tagiyev, and J.~Duffy, ``A forward and reverse
+  displacement analysis of an in-parallel spherical manipulator,'' {\em
+  Mechanism and Machine Theory}, vol.~29, no.~1, pp.~125--137, 1994.
+
+\end{thebibliography}
