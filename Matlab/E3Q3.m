@@ -28,9 +28,10 @@ sub1 = simplify(expand(identities));
 sub2 = subs(sub1,[y^2,z^2,y*z],[y_quad,z_quad,yz])
 [A_,b] = equationsToMatrix(sub2,[y,z])
 A2 = simplify([A_,-b])
-det(A2)
-
-
+p = det(A2)
+coef = coeffs(p)
+p_root = sturm(double(coef))
+double(roots(coef))
 
 end
 
