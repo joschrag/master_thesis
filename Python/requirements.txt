@@ -1,0 +1,6 @@
+black==23.7.0
+mypy==1.4.1
+mypy-extensions==1.0.0
+numpy==1.25.1
+packaging==23.1
+pydocstyle==6.3.0
