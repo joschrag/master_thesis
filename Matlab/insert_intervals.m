@@ -6,9 +6,9 @@ intervals;
 root_indices;
 num_roots;
 end
-step = 100;
+step = 10;
 if numel(intervals) == 2 && all(intervals == [-inf,inf])
-    new_intervals = [-inf,-200,-100,inf];
+    new_intervals = [-inf,-100,100,inf];
     new_indices = [2,3];
 else
     new_intervals = intervals;
