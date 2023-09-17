@@ -1,6 +1,9 @@
 function [p_root] = sturm(p)
 %STURM Summary of this function goes here
 %   Detailed explanation goes here
+arguments
+    p;
+end
 n = numel(p);
 p_vec = zeros(n,n);
 p_vec(1,:) = p;
