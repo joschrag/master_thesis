@@ -1,4 +1,4 @@
-function fig = plot_quadric_3d(pos_eig,neg_eig,a,b,c,V,offsets,fig)
+function fig = plot_quadric_3d(pos_eig,neg_eig,a,b,c,V,offsets,fig,add)
 arguments
     pos_eig (1,1) {mustBeInteger,mustBeNonnegative};
     neg_eig (1,1) {mustBeInteger,mustBeNonnegative};
@@ -7,10 +7,14 @@ arguments
     c (1,1) {mustBeReal,mustBePositive};
     V (3,3) {mustBeReal};
     offsets (3,1) {mustBeReal};
-    fig matlab.ui.Figure = figure;
+    fig matlab.ui.Figure = gcf;
+    add {mustBeNumericOrLogical} = true
 end
-ax = axes(fig);
-hold(ax,"off")
+if size(fig.CurrentAxes) == 0
+    ax = axes(fig);
+else
+    ax = fig.CurrentAxes;
+end
 if pos_eig == 3 % Ellipsoid
     x =@(theta,phi,a,b,c) a.*sin(theta).*cos(phi);
     y =@(theta,phi,a,b,c) b.*sin(theta).*sin(phi);
@@ -37,6 +41,7 @@ XX = reshape(tmp(1,:),shape);
 YY = reshape(tmp(2,:),shape);
 ZZ = reshape(tmp(3,:),shape);
 s = surf(ax,XX,YY,ZZ);
+colormap(viridis)
 set(s,"EdgeColor","None")
 if pos_eig == 1 && neg_eig == 2
     hold(ax,"on")
@@ -46,6 +51,8 @@ YY = reshape(tmp(2,:),shape);
 ZZ = reshape(tmp(3,:),shape);
     s = surf(ax,XX,YY,ZZ);
     set(s,"EdgeColor","None")
+    colormap(inferno)
 end
-
+hld = ["off","on"];
+hold(ax,hld(add+1))
 end
