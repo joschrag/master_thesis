@@ -31,32 +31,109 @@ fun2 = matlabFunction(simplify(expand(dot(B,var(1:3)))),'Vars',{[x;y;z]});
 [V,D] = eig(A);
 V = [V(:,1)./norm(V(:,1)),V(:,2)./norm(V(:,2)),V(:,3)./norm(V(:,3))];
 eig_vals = diag(D);
+
 if round(det(V)) == -1
     V = [V(:,2),V(:,1),V(:,3)];
     eig_vals = [eig_vals(2),eig_vals(1),eig_vals(3)];
 end
+lambda1 = eig_vals(1);
+lambda2 = eig_vals(2);
+lambda3 = eig_vals(3);
 pos_eig_vals = sum(eig_vals > 0);
 neg_eig_vals = sum(eig_vals < 0);
+zero_eig_vals = 3-pos_eig_vals-neg_eig_vals;
 xi = sym("xi","real");
 eta = sym("eta","real");
 zeta = sym("zeta","real");
-lhs_quad = simplify(fun1(V*[xi;eta;zeta]));
+new_vars = [xi;eta;zeta];
 const = coeff_vec(10);
 offsets = zeros(3,1);
 if any(B~=0)
-    lhs_lin = simplify(fun2(V*[xi;eta;zeta]));
-    [tmp1,~] = coeffs(lhs_lin,[xi,eta,zeta]);
-    %Quadratische Ergänzung
-    [offsets(1),const] = square_complete(eig_vals(1),tmp1(1),const);
-    [offsets(2),const] = square_complete(eig_vals(2),tmp1(2),const);
-    [offsets(3),const] = square_complete(eig_vals(3),tmp1(3),const);
+    lhs_lin = simplify(fun2(V*new_vars));
+else
+    lhs_lin = 0;
 end
-tmp = 1./(sqrt(abs(eig_vals./(-const))));
-a = double(tmp(1));
-b = double(tmp(2));
-c = double(tmp(3));
+if lambda1 ~= 0
+    [tmp1,~] = coeffs(lhs_lin,xi,"All");
+    if numel(tmp1) > 1
+        factor = double(tmp1(1));
+        [offsets(1),const] = square_complete(lambda1,factor,const);
+    else
+        offsets(1) = 0;
+    end
+end
+if lambda2 ~= 0
+    [tmp1,~] = coeffs(lhs_lin,eta,"All");
+    if numel(tmp1) > 1
+        factor = double(tmp1(1));
+        [offsets(2),const] = square_complete(lambda2,factor,const);
+    else
+        offsets(2) = 0;
+    end
+end
+if lambda3 ~= 0
+    [tmp1,~] = coeffs(lhs_lin,zeta,"All");
+    if numel(tmp1) > 1
+        factor = double(tmp1(1));
+        [offsets(3),const] = square_complete(lambda3,factor,const);
+    else
+        offsets(3) = 0;
+    end
 
-if all(eig_vals ~= 0)
-    plot_quadric_3d(pos_eig_vals,neg_eig_vals,a,b,c,V,offsets);
 end
+if const ~= 0
+    tmp = 1./(sqrt(abs(eig_vals./(-const))));
+else
+    tmp = 1./(sqrt(abs(eig_vals)));
+end
+if lambda1 ~= 0
+    a = double(tmp(1));
+else
+    a = 0;
+end
+if lambda2 ~= 0
+    b = double(tmp(2));
+else
+    b = 0;
+end
+if lambda3 ~= 0
+    c = double(tmp(3));
+else
+    c = 0;
+end
+
+
+if zero_eig_vals == 0
+    if const ~= 0 % cases [+++1,++-1,+--1]
+        plot_quadric_3d(pos_eig_vals,neg_eig_vals,a,b,c,V,offsets);
+    else % cases [++-0]
+        plot_ell_cone(a,b,c,V,offsets)
+    end
+elseif zero_eig_vals == 1
+    if const == 0
+        if pos_eig_vals == 1 % case [+-00]
+            disp("hyp Para")
+            single_var = new_vars(~ismember(new_vars,symvar(fun1(V*new_vars))));
+            cc = coeffs(fun2(V*new_vars),single_var,"All");
+            tmp_fac = double(2.*eig_vals(eig_vals~=0)./(sign(cc(1))*cc(1)));
+            a = abs(tmp_fac(1));
+            b = abs(tmp_fac(2));
+            plot_paraboloids(pos_eig_vals,a,b,V,offsets)
+        elseif pos_eig_vals == 2 % case [++00]
+            disp("ell Para")
+            single_var = new_vars(~ismember(new_vars,symvar(fun1(V*new_vars))));
+            cc = coeffs(fun2(V*new_vars),single_var,"All");
+            tmp_fac = double(2.*eig_vals(eig_vals~=0)./(sign(cc(1))*cc(1)));
+            a = tmp_fac(1);
+            b = tmp_fac(2);
+            plot_paraboloids(pos_eig_vals,a,b,V,offsets)
+        end
+    else
+        if pos_eig_vals == 1
+            disp("ell Zyl")
+
+        elseif pos_eig_vals == 2
+            disp("hyp Zyl")
+        end
+    end
 end
