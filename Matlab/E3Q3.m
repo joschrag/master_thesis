@@ -5,11 +5,11 @@ function [] = E3Q3()
 x = sym("x","real");
 y = sym("y","real");
 z = sym("z","real");
-vars = [x^2,y^2,z^2,x*y,x*z,y*z,x,y,z,1];
-c = [4,0,0,1,0,1,1,1,1,-1;...
-          -3,1,1,0,1,0,7,0,0,-1;...
-          2,-1,2,1,0,1,-15,0,0,-1;
-         ];
+variables = [x^2,y^2,z^2,x*y,x*z,y*z,x,y,z,1];
+c = [-1,2,-1,1,0,1,1,1,1,-10;...
+    2,1,1,0,1,-1,7,0,0,-10;...
+    1,1,2,1,0,1,-15,0,0,-10;
+    ];
 A = -[c(:,2),c(:,3),c(:,6)];
 P = [c(:,4).*x+c(:,8),c(:,5).*x+c(:,9),c(:,1).*x^2+c(:,7).*x+c(:,10)];
 rref(inv(A))
@@ -25,13 +25,23 @@ identities = [(y_quad)*z == (yz)*y;...
     (yz)*(yz) == y_quad*z_quad];
 
 sub1 = simplify(expand(identities));
-sub2 = subs(sub1,[y^2,z^2,y*z],[y_quad,z_quad,yz])
-[A_,b] = equationsToMatrix(sub2,[y,z])
-A2 = simplify([A_,-b])
-p = det(A2)
-coef = coeffs(p)
-p_root = sturm(double(coef))
-double(roots(coef))
+sub2 = subs(sub1,[y^2,z^2,y*z],[y_quad,z_quad,yz]);
+[A_,b] = equationsToMatrix(sub2,[y,z]);
+A2 = simplify([A_,-b]);
+p = det(A2);
+coef = coeffs(p,"All");
+p_root = sturm(double(coef));
+for x_root = p_root'
+    M = subs(A2,x,x_root);
+    %eigenvector approach
+    [~,S,V] = svd(M);
+    [~,index] = min(diag(S));
+    y_root = V(1,index)/V(3,index);
+    z_root = V(2,index)/V(3,index);
 
+    ax = gca();
+    scatter3(ax,x_root,y_root,z_root,50,"k","filled")
+    hold(ax,"on")
+end
 end
 
