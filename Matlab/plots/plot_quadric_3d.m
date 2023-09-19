@@ -43,6 +43,15 @@ ZZ = reshape(tmp(3,:),shape);
 s = surf(ax,XX,YY,ZZ);
 colormap(viridis)
 set(s,"EdgeColor","None")
+if pos_eig == 3 % Ellipsoid
+    s.DisplayName = "Ellipsoid";
+elseif pos_eig == 2 && neg_eig == 1 % 1 schalig Hyperboloid
+    s.DisplayName = "1 Hyperboloid";
+elseif pos_eig == 1 && neg_eig == 2 % 2 schalig Hyperboloid
+    s.DisplayName = "2 Hyperboloid";
+end
+
+
 if pos_eig == 1 && neg_eig == 2
     hold(ax,"on")
     tmp = V*[X(:),Y(:),-Z(:)]' - V*offsets;
@@ -52,6 +61,7 @@ ZZ = reshape(tmp(3,:),shape);
     s = surf(ax,XX,YY,ZZ);
     set(s,"EdgeColor","None")
     colormap(inferno)
+    s.DisplayName = "2 Hyperboloid";
 end
 hld = ["off","on"];
 hold(ax,hld(add+1))

@@ -37,6 +37,7 @@ YY = reshape(tmp(2,:),shape);
 ZZ = reshape(tmp(3,:),shape);
 s = surf(ax,XX,YY,ZZ);
 s.EdgeColor = 'none';
+s.DisplayName = "Ell Cone";
 hld = ["off","on"];
 hold(ax,hld(add+1))
 end

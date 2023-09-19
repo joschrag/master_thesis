@@ -37,6 +37,9 @@ XX = reshape(tmp(1,:),shape);
 YY = reshape(tmp(2,:),shape);
 ZZ = reshape(tmp(3,:),shape);
 s = surf(ax,XX,YY,ZZ);
+names = ["hyp Paraboloid","ell Paraboloid"];
+s.DisplayName = names(pos_eig);
+
 set(s,"EdgeColor","None")
 hld = ["off","on"];
 hold(ax,hld(add+1))
