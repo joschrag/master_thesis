@@ -1,11 +1,10 @@
-function pa_transformation(coeff_vec,tol)
+function pa_transformation(coeff_vec)
 %PA_TRANSFORMATION Summary of this function goes here
 %   Detailed explanation goes here
 %   arguments:
 %       coeffs: coefficient vector of (x^2,y^2,z^2,xy,xz,yz,x,y,z,1)
 arguments
     coeff_vec (1,10) {mustBeReal} = ones(1,10);
-    tol (1,1) {mustBeReal,mustBePositive} = 10^-6;
 end
 % if abs(coeff_vec(10)) >= tol
 %     coeff_vec = coeff_vec./(-coeff_vec(10));
@@ -13,10 +12,6 @@ end
 % else
 %     rhs = 0;
 % end
-M = [coeff_vec(1),coeff_vec(4)/2,coeff_vec(5)/2,coeff_vec(7)/2;...
-    coeff_vec(4)/2,coeff_vec(2),coeff_vec(6)/2,coeff_vec(8)/2;...
-    coeff_vec(5)/2,coeff_vec(6)/2,coeff_vec(3),coeff_vec(9)/2;...
-    coeff_vec(7)/2,coeff_vec(8)/2,coeff_vec(9)/2,coeff_vec(10)];
 A = [coeff_vec(1),coeff_vec(4)/2,coeff_vec(5)/2;...
     coeff_vec(4)/2,coeff_vec(2),coeff_vec(6)/2;...
     coeff_vec(5)/2,coeff_vec(6)/2,coeff_vec(3)];
@@ -101,7 +96,6 @@ if lambda3 ~= 0
 else
     c = 0;
 end
-
 
 if zero_eig_vals == 0
     if const ~= 0 % cases [+++1,++-1,+--1]
