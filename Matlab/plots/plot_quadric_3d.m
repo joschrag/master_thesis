@@ -15,21 +15,22 @@ if size(fig.CurrentAxes) == 0
 else
     ax = fig.CurrentAxes;
 end
+step_arc = 0.01;
 if pos_eig == 3 % Ellipsoid
     x =@(theta,phi,a,b,c) a.*sin(theta).*cos(phi);
     y =@(theta,phi,a,b,c) b.*sin(theta).*sin(phi);
     z =@(theta,phi,a,b,c) c.*cos(theta);
-    [c1,c2] = meshgrid(0:0.1:pi+0.1,0:0.1:2*pi+0.1);
+    [c1,c2] = meshgrid(0:step_arc:pi+step_arc,0:step_arc:2*pi+step_arc);
 elseif pos_eig == 2 && neg_eig == 1 % 1 schalig Hyperboloid
     x =@(s,t,a,b,c)  a.*cosh(s).*cos(t);
     y =@(s,t,a,b,c) b.*cosh(s).*sin(t);
     z =@(s,t,a,b,c) c.*sinh(s);
-    [c1,c2] = meshgrid(0:0.1:2*pi+0.1,-10:0.1:10);
+    [c1,c2] = meshgrid(0:step_arc:2*pi+step_arc,-10:0.1:10);
 elseif pos_eig == 1 && neg_eig == 2 % 2 schalig Hyperboloid
     x =@(s,t,a,b,c) a.*sinh(s).*cos(t);
     y =@(s,t,a,b,c) b.*sinh(s).*sin(t);
     z =@(s,t,a,b,c) c.*cosh(s);
-    [c1,c2] = meshgrid(0:0.1:2*pi+0.1,-10:0.1:10);
+    [c1,c2] = meshgrid(0:step_arc:2*pi+step_arc,-10:0.1:10);
 end
 
 shape = size(c1);
