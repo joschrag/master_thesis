@@ -123,6 +123,12 @@ elseif zero_eig_vals == 1
             plot_paraboloids(pos_eig_vals,a,b,V,offsets)
         end
     else
+        tmp = [a,b,c];
+        tmp = tmp(tmp~=0);
+        a = tmp(1);
+        b = tmp(2);
+        plot_cylinder(pos_eig_vals,a,b,V,offsets)
+
         if pos_eig_vals == 1
             disp("ell Zyl")
 
@@ -130,4 +136,10 @@ elseif zero_eig_vals == 1
             disp("hyp Zyl")
         end
     end
+elseif zero_eig_vals == 2
+    single_var = new_vars(ismember(new_vars,symvar(fun2(V*new_vars))));
+    cc = coeffs(fun2(V*new_vars),single_var,"All");
+    tmp_fac = double(2.*eig_vals(eig_vals~=0)./(sign(cc(1))*cc(1)));
+    a = tmp_fac(1);
+    plot_parabola(pos_eig_vals,a,V,offsets)
 end
