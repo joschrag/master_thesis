@@ -141,5 +141,5 @@ elseif zero_eig_vals == 2
     cc = coeffs(fun2(V*new_vars),single_var,"All");
     tmp_fac = double(2.*eig_vals(eig_vals~=0)./(sign(cc(1))*cc(1)));
     a = tmp_fac(1);
-    plot_parabola(pos_eig_vals,a,V,offsets)
+    plot_parabola(a,V,offsets)
 end

@@ -1,8 +1,7 @@
-function fig = plot_parabola(pos_eig,a,V,offsets,fig,add)
+function fig = plot_parabola(a,V,offsets,fig,add)
 %PLOT_PARABOLA Summary of this function goes here
 %   Detailed explanation goes here
 arguments
-    pos_eig (1,1) {mustBeInteger,mustBeNonnegative};
     a (1,1) {mustBeReal,mustBePositive};
     V (3,3) {mustBeReal};
     offsets (3,1) {mustBeReal};
