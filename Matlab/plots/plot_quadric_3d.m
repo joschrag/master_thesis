@@ -42,7 +42,6 @@ XX = reshape(tmp(1,:),shape);
 YY = reshape(tmp(2,:),shape);
 ZZ = reshape(tmp(3,:),shape);
 s = surf(ax,XX,YY,ZZ);
-colormap(viridis)
 set(s,"EdgeColor","None")
 if pos_eig == 3 % Ellipsoid
     s.DisplayName = "Ellipsoid";
@@ -61,7 +60,6 @@ YY = reshape(tmp(2,:),shape);
 ZZ = reshape(tmp(3,:),shape);
     s = surf(ax,XX,YY,ZZ);
     set(s,"EdgeColor","None")
-    colormap(inferno)
     s.DisplayName = "2 Hyperboloid";
 end
 hld = ["off","on"];

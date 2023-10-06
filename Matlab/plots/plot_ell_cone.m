@@ -28,8 +28,8 @@ XX = reshape(tmp(1,:),shape);
 YY = reshape(tmp(2,:),shape);
 ZZ = reshape(tmp(3,:),shape);
 s = surf(ax,XX,YY,ZZ);
-colormap(inferno)
 s.EdgeColor = 'none';
+s.DisplayName = "Ell Cone";
 hold(ax,"on")
 tmp = V*[X(:),Y(:),-Z(:)]' - V*offsets;
 XX = reshape(tmp(1,:),shape);
