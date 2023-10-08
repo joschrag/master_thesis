@@ -96,6 +96,45 @@ if lambda3 ~= 0
 else
     c = 0;
 end
+[g, h] = detect_linear_factors(new_vars, fun1, V, fun2);
+ev_count = {pos_eig_vals,neg_eig_vals,zero_eig_vals}
+res = classify_quadrics(ev_count,const,g,h)
+
+switch res
+    case "ellipsoid"
+        plot_ellipsoid(a,b,c,V,offsets)
+    case "hyperboloid 1"
+        plot_hyperboloid_1(a,b,c,V,offsets)
+    case "hyperboloid 2"
+        plot_hyperboloid_2(a,b,c,V,offsets)
+    case "ell paraboloid"
+        plot_ell_paraboloid(a,b,c,V,offsets)
+    case "hyp paraboloid"
+        plot_hyp_paraboloid(a,b,c,V,offsets)
+    case "ell cone"
+        plot_ell_cone(a,b,c,V,offsets)
+    case "ell cylinder"
+        plot_ell_cylinder(a,b,c,V,offsets)
+    case "hyp cylinder"
+        plot_hyp_cylinder(a,b,c,V,offsets)
+    case "par cylinder"
+        plot_par_cylinder(a,b,c,V,offsets)
+    case "two planes"
+        fun2(V*new_vars) + fun1(V*new_vars) + const
+    case "one plane"
+        fun2(V*new_vars) + fun1(V*new_vars) + const
+    case "one line"
+        fun2(V*new_vars) + fun1(V*new_vars) + const
+    case "point solution"
+        fun2(V*new_vars) + fun1(V*new_vars) + const
+end
+
+
+
+
+
+
+
 
 if zero_eig_vals == 0
     if const ~= 0 % cases [+++1,++-1,+--1]
@@ -122,7 +161,7 @@ elseif zero_eig_vals == 1
             b = tmp_fac(2);
             plot_paraboloids(pos_eig_vals,a,b,V,offsets)
         end
-    else
+    else % case [+-01,++01]
         tmp = [a,b,c];
         tmp = tmp(tmp~=0);
         a = tmp(1);
@@ -136,10 +175,25 @@ elseif zero_eig_vals == 1
             disp("hyp Zyl")
         end
     end
-elseif zero_eig_vals == 2
+elseif zero_eig_vals == 2 % cases [+000,-000]
     single_var = new_vars(ismember(new_vars,symvar(fun2(V*new_vars))));
     cc = coeffs(fun2(V*new_vars),single_var,"All");
     tmp_fac = double(2.*eig_vals(eig_vals~=0)./(sign(cc(1))*cc(1)));
     a = tmp_fac(1);
     plot_parabola(a,V,offsets)
+end
+
+function [g, h] = detect_linear_factors(new_vars, fun1, V, fun2)
+g = 0;
+h = 0;
+single_vars = new_vars(~ismember(new_vars,symvar(fun1(V*new_vars))));
+tmp = coeffs(fun2(V*new_vars),single_vars(1),"All");
+if numel(tmp) == 2
+    g= tmp(1);
+end
+if numel(single_vars) == 2
+    tmp = coeffs(fun2(V*new_vars),single_vars(2),"All");
+    if numel(tmp) == 2
+        h = tmp(1);
+    end
 end
