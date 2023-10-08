@@ -8,21 +8,26 @@ if zero_eig == 0
     if r < 0
         if pos_eig == 3 || neg_eig == 3
             %point solution
-            result = "point solution";
+            fprintf("point solution\n")
+            result = 1;
         else
             %ell cone
-            result = "ell cone";
+            fprintf("ell cone\n")
+            result = 2;
         end
     elseif r == 0
         if pos_eig == 3
             %Ellipsoid
-            result = "ellipsoid";
+            fprintf("ellipsoid\n")
+            result = 3;
         elseif pos_eig == 2
             %Hyperboloid 1
-            result = "hyperboloid 1";
+            fprintf("hyperboloid1\n")
+            result = 4;
         elseif pos_eig == 1
             %Hyperboloid 2
-            result = "hyperboloid 2";
+            fprintf("hyperboloid2\n")
+            result = 5;
         elseif pos_eig == 0
             error("Equation contains no real solutions.")
         else
@@ -33,19 +38,23 @@ elseif zero_eig == 1
     if g ~= 0
         if pos_eig == 2 || neg_eig == 2
             % ell paraboloid
-            result = "ell paraboloid";
+            fprintf("ell paraboloid\n")
+            result = 6;
         else
             % hyperb paraboloid
-            result = "hyp paraboloid";
+            fprintf("hyp paraboloid\n")
+            result = 7;
         end
     elseif g == 0
         if pos_eig == 2
             if r < 0
                 % ell cylinder
-                result = "ell cylinder";
+                fprintf("ell cylinder\n")
+                result = 8;
             elseif r == 0
                 % line
-                result = "line";
+                fprintf("line\n")
+                result = 9;
             elseif r >0
                 error("Equation contains no real solutions.")
             end
@@ -54,42 +63,51 @@ elseif zero_eig == 1
                 error("Equation contains no real solutions.")
             elseif r == 0
                 % line
-                result = "line";
+                fprintf("line\n")
+                result = 9;
             elseif r >0
                 %ell cylinder
-                result = "ell cylinder";
+                fprintf("ell cylinder\n")
+                result = 8;
             end
         elseif neg_eig == 1 && pos_eig == 1
             if r < 0
                 % hyberb cylinder
-                result = "hyp cylinder";
+                fprintf("hyp cylinder\n")
+                result = 10;
             else    %if r == 0 || r <0
-                % two planes
-                result = "two planes";
+                % two planes crossing
+                fprintf("two planes crossing\n")
+                result = 14;
             end
         end
     end
 elseif zero_eig == 2
     if (g ~=0) ||  (h~= 0)
         % parabol cylinder
-        result = "par cylinder";
+        fprintf("parabol cylinder\n")
+        result = 11;
     elseif pos_eig == 1
         if r < 0
-            %two planes
-            result = "two planes";
+            %two planes parallel
+            fprintf("two planes parallel\n")
+            result = 12;
         elseif r == 0
             % one plane
-            result = "one plane";
+            fprintf("one plane\n")
+            result = 13;
         else    %r>0
             error("Equation contains no real solutions.")
         end
     else %if neg_eig == 1
         if r > 0
             %two planes
-            result = "two planes";
+            fprintf("two planes parallel\n")
+            result = 12;
         elseif r == 0
             % one plane
-            result = "one plane";
+            fprintf("one plane\n")
+            result = 13;
         else    %r<0
             error("Equation contains no real solutions.")
         end
