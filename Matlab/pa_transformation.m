@@ -101,97 +101,53 @@ ev_count = {pos_eig_vals,neg_eig_vals,zero_eig_vals}
 res = classify_quadrics(ev_count,const,g,h)
 
 switch res
-    case "ellipsoid"
-        plot_ellipsoid(a,b,c,V,offsets)
-    case "hyperboloid 1"
-        plot_hyperboloid_1(a,b,c,V,offsets)
-    case "hyperboloid 2"
-        plot_hyperboloid_2(a,b,c,V,offsets)
-    case "ell paraboloid"
-        plot_ell_paraboloid(a,b,c,V,offsets)
-    case "hyp paraboloid"
-        plot_hyp_paraboloid(a,b,c,V,offsets)
-    case "ell cone"
-        plot_ell_cone(a,b,c,V,offsets)
-    case "ell cylinder"
-        plot_ell_cylinder(a,b,c,V,offsets)
-    case "hyp cylinder"
-        plot_hyp_cylinder(a,b,c,V,offsets)
-    case "par cylinder"
-        plot_par_cylinder(a,b,c,V,offsets)
-    case "two planes"
+    case 3
+        params = get_ellipsoid_params(a,b,c,V,offsets);
+    case 4
+        params = get_hyperboloid_1_params(a,b,c,V,offsets)
+    case 5
+        params = get_hyperboloid_2_params(a,b,c,V,offsets)
+    case 6
+        params = get_ell_paraboloid_params(a,b,c,V,offsets)
+    case 7
+        params = get_hyp_paraboloid_params(a,b,c,V,offsets)
+    case 2
+        params = get_ell_cone_params(a,b,c,V,offsets)
+    case 8
+        params = get_ell_cylinder_params(a,b,c,V,offsets)
+    case 10
+        params = get_hyp_cylinder_params(a,b,c,V,offsets)
+    case 11
+        params = get_par_cylinder_params(a,b,c,V,offsets)
+    case 12
         fun2(V*new_vars) + fun1(V*new_vars) + const
-    case "one plane"
+    case 13
         fun2(V*new_vars) + fun1(V*new_vars) + const
-    case "one line"
+    case 14
         fun2(V*new_vars) + fun1(V*new_vars) + const
-    case "point solution"
+    case 9
+        fun2(V*new_vars) + fun1(V*new_vars) + const
+    case 1
         fun2(V*new_vars) + fun1(V*new_vars) + const
 end
-
-
-
-
-
-
-
-
-if zero_eig_vals == 0
-    if const ~= 0 % cases [+++1,++-1,+--1]
-        plot_quadric_3d(pos_eig_vals,neg_eig_vals,a,b,c,V,offsets);
-    else % cases [++-0]
-        plot_ell_cone(a,b,c,V,offsets)
-    end
-elseif zero_eig_vals == 1
-    if const == 0
-        if pos_eig_vals == 1 % case [+-00]
-            disp("hyp Para")
-            single_var = new_vars(~ismember(new_vars,symvar(fun1(V*new_vars))));
-            cc = coeffs(fun2(V*new_vars),single_var,"All");
-            tmp_fac = double(2.*eig_vals(eig_vals~=0)./(sign(cc(1))*cc(1)));
-            a = abs(tmp_fac(1));
-            b = abs(tmp_fac(2));
-            plot_paraboloids(pos_eig_vals,a,b,V,offsets)
-        elseif pos_eig_vals == 2 % case [++00]
-            disp("ell Para")
-            single_var = new_vars(~ismember(new_vars,symvar(fun1(V*new_vars))));
-            cc = coeffs(fun2(V*new_vars),single_var,"All");
-            tmp_fac = double(2.*eig_vals(eig_vals~=0)./(sign(cc(1))*cc(1)));
-            a = tmp_fac(1);
-            b = tmp_fac(2);
-            plot_paraboloids(pos_eig_vals,a,b,V,offsets)
-        end
-    else % case [+-01,++01]
-        tmp = [a,b,c];
-        tmp = tmp(tmp~=0);
-        a = tmp(1);
-        b = tmp(2);
-        plot_cylinder(pos_eig_vals,a,b,V,offsets)
-
-        if pos_eig_vals == 1
-            disp("ell Zyl")
-
-        elseif pos_eig_vals == 2
-            disp("hyp Zyl")
-        end
-    end
-elseif zero_eig_vals == 2 % cases [+000,-000]
-    single_var = new_vars(ismember(new_vars,symvar(fun2(V*new_vars))));
-    cc = coeffs(fun2(V*new_vars),single_var,"All");
-    tmp_fac = double(2.*eig_vals(eig_vals~=0)./(sign(cc(1))*cc(1)));
-    a = tmp_fac(1);
-    plot_parabola(a,V,offsets)
+params
+for i = 1:numel(params)
+coords = params{i};
+s = surf(coords{1},coords{2},coords{3});
+set(s,"EdgeColor","None")
+ax = gca();
+hold(ax,"on")
 end
+
 
 function [g, h] = detect_linear_factors(new_vars, fun1, V, fun2)
 g = 0;
 h = 0;
 single_vars = new_vars(~ismember(new_vars,symvar(fun1(V*new_vars))));
-tmp = coeffs(fun2(V*new_vars),single_vars(1),"All");
-if numel(tmp) == 2
+if numel(single_vars) == 1
+    tmp = coeffs(fun2(V*new_vars),single_vars(1),"All");
     g= tmp(1);
-end
-if numel(single_vars) == 2
+elseif numel(single_vars) == 2
     tmp = coeffs(fun2(V*new_vars),single_vars(2),"All");
     if numel(tmp) == 2
         h = tmp(1);
