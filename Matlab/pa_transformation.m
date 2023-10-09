@@ -97,8 +97,8 @@ else
     c = 0;
 end
 [g, h] = detect_linear_factors(new_vars, fun1, V, fun2);
-ev_count = {pos_eig_vals,neg_eig_vals,zero_eig_vals}
-res = classify_quadrics(ev_count,const,g,h)
+ev_count = {pos_eig_vals,neg_eig_vals,zero_eig_vals};
+res = classify_quadrics(ev_count,const,g,h);
 
 switch res
     case 3
@@ -108,35 +108,48 @@ switch res
     case 5
         params = get_hyperboloid_2_params(a,b,c,V,offsets)
     case 6
-        params = get_ell_paraboloid_params(a,b,c,V,offsets)
+        params = get_ell_paraboloid_params(a,b,V,offsets)
     case 7
-        params = get_hyp_paraboloid_params(a,b,c,V,offsets)
+        params = get_hyp_paraboloid_params(a,b,V,offsets)
     case 2
         params = get_ell_cone_params(a,b,c,V,offsets)
     case 8
-        params = get_ell_cylinder_params(a,b,c,V,offsets)
+        params = get_ell_cylinder_params(a,b,V,offsets)
     case 10
-        params = get_hyp_cylinder_params(a,b,c,V,offsets)
+        params = get_hyp_cylinder_params(a,b,V,offsets)
     case 11
-        params = get_par_cylinder_params(a,b,c,V,offsets)
+        params = get_par_cylinder_params(a,V,offsets)
     case 12
         fun2(V*new_vars) + fun1(V*new_vars) + const
+        a = sqrt(eig_vals(eig_vals~=0)./(-const));
+        params = get_parallel_plane_params(a, V, offsets);
     case 13
         fun2(V*new_vars) + fun1(V*new_vars) + const
+        get_plane_params(a, b, V, offsets);
     case 14
         fun2(V*new_vars) + fun1(V*new_vars) + const
+        tmp = sqrt(abs(eig_vals(eig_vals~=0)));
+        a = tmp(1);
+        b = tmp(2);
+        params = get_cross_plane_params(a,b,V,offsets);
     case 9
         fun2(V*new_vars) + fun1(V*new_vars) + const
+        params = get_line_params(V,offsets);
     case 1
-        fun2(V*new_vars) + fun1(V*new_vars) + const
+        params = {{0,0,0}};
 end
-params
-for i = 1:numel(params)
-coords = params{i};
-s = surf(coords{1},coords{2},coords{3});
-set(s,"EdgeColor","None")
 ax = gca();
-hold(ax,"on")
+for i = 1:numel(params)
+    coords = params{i};
+    if all(size(coords{3})>1)
+    s = surf(ax,coords{1},coords{2},coords{3});
+    set(s,"EdgeColor","None")
+    elseif any(size(coords{3})>1)
+        plot3(ax,coords{1},coords{2},coords{3})
+    else
+        scatter3(ax,coords{1},coords{2},coords{3})
+    end
+    hold(ax,"on")
 end
 
 
@@ -144,10 +157,12 @@ function [g, h] = detect_linear_factors(new_vars, fun1, V, fun2)
 g = 0;
 h = 0;
 single_vars = new_vars(~ismember(new_vars,symvar(fun1(V*new_vars))));
-if numel(single_vars) == 1
+if numel(single_vars) >= 1
     tmp = coeffs(fun2(V*new_vars),single_vars(1),"All");
-    g= tmp(1);
-elseif numel(single_vars) == 2
+    if numel(tmp) == 2
+        g = tmp(1);
+    end
+elseif numel(single_vars) >= 2
     tmp = coeffs(fun2(V*new_vars),single_vars(2),"All");
     if numel(tmp) == 2
         h = tmp(1);
