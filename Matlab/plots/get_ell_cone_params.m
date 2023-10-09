@@ -1,4 +1,4 @@
-function [params] = get_ell_cone_params(a,b,V,offsets)
+function [params] = get_ell_cone_params(a,b,c,V,offsets)
 %GET_ELL_CONE_PARAMS Summary of this function goes here
 %   Detailed explanation goes here
 s = 0:0.1:2*pi+0.1;
