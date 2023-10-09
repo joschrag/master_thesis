@@ -5,7 +5,7 @@ pos_eig = eigs{1};
 neg_eig = eigs{2};
 zero_eig = eigs{3};
 if zero_eig == 0
-    if r < 0
+    if r == 0
         if pos_eig == 3 || neg_eig == 3
             %point solution
             fprintf("point solution\n")
@@ -15,7 +15,7 @@ if zero_eig == 0
             fprintf("ell cone\n")
             result = 2;
         end
-    elseif r == 0
+    elseif r < 0
         if pos_eig == 3
             %Ellipsoid
             fprintf("ellipsoid\n")
@@ -30,9 +30,9 @@ if zero_eig == 0
             result = 5;
         elseif pos_eig == 0
             error("Equation contains no real solutions.")
-        else
-            error("r>0 should not happen!")
         end
+    else
+        error("r>0 should not happen!")
     end
 elseif zero_eig == 1
     if g ~= 0
