@@ -2,7 +2,7 @@ function [params] = get_ell_cone_params(a,b,c,V,offsets)
 %GET_ELL_CONE_PARAMS Summary of this function goes here
 %   Detailed explanation goes here
 s = 0:0.1:2*pi+0.1;
-t = 0:10;
+t = 0:5;
 x =@(s,t,a,b,c) a.*t.*cos(s);
 y =@(s,t,a,b,c) b.*t.*sin(s);
 z =@(s,t,a,b,c) c.*t;
