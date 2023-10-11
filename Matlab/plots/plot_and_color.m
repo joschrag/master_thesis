@@ -15,10 +15,9 @@ color_list = [[1,0.411764705882353,0.160784313725490];...
 j =1;
 skip = false;
 for i=1:numel(plt_list)
-    if ~isa(plt_list(i),"matlab.graphics.chart.primitive.Scatter")
-        %fprintf("%i : %s\n",i,class(plt_list(i)))
+        fprintf("%i : %s | %s\n",i,class(plt_list(i)),plt_list(i).DisplayName)
         switch plt_list(i).DisplayName
-            case {"2 Hyperboloid","Ell Cone"}
+            case {"hyperboloid2","ell cone","cross planes","par planes","hyp cylinder"}
                 plt_list(i).FaceColor = color_list(j,:);
                 plt_list(i).FaceAlpha = 0.7;
                 if skip
@@ -26,13 +25,21 @@ for i=1:numel(plt_list)
                     continue
                 end
                 skip = true;
+            case "solution"
+                continue
+            case "line"
+                plt_list(i).Color = color_list(j,:);
+                j = j+1;
+            case "point"
+                plt_list(i).MarkerEdgeColor = color_list(j,:);
+                plt_list(i).MarkerFaceColor = color_list(j,:);
+                j = j+1;
             otherwise
                 plt_list(i).FaceColor = color_list(j,:);
                 plt_list(i).FaceAlpha = 0.7;
                 skip = false;
                 j = j+1;
         end
-    end
 end
 end
 

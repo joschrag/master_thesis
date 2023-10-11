@@ -103,53 +103,71 @@ res = classify_quadrics(ev_count,const,g,h);
 switch res
     case 3
         params = get_ellipsoid_params(a,b,c,V,offsets);
+        dname = "ellipsoid";
     case 4
-        params = get_hyperboloid_1_params(a,b,c,V,offsets)
+        params = get_hyperboloid_1_params(a,b,c,V,offsets);
+        dname = "hyperboloid1";
     case 5
-        params = get_hyperboloid_2_params(a,b,c,V,offsets)
+        params = get_hyperboloid_2_params(a,b,c,V,offsets);
+        dname = "hyperboloid2";
     case 6
-        params = get_ell_paraboloid_params(a,b,V,offsets)
+        params = get_ell_paraboloid_params(a,b,V,offsets);
+        dname = "ell paraboloid";
     case 7
-        params = get_hyp_paraboloid_params(a,b,V,offsets)
+        params = get_hyp_paraboloid_params(a,b,V,offsets);
+        dname = "hyp paraboloid";
     case 2
-        params = get_ell_cone_params(a,b,c,V,offsets)
+        params = get_ell_cone_params(a,b,c,V,offsets);
+        dname = "ell cone";
     case 8
-        params = get_ell_cylinder_params(a,b,V,offsets)
+        params = get_ell_cylinder_params(a,b,V,offsets);
+        dname = "ell cylinder";
     case 10
-        params = get_hyp_cylinder_params(a,b,V,offsets)
+        params = get_hyp_cylinder_params(a,b,V,offsets);
+        dname = "hyp cylinder";
     case 11
-        params = get_par_cylinder_params(a,V,offsets)
+        tmp = [g,h];
+        a = eval(sqrt(abs(tmp(tmp~=0)/(2*eig_vals(eig_vals~=0)))))
+        params = get_par_cylinder_params(a,V,offsets);
+        dname = "par cylinder";
     case 12
-        fun2(V*new_vars) + fun1(V*new_vars) + const
+%         fun2(V*new_vars) + fun1(V*new_vars) + const
         a = sqrt(eig_vals(eig_vals~=0)./(-const));
         params = get_parallel_plane_params(a, V, offsets);
+        dname = "par planes";
     case 13
-        fun2(V*new_vars) + fun1(V*new_vars) + const
-        get_plane_params(a, b, V, offsets);
+%         fun2(V*new_vars) + fun1(V*new_vars) + const
+        params = get_plane_params(a, b, V, offsets);
+        dname = "plane";
     case 14
-        fun2(V*new_vars) + fun1(V*new_vars) + const
+%         fun2(V*new_vars) + fun1(V*new_vars) + const
         tmp = sqrt(abs(eig_vals(eig_vals~=0)));
         a = tmp(1);
         b = tmp(2);
         params = get_cross_plane_params(a,b,V,offsets);
+        dname = "cross planes";
     case 9
-        fun2(V*new_vars) + fun1(V*new_vars) + const
+%         fun2(V*new_vars) + fun1(V*new_vars) + const
         params = get_line_params(V,offsets);
+        dname = "line";
     case 1
         params = {{0,0,0}};
+        dname = "point";
 end
 ax = gca();
 for i = 1:numel(params)
     coords = params{i};
     if all(size(coords{3})>1)
-    s = surf(ax,coords{1},coords{2},coords{3});
-    set(s,"EdgeColor","None")
+    go = surf(ax,coords{1},coords{2},coords{3});
+    set(go,"EdgeColor","None")
     elseif any(size(coords{3})>1)
-        plot3(ax,coords{1},coords{2},coords{3})
+        go = plot3(ax,coords{1},coords{2},coords{3});
     else
-        scatter3(ax,coords{1},coords{2},coords{3})
+        go = scatter3(ax,coords{1},coords{2},coords{3});
     end
+    go.DisplayName = dname;
     hold(ax,"on")
+    disp(fun2(V*new_vars) + fun1(V*new_vars) + const)
 end
 
 
@@ -162,7 +180,8 @@ if numel(single_vars) >= 1
     if numel(tmp) == 2
         g = tmp(1);
     end
-elseif numel(single_vars) >= 2
+end
+if numel(single_vars) >= 2
     tmp = coeffs(fun2(V*new_vars),single_vars(2),"All");
     if numel(tmp) == 2
         h = tmp(1);
