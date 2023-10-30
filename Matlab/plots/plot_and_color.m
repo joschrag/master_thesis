@@ -1,6 +1,9 @@
 function plot_and_color(c)
 %PLOT_AND_COLOR Summary of this function goes here
 %   Detailed explanation goes here
+arguments
+    c (3,10) {mustBeReal}
+end
 f = gcf;
 pa_transformation(c(1,:))
 pa_transformation(c(2,:))
@@ -41,5 +44,8 @@ for i=1:numel(plt_list)
                 j = j+1;
         end
 end
+xlabel("x")
+ylabel("y")
+zlabel("z")
 end
 
