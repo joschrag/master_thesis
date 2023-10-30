@@ -1,4 +1,4 @@
-function [params] = get_parallel_plane_params(a, V, offsets)
+function [params] = get_par_plane_params(a, V, offsets)
 %GET_PARALLEL_PLANE_PARAMS Summary of this function goes here
 %   Detailed explanation goes here
 T = -5:0.1:5;
