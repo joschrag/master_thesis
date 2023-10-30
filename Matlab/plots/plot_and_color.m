@@ -25,6 +25,7 @@ for i=1:numel(plt_list)
                 plt_list(i).FaceAlpha = 0.7;
                 if skip
                     j = j+1;
+                    skip = false;
                     continue
                 end
                 skip = true;
