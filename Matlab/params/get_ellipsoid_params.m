@@ -14,6 +14,5 @@ tmp = V*[X(:),Y(:),Z(:)]' - V*offsets;
 XX = reshape(tmp(1,:),shape);
 YY = reshape(tmp(2,:),shape);
 ZZ = reshape(tmp(3,:),shape);
-size(XX)
 params = {{XX,YY,ZZ}};
 end

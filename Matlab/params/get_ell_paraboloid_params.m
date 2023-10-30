@@ -1,16 +1,17 @@
-function [params] = get_ell_paraboloid_params(a,b,V,offsets)
+function [params] = get_ell_paraboloid_params(a,b,V,offsets,dir)
 %GET_ELL_PARABOLOID_PARAMS Summary of this function goes here
 %   Detailed explanation goes here
-T = -5:0.1:5;
-U = -5:0.1:5;
+T = [0:0.01:0.4,0.5:0.1:2];
+step_arc = 0.01;
+U = -pi:step_arc:pi+step_arc;
 [c1,c2] = meshgrid(T,U);
-x =@(s,t,a,b) a.*s;
-y =@(s,t,a,b) b.*t;
-z =@(s,t,a,b) (s.^2-t.^2)./2;
+x =@(s,t,a,b) a.*s.*cos(t);
+y =@(s,t,a,b) b.*s.*sin(t);
+z =@(s,t,a,b) s.^2;
 shape = size(c1);
 X = x(c1,c2,a,b);
 Y = y(c1,c2,a,b);
-Z = z(c1,c2,a,b);
+Z = dir.*z(c1,c2,a,b);
 tmp = V*[X(:),Y(:),Z(:)]' - V*offsets;
 XX = reshape(tmp(1,:),shape);
 YY = reshape(tmp(2,:),shape);
