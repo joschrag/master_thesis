@@ -1,9 +1,10 @@
-\documentclass[12pt,a4paper,titlepage]{article}
+\documentclass[a4paper,twoside, 11pt]{book}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{makeidx}
 \usepackage{graphicx}
@@ -110,13 +111,80 @@ labelformat=brace, position=top]{subcaption}
 }
 
 
+\newtheoremstyle{custom}% name
+{\topsep}%      Space above, empty = `usual value'
+{}%      Space below
+{}% Body font
+{}%         Indent amount (empty = no indent, \parindent = para indent)
+{\bfseries}% Thm head font
+{:}%        Punctuation after thm head
+{4pt}% Space after thm head: \newline = linebreak
+{}%         Thm head spec
+
+\renewcommand{\thesubfigure}{\roman{subfigure}}
+\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+
+\swapnumbers
+\theoremstyle{custom}
+\newtheorem{theorem}{Theorem}[subsection]
+\renewcommand{\thetheorem}{\arabic{chapter}.\arabic{section}.\arabic{theorem}}
+\newtheorem{proposition}[theorem]{Satz}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{cor}[theorem]{Korollar}
+
+
+\theoremstyle{custom}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conj}[theorem]{Vermutung}
+\newtheorem{example}[theorem]{Beispiel}
+\newtheorem{examples}[theorem]{Beispiele}
+
+\newtheorem{remark}[theorem]{Bemerkung}
+\newtheorem{note}[theorem]{Notiz}
+
+
 \begin{document}
 	\bibliographystyle{ieeetr}
 	\maketitle
 	\newpage
 	\tableofcontents
 	\newpage
+	\chapter{Equations of higher degree}
+	\section{3 Gleichungen 3. Grades in 3 Variablen}
+	\newpage
+	\section{Aufteilen der Variablen}
+	\begin{proposition}\label{prop:gen_inv}
+		Für eine Matrix $A \in K^{m\times n}$ gilt:
+		\begin{itemize}
+			 \item[$-$] $A$ besitzt eine linke Inverse genau dann, wenn $Rang(A) = n$
+			 \item[$-$] $A$ besitzt eine rechte Inverse genau dann, wenn $Rang(A) = m$
+		\end{itemize}
+		Insbesondere existiert im Falle $n<m$ keine linke Inverse und im Falle $n>m$ existiert keine rechte Inverse.
+	\end{proposition}
 
+	Analog zu dem Vorgehen in \ref{} lassen wir $x$ erstmal außen vor und teilen die verbleibenden Kombinationen der Unbestimmten $Y,\ Z$ in zwei Gruppen auf.
+	Dies führt zu den 10 Kandidaten 
+	\begin{equation}
+		\{Y^3,Z^3,Y^2Z,YZ^2,Y^2,Z^2,YZ,Y,Z,1\},
+	\end{equation}
+	welche wir nun in zwei Gruppen aufteilen wollen.
+	
+	Für $m$ Elemente in der ersten Gruppe und $n \coloneqq 10-m$ ergibt sich das Gleichungssystem in Matrixform als
+	\begin{equation}
+		-\underset{\scriptscriptstyle 3\times m}{A} \cdot \left(\mu_1,\ldots,\mu_m\right)^{\intercal} = \underset{\scriptscriptstyle 3\times n}{P} \cdot \left(\eta_1,\ldots,\eta_n\right)^{\intercal}
+	\end{equation}
+	Im nächsten Schritt isolieren wir die $\mu_k$'s indem wir beide Seiten mit der linksinversen Matrix zu A multiplizieren. Laut Satz \ref{prop:gen_inv} existiert diese aber nur im Falle $m \leq 3$.
+	
+	Für $m \leq 3$ erhält man also 
+	\begin{equation}\label{eqn:cub_inv_eqs}
+		\left(\mu_1,\ldots,\mu_m\right)^{\intercal} = -\underset{\scriptscriptstyle m\times 3}{A^{-1}}\cdot \underset{\scriptscriptstyle 3\times n}{P} \cdot \left(\eta_1,\ldots,\eta_n\right)^{\intercal}
+	\end{equation}
+	
+	Um das Vorgehen weiter übertragen zu können müssen wir $m$ Gleichungen bei denen wir $\mu_1, mu_2$ und $mu_3$ verwenden um diese mithilfe von \eqref{eqn:cub_inv_eqs} zu substituieren.\\
+	Damit die Substitution zur Elimination der Unbestimmten $\mu_1, mu_2, mu_3$ führt, darf es nach dem Einsetzen nur noch Terme in $\mu_1, \ldots, mu_m$ und $\eta_1,\ldots,\eta_n$ geben. Es dürfen dabei keine neuen Kombinationen aus den Unbestimmten $Y,Z$ entstehen.
+	
+	\subsection{Fall 1 $m=3, n=7$}
 	\newpage
 	\pagestyle{plain}
 	\nocite{*}
