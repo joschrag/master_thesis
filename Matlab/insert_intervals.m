@@ -5,7 +5,7 @@ arguments
     intervals (1,:) {mustBeReal};
     roots_per_interval (1,:) {mustBeNonnegative,mustBeInteger};
     step (1,1) {mustBeNonnegative,mustBeInteger} = 50;
-    tolerance (1,1) {mustBeReal,mustBePositive} = 10^-1;
+    tolerance (1,1) {mustBeReal,mustBePositive} = 10^-6;
 end
 if numel(intervals) == 2 && all(intervals == [-inf,inf])
     new_intervals = [-inf,-100,100,inf];
