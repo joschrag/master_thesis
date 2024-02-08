@@ -46,11 +46,14 @@ labelformat=brace, position=top]{subcaption}
 \newcommand{\C}{{\mathbb C}}
 \newcommand{\Z}{{\mathbb Z}}
 \newcommand{\Q}{{\mathbb Q}}
+\newcommand{\K}{\text{K}}
 \newcommand{\coloneqq}{:=}
 \newcommand{\hspf}{\hspace*{\fill}}
 \newcommand{\Rd}{{\R^\text{d}}}
 \newcommand{\Rdd}{{\R^{\text{d} \times }}}
 \newcommand{\Diff}{\text{Diff}}
+\newcommand{\totdeg}{\text{deg}_{tot}}
+
 
 \definecolor{Darkgreen}{rgb}{0.13, 0.55, 0.13}
 \definecolor{Blue}{rgb}{0.0, 0.28, 0.67}
@@ -163,12 +166,21 @@ labelformat=brace, position=top]{subcaption}
 		Insbesondere existiert im Falle $n<m$ keine linke Inverse und im Falle $n>m$ existiert keine rechte Inverse.
 	\end{proposition}
 
+	\begin{proof}
+		content
+	\end{proof}
+
 	Analog zu dem Vorgehen in \ref{} lassen wir $x$ erstmal außen vor und teilen die verbleibenden Kombinationen der Unbestimmten $Y,\ Z$ in zwei Gruppen auf.
 	Dies führt zu den 10 Kandidaten 
 	\begin{equation}
 		\{Y^3,Z^3,Y^2Z,YZ^2,Y^2,Z^2,YZ,Y,Z,1\},
 	\end{equation}
-	welche wir nun in zwei Gruppen aufteilen wollen.
+	welche wir nun in die zwei Gruppen 
+	\begin{align}
+		G1 &\coloneqq \{\mu_1,\ldots,\mu_m\} \ \text{und} \\
+		G2 &\coloneqq \{\eta_1,\ldots,\eta_n\}
+	\end{align}
+	aufteilen wollen.
 	
 	Für $m$ Elemente in der ersten Gruppe und $n \coloneqq 10-m$ ergibt sich das Gleichungssystem in Matrixform als
 	\begin{equation}
@@ -181,10 +193,47 @@ labelformat=brace, position=top]{subcaption}
 		\left(\mu_1,\ldots,\mu_m\right)^{\intercal} = -\underset{\scriptscriptstyle m\times 3}{A^{-1}}\cdot \underset{\scriptscriptstyle 3\times n}{P} \cdot \left(\eta_1,\ldots,\eta_n\right)^{\intercal}
 	\end{equation}
 	
-	Um das Vorgehen weiter übertragen zu können müssen wir $m$ Gleichungen bei denen wir $\mu_1, mu_2$ und $mu_3$ verwenden um diese mithilfe von \eqref{eqn:cub_inv_eqs} zu substituieren.\\
-	Damit die Substitution zur Elimination der Unbestimmten $\mu_1, mu_2, mu_3$ führt, darf es nach dem Einsetzen nur noch Terme in $\mu_1, \ldots, mu_m$ und $\eta_1,\ldots,\eta_n$ geben. Es dürfen dabei keine neuen Kombinationen aus den Unbestimmten $Y,Z$ entstehen.
-	
+	Um das Vorgehen weiter übertragen zu können müssen wir $m$ Gleichungen bei denen wir $\mu_1, \mu_2$ und $\mu_3$ verwenden um diese mithilfe von \eqref{eqn:cub_inv_eqs} zu substituieren.\\
+	Damit die Substitution zur Elimination der Unbestimmten $\mu_1, \mu_2, \mu_3$ führt, darf es nach dem Einsetzen nur noch Terme in $\mu_1, \ldots, \mu_m$ und $\eta_1,\ldots,\eta_n$ geben. Es dürfen dabei keine Monome $M$ mit $\totdeg\left(M\right)\geq 4$ aus den Unbestimmten $Y,Z$ entstehen.
+	\section{Substitution}
 	\subsection{Fall 1 $m=3, n=7$}
+	Die vier Monome $Y^{3}$, $Y^{2}Z$, $YZ^{2}$ und $Z^{3}$ haben alle einen totalen Grad von $3$.
+	Da wir nur drei Monome in die Gruppe $G_1$ zuteilen, besitzt Gruppe $G_2$ mindestens eines dieser Monome.
+	
+	Die Gleichungen zur Substitution haben folgende Form
+	
+\begin{gather}
+		\begin{alignedat}{1}
+	Y^{a_1}Z^{\tilde{a}_1} \cdot \mu_1	&= \mu_2 \cdot Y^{b_2}Z^{\tilde{b}_2} \\
+	Y^{a_2}Z^{\tilde{a}_2} \cdot \mu_2	&= \mu_3 \cdot Y^{b_3}Z^{\tilde{b}_3} \ ,\\
+	Y^{a_3}Z^{\tilde{a}_3} \cdot \mu_3	&= \mu_1 \cdot Y^{b_1}Z^{\tilde{b}_1}
+	\end{alignedat}
+\end{gather}
+
+wobei $a_k, \tilde{a}_k ,b_k , \tilde{b}_k \in \N_{0}$ sind.
+ Die paarweise verschiedenen $\mu_k$ führen dazu, dass zwangsweise $a_k + \tilde{a}_k \geq 1$ oder $b_k + \tilde{b}_k \geq 1$ gilt.\\
+
+Beim Substituieren nach der Vorschrift aus Gleichung \eqref{eqn:cub_inv_eqs} entsteht dann ein Monom $M$ mit $\totdeg\left(M\right) = 4$. Dies ist ein Monom welches nicht in unserem kubischen Polynom \ref{} vorkommt und somit ein Widerspruch zu \ref{}.
+
+Mit analoger Begründung kann das Verfahren auch in den verbleibenden Fällen $m<3$ nicht funktionieren.
+
+\section{Anpassung des Gleichungssystems}
+Aus Symmetriegründen bietet sich bei den zehn Monomen an $n=m=5$ zu wählen.
+Damit unsere Matrix $A$ aus \eqref{eqn:cub_inv_eqs} eine linke Inverse besitzt brauchen wir also mindestens $5$ Gleichungen.
+
+Mit der Wahl von $G_{1} = \{Y^{3},Y^{2}Z,YZ,YZ^{2},Z^{3}\}$ und den Substitutionsgleichungen
+\begin{gather}
+	\begin{alignedat}{-1}
+	Z \cdot& \left( Y^{3}\right)  &= \left( Y^{2}Z\right) \cdot& Y\\
+		Z\cdot& \left(Y^{2}Z\right) &= \left(YZ^{2}\right) \cdot& Y\\
+		Y\cdot&\left( Z^{3}\right) &= \left(YZ^{2}\right) \cdot& Z\\
+		&\left(Y^{2}Z\right)  &= \left(YZ\right) \cdot& Y\\
+		&\left(YZ^{2}\right)  &= \left(YZ\right) \cdot& Z\\
+	\end{alignedat}
+\end{gather}
+ergeben sich nach Einsetzen von $G_{2} = \{Y^2,Z^2,Y,Z,1\}$ nur Monome von totalen Grad drei oder kleiner.
+
+Substituiert man jetzt im resultierenden Gleichungssystem nur die Monome $Y^{3}$,$Y^{2}Z$,$YZ^{2}$,$Z^{3}$, so erhält man fünf quadratische Gleichungen in $X,Y,Z$. Dieses System können wir nun mit dem Verfahren \ref{} lösen.
 	\newpage
 	\pagestyle{plain}
 	\nocite{*}
