@@ -1,4 +1,4 @@
-function [result] = classify_quadrics(eigs,d0,d1,r)
+function [result,swap] = classify_quadrics(eigs,d0,d1,r)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 arguments
@@ -10,7 +10,7 @@ end
 pos_eig = eigs{1};
 neg_eig = eigs{2};
 zero_eig = eigs{3};
-
+swap = 1;
 switch zero_eig
     case 0
         if r<0
@@ -37,6 +37,21 @@ switch zero_eig
                 fprintf("ell cone\n")
                 result = 2;
             end
+        elseif r > 0
+            swap = -1;
+            switch neg_eig
+                case 3
+                    fprintf("ellipsoid\n")
+                    result = 3;
+                case 2
+                    fprintf("hyperboloid1\n")
+                    result = 4;
+                case 1
+                    fprintf("hyperboloid2\n")
+                    result = 5;
+                otherwise
+                    error("Equation contains no real solutions.")
+            end
         else
             error("r should be <= 0")
         end
@@ -44,7 +59,7 @@ switch zero_eig
         if d0 == 0
             if r < 0
                 switch pos_eig
-                    case {2,0}
+                    case 2
                         fprintf("ell cylinder\n")
                         result = 8;
                     case 1
@@ -64,18 +79,45 @@ switch zero_eig
                     otherwise
                         error("Equation contains no real solutions.")
                 end
-            else
-                error("r should be <= 0")
+            elseif r > 0
+                swap = -1;
+                switch neg_eig
+                    case 2
+                        fprintf("ell cylinder\n")
+                        result = 8;
+                    case 1
+                        fprintf("hyp cylinder\n")
+                        result = 10;
+                    otherwise
+                        error("Equation contains no real solutions.")
+                end
             end
-        else
+        elseif d0 < 0
             switch pos_eig
                 case 2
                     fprintf("ell paraboloid\n")
                     result = 6;
-
                 case 1
                     fprintf("hyp paraboloid\n")
                     result = 7;
+                case 0
+                    fprintf("WTF\n")
+                otherwise
+                    error("Equation contains no real solutions.")
+            end
+        elseif d0 > 0
+            switch neg_eig
+                case 2
+                    fprintf("WTF\n")
+                    result = 6;
+                case 1
+                    fprintf("hyp paraboloid\n")
+                    result = 7;
+                    swap = -1;
+                case 0
+                    fprintf("ell paraboloid\n")
+                    result = 6;
+                    swap = -1;
                 otherwise
                     error("Equation contains no real solutions.")
             end
