@@ -21,10 +21,7 @@ classdef FF
             obj.order = order;
             obj.value = mod(value,order);
         end
-        %rdivide
         %mpower
-        %ctranspose
-        %transpose
 
         function r = plus(o1,o2)
             arguments
@@ -97,8 +94,21 @@ classdef FF
                 error("Order of summands must be the same.\n" + ...
                     "Orders are %i and %i.",o1.order,o2.order)
             end
-
-            r = FF(dot_mul,ord);
+            if isa(o1,"FF") && isa(o2,"FF")
+                if o1.order ~= o2.order
+                    error("Order of summands must be the same.\n" + ...
+                        "Orders are %i and %i.",o1.order,o2.order)
+                end
+                dot_div = [o1.value].\[o2.value];
+                ord = o1.order;
+            elseif isa(o1,"FF")
+                dot_div = [o1.value].\o2;
+                ord = o1.order;
+            else
+                dot_div = o1.\[o2.value];
+                ord = o2.order;
+            end
+            r = FF(dot_div,ord);
 
         end
         function r = power(obj,pow)
@@ -122,8 +132,14 @@ classdef FF
         end
         function r = mldivide(o1,o2)
             arguments
-                o1 FF
-                o2 FF
+                o1
+                o2
+            end
+            if ~isa(o1,"FF")
+                o1 = FF(o1,o2.order);
+            end
+            if ~isa(o2,"FF")
+                o2 = FF(o2,o1.order);
             end
             if o1.order ~= o2.order
                 error("Order of summands must be the same.\n" + ...
@@ -214,13 +230,37 @@ classdef FF
             end
             r = FF(x,o1.order);
         end
+        function r = mrdivide(o1,o2)
+            arguments
+                o1
+                o2
+            end
+            if ~isa(o1,"FF")
+                o1 = FF(o1,o2.order);
+            end
+            if ~isa(o2,"FF")
+                o2 = FF(o2,o1.order);
+            end
+            if o1.order ~= o2.order
+                error("Order of summands must be the same.\n" + ...
+                    "Orders are %i and %i.",o1.order,o2.order)
+            end
+            r = mldivide(o2',o1')';
+        end
+        function obj = ctranspose(obj) % overload conjugate transpose: '
+            % ctranspose and transpose have identical behavior
+            obj.value=obj.value';
+        end
+        function obj = transpose(obj)            
+            obj.value=obj.value.';
+        end
         function r = eq(o1,o2)
             arguments
                 o1 FF
                 o2 FF
             end
             r = false;
-            if o1.order == o2.order && o1.value == o2.value
+            if (o1.order == o2.order) && all(o1.value == o2.value)
                 r = true;
             end
         end
