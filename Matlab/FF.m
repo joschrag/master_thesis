@@ -7,6 +7,16 @@ classdef FF
         order double
     end
 
+    methods (Static)
+        function val = simplify_mod(val,order)
+            arguments
+                val (1,1)
+                order (1,1) {mustBeInteger,mustBePositive}
+            end
+            [c,t] = coeffs(val,symvar(val));
+            val = dot(mod(c,order),t);
+        end
+    end
     methods
         function obj = FF(value,order)
             %FF Construct an instance of this class
@@ -16,138 +26,138 @@ classdef FF
                 order (1,1) {mustBeInteger,mustBePositive}
             end
             if ~isprime(order)
-                error("Order must be prime.")
+                error("FF:order","Order must be prime.")
             end
             obj.order = order;
-            obj.value = mod(value,order);
-        end
-        %mpower
-
-        function r = plus(o1,o2)
-            arguments
-                o1 FF
-                o2 FF
+            if isa(value,"numeric")
+                obj.value = mod(value,order);
+            elseif isa(value,"sym")
+                obj.value = arrayfun(@(x) FF.simplify_mod(x,order),value);
             end
-            if o1.order ~= o2.order
+        end
+        function r = plus(self,other)
+            arguments
+                self FF
+                other FF
+            end
+            if self.order ~= other.order
                 error("Order of summands must be the same.\n" + ...
-                    "Orders are %i and %i.",o1.order,o2.order)
+                    "Orders are %i and %i.",self.order,other.order)
             end
-            r = FF([o1.value] + [o2.value],o1.order);
+            r = FF([self.value] + [other.value],self.order);
         end
-        function r = minus(o1,o2)
+        function r = minus(self,other)
             arguments
-                o1 FF
-                o2 FF
+                self FF
+                other FF
             end
-            if o1.order ~= o2.order
+            if self.order ~= other.order
                 error("Order of summands must be the same.\n" + ...
-                    "Orders are %i and %i.",o1.order,o2.order)
+                    "Orders are %i and %i.",self.order,other.order)
             end
-            r = FF([o1.value] - [o2.value],o1.order);
+            r = FF([self.value] - [other.value],self.order);
         end
-        function r = uminus(obj)
+        function r = uminus(self)
             arguments
-                obj FF
+                self FF
             end
-            r = FF(-[obj.value],obj.order);
+            r = FF(-[self.value],self.order);
         end
-        function r = uplus(obj)
+        function r = uplus(self)
             arguments
-                obj FF
+                self FF
             end
-            r = obj;
+            r = self;
         end
-        function r = times(o1,o2)
-            if isa(o1,"FF") && isa(o2,"FF")
-                if o1.order ~= o2.order
+        function r = times(self,other)
+            if isa(self,"FF") && isa(other,"FF")
+                if self.order ~= other.order
                     error("Order of summands must be the same.\n" + ...
-                        "Orders are %i and %i.",o1.order,o2.order)
+                        "Orders are %i and %i.",self.order,other.order)
                 end
-                dot_mul = [o1.value].*[o2.value];
-                ord = o1.order;
-            elseif isa(o1,"FF")
-                dot_mul = [o1.value].*o2;
-                ord = o1.order;
+                dot_mul = [self.value].*[other.value];
+                ord = self.order;
+            elseif isa(self,"FF")
+                dot_mul = [self.value].*other;
+                ord = self.order;
             else
-                dot_mul = o1.*[o2.value];
-                ord = o2.order;
+                dot_mul = self.*[other.value];
+                ord = other.order;
             end
             r = FF(dot_mul,ord);
         end
-        function r = mtimes(o1,o2)
+        function r = mtimes(self,other)
             arguments
-                o1 FF
-                o2 FF
+                self FF
+                other FF
             end
-            if o1.order ~= o2.order
+            if self.order ~= other.order
                 error("Order of summands must be the same.\n" + ...
-                    "Orders are %i and %i.",o1.order,o2.order)
+                    "Orders are %i and %i.",self.order,other.order)
             end
-            r = FF(o1.value*o2.value,o1.order);
+            r = FF(self.value*other.value,self.order);
         end
-        function r = rdivide(o1,o2)
+        function r = rdivide(self,other)
             arguments
-                o1 FF
-                o2 FF
+                self FF
+                other FF
             end
-            if o1.order ~= o2.order
+            if self.order ~= other.order
                 error("Order of summands must be the same.\n" + ...
-                    "Orders are %i and %i.",o1.order,o2.order)
+                    "Orders are %i and %i.",self.order,other.order)
             end
-            if isa(o1,"FF") && isa(o2,"FF")
-                if o1.order ~= o2.order
+            if isa(self,"FF") && isa(other,"FF")
+                if self.order ~= other.order
                     error("Order of summands must be the same.\n" + ...
-                        "Orders are %i and %i.",o1.order,o2.order)
+                        "Orders are %i and %i.",self.order,other.order)
                 end
-                dot_div = [o1.value].\[o2.value];
-                ord = o1.order;
-            elseif isa(o1,"FF")
-                dot_div = [o1.value].\o2;
-                ord = o1.order;
+                dot_div = [self.value].\[other.value];
+                ord = self.order;
+            elseif isa(self,"FF")
+                dot_div = [self.value].\other;
+                ord = self.order;
             else
-                dot_div = o1.\[o2.value];
-                ord = o2.order;
+                dot_div = self.\[other.value];
+                ord = other.order;
             end
             r = FF(dot_div,ord);
 
         end
-        function r = power(obj,pow)
+        function r = power(self,pow)
             arguments
-                obj FF
+                self FF
                 pow {mustBeInteger}
             end
             if pow >= 0
-                val = obj.value.^pow;
-            elseif (obj.value == 1) || (obj.value == (obj.order-1))
-                val = a;
-            elseif ~all(obj.value)
+                val = self.value.^pow;
+            elseif ~all(self.value)
                 error('FF:power:inverse','zero has no inverse')
             else
-                [~, c, ~] = gcd(1:obj.order-1, obj.order);
-                y = mod(c, obj.order)';
+                [~, c, ~] = gcd(1:self.order-1, self.order);
+                y = mod(c, self.order)';
 
-                val = y(obj.value).^(-pow);
+                val = y(self.value).^(-pow);
             end
-            r = FF(val,obj.order);
+            r = FF(val,self.order);
         end
-        function r = mldivide(o1,o2)
+        function r = mldivide(self,other)
             arguments
-                o1
-                o2
+                self
+                other
             end
-            if ~isa(o1,"FF")
-                o1 = FF(o1,o2.order);
+            if ~isa(self,"FF")
+                self = FF(self,other.order);
             end
-            if ~isa(o2,"FF")
-                o2 = FF(o2,o1.order);
+            if ~isa(other,"FF")
+                other = FF(other,self.order);
             end
-            if o1.order ~= o2.order
+            if self.order ~= other.order
                 error("Order of summands must be the same.\n" + ...
-                    "Orders are %i and %i.",o1.order,o2.order)
+                    "Orders are %i and %i.",self.order,other.order)
             end
             %Code adapted from Matlab Comm Toolbox gflineq function
-            coder.internal.errorIf(size(o1.value, 1) ~= size(o2.value, 1), 'FF:mldivide:InvalidAB');
-            aa = [o1.value o2.value];
+            coder.internal.errorIf(size(self.value, 1) ~= size(other.value, 1), 'FF:mldivide:InvalidAB');
+            aa = [self.value other.value];
             [m_aa, n_aa] = size(aa);
 
             row_idx = 1;
@@ -157,8 +167,8 @@ classdef FF
 
             % Find the multiplicative inverse of the field elements.
             % This will be used for setting major elements in the matrix to one.
-            [~, c, ~] = gcd(1:o1.order-1, o1.order);
-            field_inv = mod(c, o1.order)';
+            [~, c, ~] = gcd(1:self.order-1, self.order);
+            field_inv = mod(c, self.order)';
 
             % Search for major elements, trying to form 'identity' matrix.
             while (row_idx <= m_aa) && (column_idx < n_aa)
@@ -200,7 +210,7 @@ classdef FF
 
                     % If the major element is not already one, set it to one.
                     if (aa(row_idx,column_idx) ~= 1)
-                        aa(row_idx,:) = mod( field_inv( aa(row_idx,column_idx) ) * aa(row_idx,:), o1.order );
+                        aa(row_idx,:) = mod( field_inv( aa(row_idx,column_idx) ) * aa(row_idx,:), self.order );
                     end
 
                     % Find the other elements in the column that must be cleared,
@@ -208,7 +218,7 @@ classdef FF
                     % and set those elements to zero.
                     for i = idx
                         if i ~= row_idx
-                            aa(i,:) = mod( aa(i,:) + aa(row_idx,:) * (o1.order - aa(i,column_idx)), o1.order );
+                            aa(i,:) = mod( aa(i,:) + aa(row_idx,:) * (self.order - aa(i,column_idx)), self.order );
                         end
                     end
 
@@ -219,89 +229,175 @@ classdef FF
                 row_idx = row_idx + 1;
 
             end
-
-            if ( rank(aa) > rank(aa(:,1:size(o1.value, 2))))
+            if ( rank(aa) > rank(aa(:,1:size(self.value, 2))))
                 % The case of no solution.
                 warning(message('FF:mldivide:NoSolution'));
                 x = [];
+            elseif isa(aa,"numeric")
+                x = zeros(size(self.value, 2), 1);
+                x(column_store,1) = aa(row_store,n_aa);
             else
-                x = zeros(size(o1.value, 2), 1);
+                x = sym("x",[size(self.value, 2), 1]);
                 x(column_store,1) = aa(row_store,n_aa);
             end
-            r = FF(x,o1.order);
+            r = FF(x,self.order);
         end
-        function r = mrdivide(o1,o2)
+        function r = mrdivide(self,other)
             arguments
-                o1
-                o2
+                self
+                other
             end
-            if ~isa(o1,"FF")
-                o1 = FF(o1,o2.order);
+            if ~isa(self,"FF")
+                self = FF(self,other.order);
             end
-            if ~isa(o2,"FF")
-                o2 = FF(o2,o1.order);
+            if ~isa(other,"FF")
+                other = FF(other,self.order);
             end
-            if o1.order ~= o2.order
+            if self.order ~= other.order
                 error("Order of summands must be the same.\n" + ...
-                    "Orders are %i and %i.",o1.order,o2.order)
+                    "Orders are %i and %i.",self.order,other.order)
             end
-            r = mldivide(o2',o1')';
+            r = mldivide(other',self')';
         end
-        function obj = ctranspose(obj) % overload conjugate transpose: '
+        function self = ctranspose(self) % overload conjugate transpose: '
             % ctranspose and transpose have identical behavior
-            obj.value=obj.value';
+            self.value=self.value';
         end
-        function obj = transpose(obj)            
-            obj.value=obj.value.';
+        function self = transpose(self)
+            self.value=self.value.';
         end
-        function r = eq(o1,o2)
+        function r = eq(self,other)
             arguments
-                o1 FF
-                o2 FF
+                self FF
+                other FF
             end
             r = false;
-            if (o1.order == o2.order) && all(o1.value == o2.value)
+            if (self.order == other.order) && all(self.value == other.value)
                 r = true;
             end
         end
-        function r = ne(o1,o2)
+        function r = ne(self,other)
             arguments
-                o1 FF
-                o2 FF
+                self FF
+                other FF
             end
-            r = ~eq(o1,o2);
+            r = ~eq(self,other);
         end
-        function r = horzcat(o1,o2)
+        function r = horzcat(self,other)
             arguments
-                o1 FF
+                self FF
             end
             arguments (Repeating)
-                o2 FF
+                other FF
             end
-            for o = o2
-                if o{1}.order == o1.order
-                    o1.value = [o1.value, o{1}.value];
+            for o = other
+                if o{1}.order == self.order
+                    self.value = [self.value, o{1}.value];
                 else
                     error("FF:horzcat:diffOrders")
                 end
             end
-            r = o1;
+            r = self;
         end
-        function r = vertcat(o1,o2)
+        function r = vertcat(self,other)
             arguments
-                o1 FF
+                self FF
             end
             arguments (Repeating)
-                o2 FF
+                other FF
             end
-            for o = o2
-                if o{1}.order == o1.order
-                    o1.value = [o1.value; o{1}.value];
+            for o = other
+                if o{1}.order == self.order
+                    self.value = [self.value; o{1}.value];
                 else
                     error("FF:horzcat:diffOrders")
                 end
-                r = o1;
+                r = self;
             end
+        end
+        function r =  rank(self)
+            %GFRANK Compute the rank of a matrix over a Galois field.
+            %
+            %   RK = GFRANK(A) calculates the rank of the matrix A in GF(2).
+            %
+            %   RK = GFRANK(A, P) calculates the rank of the matrix A in GF(P).
+            %
+            %   Note: This function performs computations in GF(P) where P is prime. To
+            %   work in GF(2^M), use the RANK function with Galois arrays.
+            %
+            %   See also GFLINEQ, GF/RANK.
+
+            %   The method used here is similar to the Gaussian elimination. The
+            %   algorithm has taken advantage of the binary computation, and double
+            %   sided elimination has been used.
+
+            %   Copyright 1996-2017 The MathWorks, Inc.
+            [n, m] = size(self.value);
+            if n < m
+                self.value = self.value';
+            end
+            p = self.order;
+            x = self.value(:);
+            if ((max(x) >=p) || (min(x) < 0) || any(any(floor(x)~=x)))
+                error(message('comm:gfrank:InvalidElementsInAB'))
+            end
+            [n, m] = size(self.value);
+            k = 1;
+            i = 1;
+            ii = [];
+            kk = [];
+
+            % forward major element selection
+            while (i <= n) && (k <= m)
+                % make the diagonal element into 1, or jump one line.
+                while (self.value(i,k) == 0) && (k <= m)
+                    ind = find(self.value(i:n, k) ~= 0);
+                    if isempty(ind) && (k == m)
+                        break;
+                    elseif isempty(ind)
+                        k = k + 1;
+                    else
+                        indx = find(self.value(i:n, k) == 1);
+                        if isempty(indx)
+                            ind_major = ind(1);
+                        else
+                            ind_major = indx(1);
+                        end
+                        j = i + ind_major - 1;
+                        tmp = self.value(i, :);
+                        self.value(i,:) = a(j, :);
+                        self.value(j, :) = tmp;
+                    end
+                end
+
+                % clear all nonzero elements in the column except the major element.
+                if (self.value(i,k) ~= 0)
+                    % to make major element into 1
+                    if (self.value(i,k) ~= 1)
+                        self.value(i,:) = rem(self.value(i,k)^(p-2) * self.value(i,:), p);
+                    end
+                    ind = find(self.value(:,k) ~= 0)';
+                    ii = [ii i];
+                    kk = [kk k];
+                    vec = (k:m);
+                    for j = ind
+                        if j > i
+                            % to make sure the column will be zero except the major element.
+                            self.value(j, vec) = rem(self.value(j, vec) + self.value(i, vec) * (p - self.value(j, k)), p);
+                        end
+                    end
+                    k = k + 1;
+                end
+                i = i + 1;
+            end
+
+            r = find(sum(self.value')>0,1,'last');
+            if isempty(r)
+                r = 0;
+            end
+        end
+        function ret = subsref(self,S)
+            ret = FF(self.value(S.subs{1}),self.order);
         end
     end
 end
