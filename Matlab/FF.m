@@ -397,7 +397,11 @@ classdef FF
             end
         end
         function ret = subsref(self,S)
-            ret = FF(self.value(S.subs{1}),self.order);
+            if S.type == "."
+                ret = builtin("subsref",self,S);
+            else
+                ret = FF(self.value(S.subs{1}),self.order);
+            end
         end
     end
 end
