@@ -93,6 +93,18 @@ classdef test_FF < matlab.unittest.TestCase
                 testCase.verifyEqual(f6.order,p)
             end
         end
+        function testFFsubsref(testCase)
+            v = -10^4:10^4;
+            indices = [1,1424;2342,3242;14000,14010];
+            for p = primes(testCase.testParameter.num_primes)
+                f1 = FF(v,p);
+                for i = indices'
+                    f2 = f1(i(1):i(2));
+                    testCase.verifyEqual(f2.value,mod(v(i(1):i(2)),p))
+                    testCase.verifyEqual(f2.order,p)
+                end
+            end
+        end
     end
 
 end

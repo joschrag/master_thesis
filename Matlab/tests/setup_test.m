@@ -57,7 +57,7 @@ if any(B~=0)
     end
 end
 const = (abs(const)>tolerance)*const;
-[d0, d1] = detect_linear_factors(new_vars, fun1, fun2, V);
+[d0, d1] = detect_linear_factors(A,B, V);
 ev_count = {pos_eig_vals,neg_eig_vals,zero_eig_vals};
 if const > 0
     const = -const;

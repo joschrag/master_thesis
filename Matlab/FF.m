@@ -13,8 +13,20 @@ classdef FF
                 val (1,1)
                 order (1,1) {mustBeInteger,mustBePositive}
             end
-            [c,t] = coeffs(val,symvar(val));
-            val = dot(mod(c,order),t);
+            try
+                l(1) = lhs(val);
+                l(2) = rhs(val);
+            catch
+                l = val;
+            end
+            if numel(l) == 1
+                [c,t] = coeffs(l,symvar(l));
+                val = sum(mod(c,order).*t);
+            elseif numel(l) ==2
+                [c1,t1] = coeffs(l(1),symvar(l(1)));
+                [c2,t2] = coeffs(l(2),symvar(l(2)));
+                val = sum(mod(c1,order).*t1) == sum(mod(c2,order).*t2);
+            end
         end
     end
     methods
@@ -266,14 +278,24 @@ classdef FF
         function self = transpose(self)
             self.value=self.value.';
         end
-        function r = eq(self,other)
+        function ret = eq(self,other)
             arguments
                 self FF
                 other FF
             end
-            r = false;
-            if (self.order == other.order) && all(self.value == other.value)
-                r = true;
+            if self.order ~= other.order
+                error("Order of summands must be the same.\n" + ...
+                    "Orders are %i and %i.",self.order,other.order)
+            end
+            if isa(self.value,"sym")
+                s_val = FF.simplify_mod(self.value,self.order);
+                o_val = FF.simplify_mod(other.value,other.order);
+                ret = FF(s_val == o_val,self.order);
+            elseif isa(self.value,"numeric")
+                ret = false;
+                if (self.order == other.order) && all(self.value == other.value)
+                    ret = true;
+                end
             end
         end
         function r = ne(self,other)
@@ -283,37 +305,104 @@ classdef FF
             end
             r = ~eq(self,other);
         end
-        function r = horzcat(self,other)
+        function ret = horzcat(self,other)
             arguments
                 self FF
             end
             arguments (Repeating)
                 other FF
             end
+            ret = self;
             for o = other
                 if o{1}.order == self.order
-                    self.value = [self.value, o{1}.value];
+                    ret = builtin("horzcat",ret, o{1});
                 else
                     error("FF:horzcat:diffOrders")
                 end
             end
-            r = self;
         end
-        function r = vertcat(self,other)
+        function ret = vertcat(self,other)
             arguments
                 self FF
             end
             arguments (Repeating)
                 other FF
             end
+            ret = self;
             for o = other
                 if o{1}.order == self.order
-                    self.value = [self.value; o{1}.value];
+                    ret = builtin("vertcat",ret, o{1});
                 else
-                    error("FF:horzcat:diffOrders")
+                    error("FF:vertcat:diffOrders")
                 end
-                r = self;
             end
+        end
+        function ret = mpower(self,pow)
+            arguments
+                self FF
+                pow (1,1) {mustBeInteger}
+            end
+            if size(self.value,1) ~= size(self.value,2)
+                error("FF:mpower:NonSquareMatrix")
+            end
+            if pow == 0
+                ret = FF(eye(size(self.value)),self.order);
+            elseif pow > 0
+                if pow == 1
+                    ret = self;
+                else
+                    ret = FF(self.value^pow,self.order);
+                end
+            else
+                ret = inv(self);
+                if pow < -1
+                    ret = ret^(-pow);
+                end
+            end
+        end
+        function ret = inv(self)
+            arguments
+                self FF
+            end
+            [m,n] = size(self.value);
+            if m ~= n
+                error("FF:inv:NonSquareMatrix")
+            end
+            d = FF(det(self),self.order);
+            if d.value == 0
+                error("FF:inv:SingularMatrix")
+            end
+            ret = d.^(-1) .* adj(self);
+        end
+        function ret = adj(self)
+            arguments
+                self FF
+            end
+            [m,n] = size(self.value);
+            if m ~= n
+                error("FF:adj:NonSquareMatrix")
+            end
+            A = zeros(m,n);
+            for i=1:m
+                for j=1:n
+                    A(j,i) = cofactor(self,i,j);
+                end
+            end
+            ret = FF(A,self.order);
+        end
+        function ret = cofactor(self,i,j)
+            arguments
+                self FF
+                i (1,1) {mustBeInteger,mustBePositive}
+                j (1,1) {mustBeInteger,mustBePositive}
+            end
+            [m,n] = size(self.value);
+            if m ~= n
+                error("FF:cofactor:NonSquareMatrix")
+            end
+            validateattributes(i,"numeric",{'>',0,'<=',m},"FF:cofactor")
+            validateattributes(j,"numeric",{'>',0,'<=',n},"FF:cofactor")
+            ret = mod(round((-1)^(i+j)*det(self.value([1:i-1 i+1:n],[1:j-1 j+1:n]))),self.order);
         end
         function r =  rank(self)
             %GFRANK Compute the rank of a matrix over a Galois field.
@@ -365,7 +454,7 @@ classdef FF
                         end
                         j = i + ind_major - 1;
                         tmp = self.value(i, :);
-                        self.value(i,:) = a(j, :);
+                        self.value(i,:) = self.value(j, :);
                         self.value(j, :) = tmp;
                     end
                 end
@@ -391,16 +480,60 @@ classdef FF
                 i = i + 1;
             end
 
-            r = find(sum(self.value')>0,1,'last');
+            r = find(sum(self.value,2)>0,1,'last');
             if isempty(r)
                 r = 0;
             end
         end
         function ret = subsref(self,S)
-            if S.type == "."
-                ret = builtin("subsref",self,S);
+            for s = S
+                self = builtin("subsref",self,s);
+            end
+            ret = self;
+        end
+        function res = sum(self)
+            res = FF(sum(self.value),self.order);
+        end
+        function ret = expand(self,varargin)
+            val = arrayfun(@(x) FF.simplify_mod(x,self.order),self.value);
+            if numel(varargin) == 0
+                ret = FF(expand(val),self.order);
             else
-                ret = FF(self.value(S.subs{1}),self.order);
+                ret = FF(expand(val,varargin),self.order);
+            end
+        end
+        function ret = simplify(self,varargin)
+            val = arrayfun(@(x) FF.simplify_mod(x,self.order),self.value);
+            if numel(varargin) == 0
+                ret = FF(simplify(val),self.order);
+            else
+                ret = FF(simplify(val,varargin),self.order);
+            end
+        end
+        function ret = subs(self,old,new)
+            val = arrayfun(@(x) FF.simplify_mod(x,self.order),self.value);
+            ret = FF(subs(val,old,new),self.order);
+        end
+        function ret = collect(self,varargin)
+            val = arrayfun(@(x) FF.simplify_mod(x,self.order),self.value);
+            if numel(varargin) == 0
+                ret = FF(collect(val),self.order);
+            else
+                ret = FF(collect(val,varargin),self.order);
+            end
+        end
+        function ret = det(self)
+            if isa(self.value,"sym")
+                ret = self.simplify_mod(det(self.value),self.order);
+            else
+                ret = mod(det(self.value),self.order);
+                if (round(ret)~=ret)
+                    if (abs(round(ret)-ret) < 10^-8)
+                        ret = round(ret);
+                    else
+                        error("FF:det","Result is not an integer.")
+                    end
+                end
             end
         end
     end
