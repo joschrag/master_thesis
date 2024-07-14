@@ -21,9 +21,9 @@ if m==3
     if ~isinf(M)
         fprintf("Using P(%s)\n",string(v(I)))
         Q = Q_list{I};
-        P = [c(:,i(I,1)).*x+c(:,i(I,2)),c(:,i(I,3)).*x+c(:,i(I,4)),c(:,i(I,5)).*x^2+c(:,i(I,6)).*x+c(:,10)];
-        lin_vars = [v(setdiff(1:3,I));1];
         p_var = v(I);
+        P = [c(:,i(I,1)).*p_var+c(:,i(I,2)),c(:,i(I,3)).*p_var+c(:,i(I,4)),c(:,i(I,5)).*p_var^2+c(:,i(I,6)).*p_var+c(:,10)];
+        lin_vars = [v(setdiff(1:3,I));1];
         P2 = Q\P;
     else
         warning("All Matrices are singular!")
