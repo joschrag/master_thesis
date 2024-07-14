@@ -11,6 +11,7 @@ end
 x = sym("x","integer");
 y = sym("y","integer");
 z = sym("z","integer");
+vars = [x,y,z];
 v = [x^2,y^2,z^2,x*y,x*z,y*z,x,y,z,1]';
 A = -FF([c(:,2),c(:,3),c(:,6)],prime);
 B = -FF([c(:,1),c(:,3),c(:,5)],prime);
@@ -39,18 +40,19 @@ if any([r_A,r_B,r_C] == 3)
         lin_vars = FF([x;y;1],prime);
         p_var = z;
     end
-    P2 = inv(Q)*P;
 
+    P2 = inv(Q)*P;
     quad_1 = FF(P2.value(1,:),prime)*lin_vars;
     quad_2 = FF(P2.value(2,:),prime)*lin_vars;
     mixed = FF(P2.value(3,:),prime)*lin_vars;
 
-    identities = [(quad_1)*FF(lin_vars.value(2),prime) == (mixed)*FF(lin_vars.value(1),prime);...
-        (mixed)*FF(lin_vars.value(2),prime) == (quad_2)*FF(lin_vars.value(1),prime);...
-        (mixed)*(mixed) == quad_1*quad_2];
+    identities = [(quad_1)*FF(lin_vars.value(2),prime) - (mixed)*FF(lin_vars.value(1),prime);...
+        (mixed)*FF(lin_vars.value(2),prime) - (quad_2)*FF(lin_vars.value(1),prime);...
+        (mixed)*(mixed) - quad_1*quad_2];
     sub1 = FF.empty(3,0);
     sub2 = FF.empty(3,0);
     sub3 = FF.empty(3,0);
+
     for i = 1:3
         sub1(i) = collect(identities(i));
     end
@@ -66,39 +68,63 @@ if any([r_A,r_B,r_C] == 3)
         sub3(i) = subs(ex,old_vars,new_vars);
     end
     eq = [sub3(1).value,sub3(2).value,sub3(3).value];
-    eq = simplify(lhs(eq)-rhs(eq));
+    eq = simplify(eq);
     [A_,b] = equationsToMatrix(eq,lin_vars.value(1:2));
     A2 = FF([A_,-b],prime);
     pol = coeffs(det(A2),p_var,"All");
-    [~,x_sol,~] = gfroots(fliplr(pol),1,prime);
-    result = [];
-    for x_0 = x_sol
-        result(1) = x_0;
-        M = subs(A2,x,x_0);
+    p_root = get_gf_root(pol,prime);
+    if numel(p_root) == 0
+        fprintf("No solutions to the equations.\n")
+        result = [];
+        return;
+    end
+    idx = [find(vars==p_var),find(vars==lin_vars.value(1)),find(vars==lin_vars.value(2))];
+    result = zeros(numel(p_root),3);
+    result(:,idx(1)) = p_root;
+    A2.value;
+    for i = 1:numel(p_root)
+        p_0 = p_root(i);
+        result(i,idx(1)) = p_0;
+        M = subs(A2,p_var,p_0);
+        if M.value == zeros(3)
+            fprintf("Matrix is singular.\n");
+            result = result((1:numel(p_root))~=i,:);
+            continue;
+        end
+        if rank(FF(M.value(1:2,1:2),prime)) < 2
+            fprintf("Rank problem\n")
+            disp(M.value)
+            %TODO solve for one variable and subs
+            % non_zero_row = M.value(any(M.value,2),:)
+            % y_sol = FF(-non_zero_row(1,2)*z-non_zero_row(1,3),prime)/FF(non_zero_row(1,1),prime);
+            % y_sol.value
+            % z_sol = FF(-non_zero_row(1,1)*y-non_zero_row(1,3),prime)/FF(non_zero_row(1,2),prime);
+            % z_sol.value
+            % for j=non_zero_row(1,3):non_zero_row(1,1):prime-1
+            %     j
+            %     o = subs(y_sol,z,j);
+            %     o.value
+            % end
+            % for k=non_zero_row(1,3):non_zero_row(1,2):prime-1
+            %     k
+            %     o = subs(z_sol,y,k);
+            %     o.value
+            % end
+            result = result((1:numel(p_root))~=i,:);
+            continue
+        end
         b_vec = -M;
-        [result(2:3),~] = gflineq(double(M.value(1:2,1:2)),double(b_vec.value(1:2,3)),prime);
+        [result(i,idx(2:3)),~] = gflineq(double(M.value(1:2,1:2)),double(b_vec.value(1:2,3)),prime);
     end
-
-    for i=1:size(result,1)
-        n = norm(mod(eval(subs(c*v,[x,y,z],result(i,:))),prime));
-        eval_str = join(repmat("\n%g",[1,m]),"");
-        line_break = join(repmat("=",[1,10]),"");
-        res_str = join(repmat("%i",[1,m]),",");
-        res_str = join(["(",res_str,")"]);
-        result_str = sprintf("Lösung %%i %s-> \nNorm: %%i%s\n%%s\n",res_str,eval_str);
-        fprintf(result_str,i,result(i,:),n,mod(eval(subs(c*v,[x,y,z],result(i,:))),prime),line_break);
-    end
-
-
-end
-for i =0:prime-1
-    for k =0:prime-1
-
-        for j =0:prime-1
-            if  ~any(mod(eval(subs(c*v,[x,y,z],[i,k,j])),prime))
-            fprintf("%i %i %i | %i %i %i\n",i,k,j,mod(eval(subs(c*v,[x,y,z],[i,k,j])),prime))
-            
-            end
+    if numel(result) > 0
+        for i=1:size(result,1)
+            n = norm(mod(eval(subs(c*v,[x,y,z],result(i,:))),prime));
+            eval_str = join(repmat("\n%g",[1,m]),"");
+            line_break = join(repmat("=",[1,10]),"");
+            res_str = join(repmat("%i",[1,m]),",");
+            res_str = join(["(",res_str,")"]);
+            result_str = sprintf("Lösung %%i %s-> \nNorm: %%i%s\n%%s\n",res_str,eval_str);
+            fprintf(result_str,i,result(i,:),n,mod(eval(subs(c*v,[x,y,z],result(i,:))),prime),line_break);
         end
     end
 end
