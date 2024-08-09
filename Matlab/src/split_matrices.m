@@ -17,13 +17,13 @@ arguments
 end
 assert(size(c,2)==10 || size(c,2)==20,"Coefficient matrix has invalid size!")
 if size(c,2)==10
-    A = -[c(:,2),c(:,3),c(:,6)];
+    A = -[c(:,4),c(:,5),c(:,6)];
     B = -[c(:,1),c(:,3),c(:,5)];
     C = -[c(:,1),c(:,2),c(:,4)];
     min_num_rows = 3;
-    i =   [4,8,5,9,1,7;...
-        4,7,6,9,2,8;...
-        5,7,6,8,3,9];
+    i =   [2,8,3,9,1,7;...
+        2,7,5,9,4,8;...
+        3,7,5,8,6,9];
 else
     assert(~any(c(:,5)))
     A = -[c(:,7),c(:,8),c(:,9),c(:,10),c(:,5)*x+c(:,15)];
@@ -63,7 +63,7 @@ if m==min_num_rows
 else
     fprintf("Using MP-inverse\n")
     if min_num_rows==3
-        P_X = [c(:,4).*x+c(:,8),c(:,5).*x+c(:,9),c(:,1).*x^2+c(:,7).*x+c(:,10)];
+        P_X = [c(:,2).*x+c(:,8),c(:,3).*x+c(:,9),c(:,1).*x^2+c(:,7).*x+c(:,10)];
         lin_vars = [y;z;1];
     else
         P_X =  [c(:,4).*x+c(:,14),...

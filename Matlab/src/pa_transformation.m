@@ -2,14 +2,14 @@ function pa_transformation(coeff_vec,tolerance)
 %PA_TRANSFORMATION Summary of this function goes here
 %   Detailed explanation goes here
 %   arguments:
-%       coeffs: coefficient vector of (x^2,y^2,z^2,xy,xz,yz,x,y,z,1)
+%       coeffs: coefficient vector of (x^2,xy,xz,y^2,yz,z^2,x,y,z,1)
 arguments
     coeff_vec (1,10) {mustBeReal} = [1,1,1,1,1,1,4,-4,10,-5];
     tolerance (1,1) {mustBePositive,mustBeReal} = 10^-10;
 end
-A = [coeff_vec(1),coeff_vec(4)/2,coeff_vec(5)/2;...
-    coeff_vec(4)/2,coeff_vec(2),coeff_vec(6)/2;...
-    coeff_vec(5)/2,coeff_vec(6)/2,coeff_vec(3)];
+A = [coeff_vec(1),coeff_vec(2)/2,coeff_vec(3)/2;...
+    coeff_vec(2)/2,coeff_vec(4),coeff_vec(5)/2;...
+    coeff_vec(3)/2,coeff_vec(5)/2,coeff_vec(6)];
 B = [coeff_vec(7),coeff_vec(8),coeff_vec(9)];
 res = classify_wolfram(coeff_vec);
 const = coeff_vec(10);
