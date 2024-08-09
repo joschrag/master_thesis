@@ -183,7 +183,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[1,3];
                     [m,r] = rref_matrix(c,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank2_13(r,p);
+                    [u,v] = rank2_13_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
