@@ -12,8 +12,8 @@ x = sym("x","integer");
 y = sym("y","integer");
 z = sym("z","integer");
 vars = [x,y,z];
-v = [x^2,y^2,z^2,x*y,x*z,y*z,x,y,z,1]';
-A = -FF([c(:,2),c(:,3),c(:,6)],prime);
+v = [x^2,x*y,x*z,y^2,y*z,z^2,x,y,z,1]';
+A = -FF([c(:,4),c(:,5),c(:,6)],prime);
 B = -FF([c(:,1),c(:,3),c(:,5)],prime);
 C = -FF([c(:,1),c(:,2),c(:,4)],prime);
 r_A = rank(A);
@@ -23,27 +23,27 @@ if any([r_A,r_B,r_C] == 3)
     if r_A == 3
         fprintf("Using P(x)\n")
         Q = A;
-        P = FF([c(:,4).*x+c(:,8),c(:,5).*x+c(:,9),c(:,1).*x^2+c(:,7).*x+c(:,10)],prime);
+        P = FF([c(:,2).*x+c(:,8),c(:,3).*x+c(:,9),c(:,1).*x^2+c(:,7).*x+c(:,10)],prime);
         lin_vars = FF([y;z;1],prime);
         p_var = x;
     elseif r_B == 3
         fprintf("Using P(y)\n")
         Q = B;
-        P = FF([c(:,4).*y+c(:,7),c(:,6).*y+c(:,9),c(:,2).*y^2+c(:,8).*y+c(:,10)],prime);
+        P = FF([c(:,2).*y+c(:,7),c(:,5).*y+c(:,9),c(:,4).*y^2+c(:,8).*y+c(:,10)],prime);
         lin_vars = FF([x;z;1],prime);
         p_var = y;
     elseif r_C == 3
         fprintf("Using P(z)\n")
         Q = C;
-        P = FF([c(:,5).*z+c(:,7),c(:,6).*z+c(:,8),c(:,3).*z^2+c(:,9).*z+c(:,10)],prime);
+        P = FF([c(:,3).*z+c(:,7),c(:,5).*z+c(:,8),c(:,6).*z^2+c(:,9).*z+c(:,10)],prime);
         lin_vars = FF([x;y;1],prime);
         p_var = z;
     end
 
     P2 = l_inv(Q)*P;
     quad_1 = FF(P2.value(1,:),prime)*lin_vars;
-    quad_2 = FF(P2.value(2,:),prime)*lin_vars;
-    mixed = FF(P2.value(3,:),prime)*lin_vars;
+    quad_2 = FF(P2.value(3,:),prime)*lin_vars;
+    mixed = FF(P2.value(2,:),prime)*lin_vars;
 
     identities = [(quad_1)*FF(lin_vars.value(2),prime) - (mixed)*FF(lin_vars.value(1),prime);...
         (mixed)*FF(lin_vars.value(2),prime) - (quad_2)*FF(lin_vars.value(1),prime);...
@@ -110,8 +110,6 @@ if any([r_A,r_B,r_C] == 3)
         end
         if ~isempty(q_root)
             for root=[q_root,r_root]'
-                [p_0;root]
-                res = M*FF([root;1],prime);
                 result=[result;[p_0,root']];
                 result(end,:) = result(end,idx);
             end
