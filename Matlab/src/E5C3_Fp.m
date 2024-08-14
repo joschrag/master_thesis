@@ -114,7 +114,7 @@ if numel(p_root) == 0
     result = [];
     return;
 end
-idx = [find(vars==p_var),find(vars==lin_vars.value(3)),find(vars==lin_vars.value(4))];
+[~,idx] = sort([find(vars==p_var),find(vars==lin_vars.value(3)),find(vars==lin_vars.value(4))]);
 result = [];
 for i = 1:numel(p_root)
     p_0 = p_root(i);
