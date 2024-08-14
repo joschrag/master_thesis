@@ -12,7 +12,7 @@ plt_list = f.Children.Children;
 color_list = ["#E41A1C","#377EB8","#4DAF4A","#984EA3","#FF7F00","#FFFF33","#A65628","#F781BF","#999999"];
 j =1;
 skip = false;
-for i=1:numel(plt_list)
+for i=numel(plt_list):-1:1
     fprintf("%i : %s | %s\n",i,class(plt_list(i)),plt_list(i).DisplayName)
     switch plt_list(i).DisplayName
         case {"hyperboloid2","ell cone","cross planes","par planes","hyp cylinder"}
