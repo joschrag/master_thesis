@@ -39,6 +39,11 @@ if any([r_A,r_B,r_C] == 3)
         lin_vars = FF([x;y;1],prime);
         p_var = z;
     end
+    else
+        fprintf("No matrix splitting possible.\n")
+        result = [];
+        return;
+    end
 
     P2 = l_inv(Q)*P;
     quad_1 = FF(P2.value(1,:),prime)*lin_vars;
@@ -86,7 +91,6 @@ if any([r_A,r_B,r_C] == 3)
             fprintf("Matrix is singular.\n");
             continue;
         end
-        disp(M.value)
         rM = rref(M);
         m = zeros(1,rank(rM));
         for j=1:rank(rM)
@@ -99,7 +103,7 @@ if any([r_A,r_B,r_C] == 3)
                 q_root = FF(-r(1).*r_root-r(2),prime).value;
             case "2"
                 q_root = (0:prime-1)';
-                r_root = FF(-r(2),prime).value;
+                r_root = repmat(FF(-r(2),prime).value,size(q_root));
             case "12"
                 o_sols = FF(-r',prime).value;
                 q_root = o_sols(1);
@@ -119,6 +123,5 @@ if any([r_A,r_B,r_C] == 3)
     if numel(result) > 0
         print_solutions(result,equations,x,y,z,prime)
     end
-end
 end
 
