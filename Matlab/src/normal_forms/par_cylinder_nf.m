@@ -14,11 +14,17 @@ if d1 > 0
     const = -const;
     eig_vals = -eig_vals;
     d = d1;
-elseif d0 > 0 && d1 == 0
+elseif d1 < 0
+        d = d1;
+elseif d1 == 0
+    if d0 > 0
     d0 = -d0;
     const = -const;
     eig_vals = -eig_vals;
     d = d0;
+    else
+    d = d0;
+    end
 end
 offsets(3) = -const/d;
 tmp = 1./sqrt(eig_vals(1)./d);
