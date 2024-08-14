@@ -1,4 +1,5 @@
 # master_thesis
+
 Repo for master thesis in algebraic geometry (E3Q3).
 
 This repository contains an implementation of the E3Q3 algorithm by Kukelova [paper](<https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Kukelova_Efficient_Intersection_of_CVPR_2016_paper.pdf>).
