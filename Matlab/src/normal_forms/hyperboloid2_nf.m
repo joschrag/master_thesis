@@ -12,8 +12,8 @@ if const < 0
     const = -const;
     eig_vals = -eig_vals;
 end
-n_idx_p = (1:3).*(eig_vals>0)';
-n_idx_m = (1:3).*(eig_vals<0)';
+n_idx_p = (1:3).*(eig_vals>0);
+n_idx_m = (1:3).*(eig_vals<0);
 n_idx = [n_idx_p(n_idx_p~=0),n_idx_m(n_idx_m~=0)];
 eig_vals = eig_vals(n_idx);
 tmp = 1./sqrt(abs(eig_vals)./const);
