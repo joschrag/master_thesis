@@ -18,3 +18,4 @@ jobs:
         uses: matlab-actions/run-tests@v2
         with:
           use-parallel: true
+          source-folder: Matlab; Matlab/src; Matlab/src/normal_forms; Matlab/src/params; Matlab/src/rank_cases; Matlab/src/rank_cases_fp; Matlab/src/plots; Matlab/src/utils
