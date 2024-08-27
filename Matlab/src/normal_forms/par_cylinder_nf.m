@@ -37,7 +37,7 @@ elseif d1 == 0
     end
 end
 offsets(3) = -const/d;
-tmp = 1./sqrt(eig_vals(1)./d);
+tmp = 1./sqrt(eig_vals(1)./-d);
 params = get_par_cylinder_params(tmp(1),d0/d,P,offsets,plotRange=opt.plotRange);
 end
 
