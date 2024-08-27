@@ -14,6 +14,7 @@ jobs:
           products: >
             Symbolic_Math_Toolbox
             Parallel_Computing_Toolbox
+            Communications_Toolbox
       - name: Run tests
         uses: matlab-actions/run-tests@v2
         with:
