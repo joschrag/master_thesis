@@ -9,8 +9,8 @@ arguments       %1  2   3   4   5   6   7   8   9  10  11  12   13 14 15  16   1
         0,-2,0,-1,0,0,-3,0,4,0,-2,6,1,6,-8,-2,3,2,3,-7;...
         ];
 end
-% close("all")
-% clearvars -except c
+close("all")
+clearvars -except c
 x = sym("x","real");
 y = sym("y","real");
 z = sym("z","real");
@@ -123,10 +123,14 @@ if ~isempty(result)
 else
     interval = [-5,5];
 end
-dens = [25,25,25,25,25];
+dens = [100,100,100,100,100];
 figure
 for i=1:m
-    f =@(u,v,w) double(subs(c(i,:)*var_vec,{x,y,z},{u,v,w}));
+    f = @(x,y,z) sum(repmat(double(c(i,:))',size(x)).*[x.^3; x.^2.*y; x.^2.*z; ...
+                                         x.*y.^2; x.*y.*z; x.*z.^2; ...
+                                         y.^3; y.^2.*z; y.*z.^2; ...
+                                         z.^3; x.^2; x.*y; x.*z; ...
+                                         y.^2; y.*z; z.^2; x; y; z; ones(size(x))], 1);
     s = fimplicit3(f,double(interval),"MeshDensity",dens(i));
     set(s,"FaceAlpha",0.4,"FaceColor",color_list(i),"EdgeColor","none");
     hold on
