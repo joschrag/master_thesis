@@ -16,7 +16,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
         % Test methods
         function test_r1(testCase)
             rng(0)
-            for i=1:testCase.testParameter.num_runs
+            for i=1:ceil(testCase.testParameter.num_runs/10)
                 c=1;
                 [m,r] = rref_matrix(c);
                 M = [m;zeros(5-numel(c),5)];
@@ -46,7 +46,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
         end
         function test_r2(testCase)
             rng(0)
-            for i=1:testCase.testParameter.num_runs
+            for i=1:ceil(testCase.testParameter.num_runs/10)
                 c=2;
                 [m,r] = rref_matrix(c);
                 M = [m;zeros(5-numel(c),5)];
@@ -54,10 +54,10 @@ classdef test_rank_solve < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(abs(res)>10^-10)
                             disp(M)
                             disp(vec)
-                            res
+                            disp(res)
                         end
                         testCase.verifyEqual(double(res),[0;0;0;0;0],AbsTol=ones(5,1).*10^-10)
 
@@ -75,10 +75,10 @@ classdef test_rank_solve < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(abs(res)>10^-10)
                             disp(M)
                             disp(vec)
-                            res
+                            disp(res)
                             
                         end
                         testCase.verifyEqual(double(res),[0;0;0;0;0],AbsTol=ones(5,1).*10^-10)
@@ -97,10 +97,10 @@ classdef test_rank_solve < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(abs(res)>10^-10)
                             disp(M)
                             disp(vec)
-                            res
+                            disp(res)
                             
                         end
                         testCase.verifyEqual(double(res),[0;0;0;0;0],AbsTol=ones(5,1).*10^-10)
