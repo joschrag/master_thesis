@@ -30,6 +30,8 @@ for j=3:n
     p1 = p_vec(j-2,j-2:end);
     p2 = p_vec(j-1,j-1:end);
     [~,r] = deconv(p1(find(p1~=0,1,'first'):end),p2(find(p2~=0,1,'first'):end));
+    nz_index = find(r,1);
+    r = r./(sign(r(nz_index))*r(nz_index));
     r=r.*(abs(r) > 10^(-5));
     p_vec(j,n+1-numel(r):end) = -r;
     if numel(r) == 1 || ~any(r)
@@ -44,7 +46,7 @@ intervals = [-inf,inf];
 roots_per_interval = abs(diff(sum(diff(lims, 1, 2) ~= 0, 2),1));
 iter = 0;
 %     less than 1 root per interval || ±inf as interval boundary
-while (~all(roots_per_interval <= 1) || any(abs(intervals)==inf)) && iter <= max_iter
+while (~all(roots_per_interval <= 1) || any(diff(intervals)>5) || any(abs(intervals)==inf)) && iter <= max_iter
     [intervals,insert_indices] = insert_intervals(intervals,roots_per_interval);
     p_vals = polyval(double(p),intervals);
     if any(abs(p_vals) < epsilon)
