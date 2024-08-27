@@ -4,9 +4,7 @@ jobs:
   my-job:
     name: Run MATLAB unit Tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        releases: [R2023a,R2023b,R2024a]
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
