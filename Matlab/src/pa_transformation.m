@@ -39,40 +39,40 @@ switch res
         params = ellipsoid_nf(lambda,P,offsets,const);
         dname = "ellipsoid";
     case 4
-        params = hyperboloid1_nf(lambda,P,offsets,const);
+        params = hyperboloid1_nf(lambda,P,offsets,const,plotRange=opt.plotRange);
         dname = "hyperboloid1";
     case 5
-        params = hyperboloid2_nf(lambda,P,offsets,const);
+        params = hyperboloid2_nf(lambda,P,offsets,const,plotRange=opt.plotRange);
         dname = "hyperboloid2";
     case 6
-        params = ell_paraboloid_nf(lambda,P,offsets,d0,const);
+        params = ell_paraboloid_nf(lambda,P,offsets,d0,const,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "ell paraboloid";
     case 7
-        params = hyp_paraboloid_nf(lambda,P,offsets,d0,const);
+        params = hyp_paraboloid_nf(lambda,P,offsets,d0,const,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "hyp paraboloid";
     case 2
-        params = ell_cone_nf(lambda,P,offsets);
+        params = ell_cone_nf(lambda,P,offsets,plotRange=opt.plotRange);
         dname = "ell cone";
     case 8
-        params = ell_cylinder_nf(lambda,P,offsets,const);
+        params = ell_cylinder_nf(lambda,P,offsets,const,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "ell cylinder";
     case 10
-        params = hyp_cylinder_nf(lambda,P,offsets,const);
+        params = hyp_cylinder_nf(lambda,P,offsets,const,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "hyp cylinder";
     case 11
-        params = par_cylinder_nf(lambda,P,offsets,d0,d1,const);
+        params = par_cylinder_nf(lambda,P,offsets,d0,d1,const,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "par cylinder";
     case 12
-        params = par_planes_nf(lambda,P,offsets,const);
+        params = par_planes_nf(lambda,P,offsets,const,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "par planes";
     case 13
-        params = plane_nf(lambda,P,offsets);
+        params = plane_nf(lambda,P,offsets,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "plane";
     case 14
-        params = cross_planes_nf(lambda,P,offsets);
+        params = cross_planes_nf(lambda,P,offsets,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "cross planes";
     case 9
-        params = line_nf(lambda,P,offsets);
+        params = line_nf(lambda,P,offsets,plotRange=opt.plotRange,tolerance=opt.tolerance);
         dname = "line";
     case 1
         params = {{0,0,0}};
