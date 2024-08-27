@@ -1,11 +1,18 @@
-function params = ellipsoid_nf(eig_vals,V,offsets,const)
+function params = ellipsoid_nf(eig_vals,P,offsets,const,opt)
 %ELLIPSOID_NF Summary of this function goes here
 %   Detailed explanation goes here
+arguments
+    eig_vals (1,3) {mustBeReal};
+    P (3,3) {mustBeReal};
+    offsets (3,1) {mustBeReal};
+    const (1,1) {mustBeReal};
+    opt.plotRange (1,2) {mustBeReal} = [-5,5];
+end
 if const > 0
     const = -const;
     eig_vals = -eig_vals;
 end
 tmp = 1./sqrt(eig_vals./-const);
-params = get_ellipsoid_params(tmp(1),tmp(2),tmp(3),V,offsets);
+params = get_ellipsoid_params(tmp(1),tmp(2),tmp(3),P,offsets);
 end
 
