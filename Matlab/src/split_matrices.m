@@ -36,8 +36,12 @@ else
         3,11,8,14,6,13,17,9,15,18,10,16,19];
 end
 Q_list = {A,B,C};
-conds = real([vpa(cond(A)),vpa(cond(B)),vpa(cond(C))]);
-[M,I] = min(conds,[],"omitnan");
+if any([rank(A),rank(B),rank(C)]==min_num_rows)
+    conds = real([vpa(cond(A)),vpa(cond(B)),vpa(cond(C))]);
+    [M,I] = min(conds,[],"omitnan");
+else
+    M = Inf;
+end
 
 
 v = [x;y;z];
@@ -61,7 +65,7 @@ if m==min_num_rows
         end
         P2 = Q\P;
     else
-        warning("All Matrices are singular!")
+        error("All Matrices are singular!")
     end
 else
     if options.verbose > 0
