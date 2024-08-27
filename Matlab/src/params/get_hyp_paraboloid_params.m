@@ -1,4 +1,4 @@
-function [params] = get_hyp_paraboloid_params(a,b,P,offsets,swap,opt)
+function [params] = get_hyp_paraboloid_params(a,b,P,offsets,dir,opt)
 %GET_ELL_PARABOLOID_PARAMS Summary of this function goes here
 %   Detailed explanation goes here
 arguments
@@ -6,7 +6,7 @@ arguments
     b (1,1) {mustBeReal};
     P (3,3) {mustBeReal};
     offsets (3,1) {mustBeReal};
-    swap (1,1) {mustBeMember(swap,[0,1])};
+    dir (1,1) {mustBeMember(dir,[-1,1])};
     opt.plotRange (1,2) {mustBeReal} = [-5,5];
 end
 T = define_plot_points(opt.plotRange);
@@ -18,7 +18,7 @@ z =@(s,t,a,b) s.^2-t.^2;
 shape = size(c1);
 X = x(c1,c2,a,b);
 Y = y(c1,c2,a,b);
-Z = swap.*z(c1,c2,a,b);
+Z = dir.*z(c1,c2,a,b);
 tmp = P*[X(:),Y(:),Z(:)]' - P*offsets;
 XX = reshape(tmp(1,:),shape);
 YY = reshape(tmp(2,:),shape);
