@@ -25,13 +25,13 @@ k = logical(all(sign(nzero_eigs) == sign(nzero_eigs(1))));
 switch p_3
     case 1
         if p_4 == 1
-            fprintf("one plane\n")
+            %one plane
             result = 13;
         elseif p_4 ==  2
-            fprintf("par planes\n")
+            %par planes
             result = 12;
         elseif p_4 ==  3
-            fprintf("par cylinder\n")
+            %par cylinder
             result = 11;
         else
             result=0;
@@ -39,30 +39,30 @@ switch p_3
     case 2
         if p_4 == 2
             if k == 0
-                fprintf("intersect planes\n")
+                %intersect planes
                 result = 14;
             elseif k == 1
-                fprintf("line\n")
+                %line
                 result = 9;
             else
                 result=0;
             end
         elseif p_4 == 3
             if k == 0
-                fprintf("hyp cylinder\n")
+                %hyp cylinder
                 result = 10;
             elseif k == 1
-                fprintf("ell cylinder\n")
+                %ell cylinder
                 result = 8;
             else
             error("");
             end
         elseif p_4 == 4
             if k == 0
-                fprintf("hyp paraboloid\n")
+                %hyp paraboloid
                 result = 7;
             elseif k == 1
-                fprintf("ell paraboloid\n")
+                %ell paraboloid
                 result = 6;
             else
             result=0;
@@ -73,10 +73,10 @@ switch p_3
     case 3
         if p_4 == 3
             if k == 1
-                fprintf("point solution\n")
+                %point solution
                 result = 1;
             elseif k == 0
-                fprintf("ell cone\n")
+                %ell cone
                 result = 2;
             end
         elseif p_4 == 4
@@ -84,17 +84,17 @@ switch p_3
                 if k == 1
                     result=0;
                 elseif k == 0
-                    fprintf("hyperboloid1\n")
+                    %hyperboloid1
                     result = 4;
                 else
                     result=0;
                 end
             elseif sign(d) == -1
                 if k == 1
-                    fprintf("ellipsoid\n")
+                    %ellipsoid
                     result = 3;
                 elseif k == 0
-                    fprintf("hyperboloid2\n")
+                    %hyperboloid2
                     result = 5;
                 else
                    result=0;
