@@ -1,9 +1,16 @@
-function [params] = get_par_cylinder_params(a,b,P,offsets)
+function [params] = get_par_cylinder_params(a,b,P,offsets,opt)
 %GET_ELL_CYLINDER_PARAMS Summary of this function goes here
 %   Detailed explanation goes here
-U = -1:0.1:1;
-V = -5:0.1:5;
-[c1,c2] = meshgrid(U,V);
+arguments
+    a (1,1) {mustBeReal};
+    b (1,1) {mustBeReal};
+    P (3,3) {mustBeReal};
+    offsets (3,1) {mustBeReal};
+    opt.plotRange (1,2) {mustBeReal} = [-5,5];
+end
+T = -1:0.1:1;
+U = define_plot_points(opt.plotRange);
+[c1,c2] = meshgrid(T,U);
 x =@(s,t,a) s;
 y =@(s,t,a) t;
 z =@(s,t,a) a.*s.^2+b.*t;
