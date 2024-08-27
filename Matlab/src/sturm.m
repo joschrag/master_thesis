@@ -45,7 +45,6 @@ roots_per_interval = abs(diff(sum(diff(lims, 1, 2) ~= 0, 2),1));
 iter = 0;
 %     less than 1 root per interval || ±inf as interval boundary
 while (~all(roots_per_interval <= 1) || any(abs(intervals)==inf)) && iter <= max_iter
-    iter
     [intervals,insert_indices] = insert_intervals(intervals,roots_per_interval);
     p_vals = polyval(double(p),intervals);
     if any(abs(p_vals) < epsilon)
