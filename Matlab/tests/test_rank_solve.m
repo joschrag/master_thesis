@@ -20,19 +20,21 @@ classdef test_rank_solve < matlab.unittest.TestCase
                 c=1;
                 [m,r] = rref_matrix(c);
                 M = [m;zeros(5-numel(c),5)];
-                [u,v] = rank1_1(r);
-                if ~isempty(u)
-                    for vec = [u,v]'
+                [t,u] = rank1_1(r);
+                t = reshape(t,[],1);
+                u = reshape(u,[],1);
+                if ~isempty(t)
+                    for vec = [t,u]'
                         res = M*[vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(abs(res)>10^-10)
                             fprintf("M:\n")
                             disp(M)
                             fprintf("vec:\n")
                             disp(vec)
                             fprintf("t:\n")
-                            disp(u)
+                            disp(t)
                             fprintf("u:\n")
-                            disp(v)
+                            disp(u)
                             fprintf("res:\n")
                             disp(res)                                
                         end
