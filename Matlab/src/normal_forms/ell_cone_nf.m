@@ -7,8 +7,8 @@ arguments
     offsets (3,1) {mustBeReal};
     opt.plotRange (1,2) {mustBeReal} = [-5,5];
 end
-n_idx_p = (1:3).*(eig_vals>0)';
-n_idx_m = (1:3).*(eig_vals<0)';
+n_idx_p = (1:3).*(eig_vals>0);
+n_idx_m = (1:3).*(eig_vals<0);
 n_idx = [n_idx_p(n_idx_p~=0),n_idx_m(n_idx_m~=0)];
 factor = 1;
 if sum(n_idx_m~=0) == 2
