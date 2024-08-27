@@ -9,9 +9,9 @@ arguments
     opt.plotRange (1,2) {mustBeReal} = [-5,5];
     opt.tolerance (1,1) {mustBeReal,mustBePositive} = 10^-10;
 end
-n_idx_p = (1:3).*(eig_vals>opt.tolerance)';
-n_idx_m = (1:3).*(eig_vals<-opt.tolerance)';
-n_idx_z = (1:3).*(abs(eig_vals)<opt.tolerance)';
+n_idx_p = (1:3).*(eig_vals>opt.tolerance);
+n_idx_m = (1:3).*(eig_vals<-opt.tolerance);
+n_idx_z = (1:3).*(abs(eig_vals)<opt.tolerance);
 n_idx = [n_idx_p(n_idx_p~=0),n_idx_m(n_idx_m~=0),n_idx_z(n_idx_z~=0)];
 eig_vals = eig_vals(n_idx);
 P = P(:,n_idx);
