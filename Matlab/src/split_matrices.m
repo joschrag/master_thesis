@@ -1,4 +1,4 @@
-function [lin_vars, p_var, P2] = split_matrices(c, m, x, y, z)
+function [lin_vars, p_var, P2] = split_matrices(c, m, x, y, z, options)
 %SPLIT_MATRICES Splits a matrix into linear and polynomial parts.
 %
 %   [LIN_VARS, P_VAR, P2] = SPLIT_MATRICES(C, M, X, Y, Z) splits the matrix C
@@ -14,6 +14,7 @@ arguments
     x (1,1) sym = sym("x","real"); % Symbolic variable for x-direction
     y (1,1) sym = sym("y","real"); % Symbolic variable for y-direction
     z (1,1) sym = sym("z","real"); % Symbolic variable for z-direction
+    options.verbose (1,1) {mustBeInteger, mustBeInRange(options.verbose,0,2)} = 0;
 end
 assert(size(c,2)==10 || size(c,2)==20,"Coefficient matrix has invalid size!")
 if size(c,2)==10
@@ -31,8 +32,8 @@ else
     C = -[c(:,1),c(:,2),c(:,4),c(:,7),c(:,5)*z+c(:,12)];
     min_num_rows=5;
     i =   [ 4,14,6,16,2,12,18,3,13,19,1,11,17;...
-            2,11,9,16,4,12,17,8,15,19,7,14,18;...
-            3,11,8,14,6,13,17,9,15,18,10,16,19];
+        2,11,9,16,4,12,17,8,15,19,7,14,18;...
+        3,11,8,14,6,13,17,9,15,18,10,16,19];
 end
 Q_list = {A,B,C};
 conds = real([vpa(cond(A)),vpa(cond(B)),vpa(cond(C))]);
@@ -42,7 +43,9 @@ conds = real([vpa(cond(A)),vpa(cond(B)),vpa(cond(C))]);
 v = [x;y;z];
 if m==min_num_rows
     if ~isinf(M)
-        fprintf("Using P(%s)\n",string(v(I)))
+        if options.verbose > 0
+            fprintf("Using P(%s)\n",string(v(I)))
+        end
         Q = Q_list{I};
         p_var = v(I);
         if min_num_rows == 3
@@ -61,7 +64,9 @@ if m==min_num_rows
         warning("All Matrices are singular!")
     end
 else
-    fprintf("Using MP-inverse\n")
+    if options.verbose > 0
+        fprintf("Using MP-inverse\n")
+    end
     if min_num_rows==3
         P_X = [c(:,2).*x+c(:,8),c(:,3).*x+c(:,9),c(:,1).*x^2+c(:,7).*x+c(:,10)];
         lin_vars = [y;z;1];

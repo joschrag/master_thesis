@@ -1,11 +1,12 @@
-function pa_transformation(coeff_vec,tolerance)
+function pa_transformation(coeff_vec,opt)
 %PA_TRANSFORMATION Summary of this function goes here
 %   Detailed explanation goes here
 %   arguments:
 %       coeffs: coefficient vector of (x^2,xy,xz,y^2,yz,z^2,x,y,z,1)
 arguments
     coeff_vec (1,10) {mustBeReal} = [1,1,1,1,1,1,4,-4,10,-5];
-    tolerance (1,1) {mustBePositive,mustBeReal} = 10^-10;
+    opt.tolerance (1,1) {mustBePositive,mustBeReal} = 10^-10;
+    opt.plotRange (1,2) {mustBeReal} = [-5,5];
 end
 A = [coeff_vec(1),coeff_vec(2)/2,coeff_vec(3)/2;...
     coeff_vec(2)/2,coeff_vec(4),coeff_vec(5)/2;...
@@ -15,7 +16,7 @@ res = classify_wolfram(coeff_vec);
 const = coeff_vec(10);
 
 [P,lambda] = eig(A,"vector");
-lambda = (abs(lambda) > tolerance).*lambda;
+lambda = (abs(lambda) > opt.tolerance).*lambda;
 P = [P(:,1)./norm(P(:,1)),P(:,2)./norm(P(:,2)),P(:,3)./norm(P(:,3))];
 d_vec = zeros(1,2);
 d_ind = 1;
