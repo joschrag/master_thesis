@@ -1,4 +1,4 @@
-function [result] = E5C3(c)
+function [result] = E5C3(c,opt)
 %E3Q3_CUBIC Summary of this function goes here
 %   Detailed explanation goes here
 arguments       %1  2   3   4   5   6   7   8   9  10  11  12   13 14 15  16   17  18  19  20
@@ -8,9 +8,10 @@ arguments       %1  2   3   4   5   6   7   8   9  10  11  12   13 14 15  16   1
         -2,2,-2,-1,0,2,2,-2,-2,2,6,-2,1,-4,9,-5,-4,-4,-5,9;...
         0,-2,0,-1,0,0,-3,0,4,0,-2,6,1,6,-8,-2,3,2,3,-7;...
         ];
+    opt.verbose {mustBeInRange(opt.verbose,0,2)} = 0;
+    opt.plot_surf {mustBeInRange(opt.plot_surf,0,1)} = 1;
+    opt.plot_subspace {mustBeInRange(opt.plot_subspace,0,1)} = 1;
 end
-close("all")
-clearvars -except c
 x = sym("x","real");
 y = sym("y","real");
 z = sym("z","real");
@@ -18,7 +19,7 @@ vars = [x,y,z];
 var_vec = [x.^3,x.^2.*y,x.^2.*z,x.*y.^2,...
     x.*y.*z,x.*z.^2,y.^3,y.^2.*z,y.*z.^2,z.^3,x.^2,x.*y,x.*z,y.^2,y.*z,z.^2,x,y,z,1]';
 m = size(c,1);
-[lin_vars,p_var,P2] = split_matrices(c,m,x,y,z);
+[lin_vars,p_var,P2] = split_matrices(c,m,x,y,z,verbose=opt.verbose);
 
 cube_1 = P2(1,:)*lin_vars;   %y^3
 quad12 = P2(2,:)*lin_vars;   %y^2*z
@@ -52,95 +53,14 @@ for i=1:numel(p_root)
     if rank(M) == 5
         warning("Precision of root is too low!")
     end
-    rM = rref(double(M), 1e-6);
-    col = zeros(1,rank(rM));
-    for j=1:rank(rM)
-        col(j) = find(rM(j,:),1,"first");
-    end
-    r = vpa(rM(1:rank(rM),setdiff(1:5,col)));
-    p_root(i)
-    col
-
-    switch join(string(col),"")
-        case "1"
-            [q_root,r_root] = rank1_1(r);
-        case "2"
-            [q_root,r_root] = rank1_2(r);
-        case "3"
-            [q_root,r_root] = rank1_3(r);
-        case "4"
-            [q_root,r_root] = rank1_4(r);
-        case "12"
-            [q_root,r_root] = rank2_12(r);
-        case "13"
-            [q_root,r_root] = rank2_13(r);
-        case "14"
-            [q_root,r_root] = rank2_14(r);
-        case "23"
-            [q_root,r_root] = rank2_23(r);
-        case "24"
-            [q_root,r_root] = rank2_24(r);
-        case "34"
-            [q_root,r_root] = rank2_34(r);
-        case "123"
-            [q_root,r_root] = rank3_123(r);
-        case "124"
-            [q_root,r_root] = rank3_124(r);
-        case "134"
-            [q_root,r_root] = rank3_134(r);
-        case "234"
-            [q_root,r_root] = rank3_234(r);
-        case "1234"
-            [q_root,r_root] = rank4_1234(r);
-        otherwise
-            % fprintf("System of equations is singular.\n");
-            continue;
-    end
-    if ~isempty(q_root)
-        for root=[q_root,r_root]'
-            result=[result;[p_root(i),root']];
-            result(end,:) = result(end,idx);
-        end
-        % plot_subspace(M)
+    cur_result = solve_subsystem(M,p_root(i),idx);
+    if ~isempty(cur_result)
+        result = [result;cur_result];
     end
 end
-color_list = ["#E41A1C","#377EB8","#4DAF4A","#984EA3","#FF7F00","#FFFF33","#A65628","#F781BF","#999999"];
-if ~isempty(result)
-    min_x = min(result(:,1));
-    max_x = max(result(:,1));
-    min_y = min(result(:,2));
-    max_y = max(result(:,2));
-    min_z = min(result(:,3));
-    max_z = max(result(:,3));
-    min_dist = 10;
-    extra = abs(max(max_x-min_x,min_dist))*0.5;
-    ex_x_roots = [min_x-extra,max_x+extra];
-    extra = abs(max(max_y-min_y,min_dist))*0.5;
-    ex_y_roots = [min_y-extra,max_y+extra];
-    extra = abs(max(max_z-min_z,min_dist))*0.5;
-    ex_z_roots = [min_z-extra,max_z+extra];
-    interval = [ex_x_roots,ex_y_roots,ex_z_roots];
-else
-    interval = [-5,5];
+if opt.plot_surf
+    plot_and_color_implicit(result, m, c);
 end
-dens = [100,100,100,100,100];
-figure
-for i=1:m
-    f = @(x,y,z) sum(repmat(double(c(i,:))',size(x)).*[x.^3; x.^2.*y; x.^2.*z; ...
-                                         x.*y.^2; x.*y.*z; x.*z.^2; ...
-                                         y.^3; y.^2.*z; y.*z.^2; ...
-                                         z.^3; x.^2; x.*y; x.*z; ...
-                                         y.^2; y.*z; z.^2; x; y; z; ones(size(x))], 1);
-    s = fimplicit3(f,double(interval),"MeshDensity",dens(i));
-    set(s,"FaceAlpha",0.4,"FaceColor",color_list(i),"EdgeColor","none");
-    hold on
-end
-for i=1:size(result,1)
-    scatter3(result(i,1),result(i,2),result(i,3),50,"black","filled")
-end
-xlabel("x")
-ylabel("y")
-zlabel("z")
 equations = c*var_vec;
 if numel(result) > 0
     print_solutions(result,equations,x,y,z)
