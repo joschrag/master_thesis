@@ -6,13 +6,10 @@ arguments
 end
 
 v_0 = -r(3,2);
-
-
 u_0 = roots([-1,-r(1,1),-r(1,2)]);
 u_0 = u_0(imag(u_0)==0);
-
-control = abs(v_0^2-r(2,1).*u_0-r(2,2)) < 10^-10;
-if isempty(control)
+control = abs(-v_0^2-r(2,1).*u_0-r(2,2)) < 10^-10;
+if ~any(control)
     v_sol = [];
     u_sol = [];
     return
