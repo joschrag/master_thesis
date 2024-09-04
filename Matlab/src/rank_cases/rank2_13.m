@@ -6,8 +6,8 @@ arguments
 end
 u = sym("u","real");
 v = sym("v","real");
-t0 = -r(2,2)*v-r(2,3);
-v_pol = subs(-r(1,1)*v^2-r(1,2)*v-r(1,3)-u^2,u,t0);
+u0 = -r(2,2)*v-r(2,3);
+v_pol = subs(-r(1,1)*v^2-r(1,2)*v-r(1,3)-u^2,u,u0);
 v_sol = roots(coeffs(v_pol,v,"All"));
 v_sol = v_sol(imag(v_sol)==0);
 if ~isempty(v_sol)
