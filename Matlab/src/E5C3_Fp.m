@@ -1,70 +1,28 @@
-function result = E5C3_Fp(c,prime)
+function result = E5C3_Fp(c,prime,opt)
 %E3Q3 Summary of this function goes here
 %   Detailed explanation goes here
 arguments                      %1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
-    c (5,20) {mustBeInteger} = [1, 2, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1,-10;...
+    c (5,20) {mustBeInteger} = [1, 2, 3, 0, 0, 0, 1, 0, 0, 2, 0, 0, 1, 1, 1, 0, 1, 1, 1,-10;...
                                 -1,2, 3,-1, 0, 0, 1, 0, 1, 0, 0, 3, 0, 1, 5,-1, 7, 0, 0,-10;...
-                                2, 3,-1, 2, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1,-3, 4,-15, 0, 0,-10;...
-                                2, 2,-1, 2, 2, 3, 1, 0, 0, 0, 1, 0, 0, 1,-3, 4,-15,-3, 0,-10;...
-                                2,-3,-1, 2, 0, 0, 1, 0, 4, 0, 1, 0, 0, 1,-3, 4,-15, 0, 0,-10;
+                                2, 3,-1, 2, 0, 0, 1, 0, 0, 4, 1, 0, 0, 1,-3, 4,-15, 0, 0,-10;...
+                                2, 2,-1, 2, 0, 3, 1, 0, 0, 0, 1, 0, 0, 1,-3, 4,-15,-3, 0,-10;...
+                                2,-3,-1, 2, 0, 0, 1, 0, 4, 1, 1, 0, 0, 1,-3, 4,-15, 0, 0,-10;
         ];
     prime (1,1) {mustBeInteger} = nextprime(6);
+    opt.verbose (1,1) {mustBeInteger, mustBeInRange(opt.verbose,0,2)} = 1;
+    opt.error (1,1) {mustBeNumericOrLogical} = true;
+    opt.log_db (1,1) {mustBeNumericOrLogical} = true;
 end
+t1 = tic();
 x = sym("x","integer");
 y = sym("y","integer");
 z = sym("z","integer");
 vars = [x,y,z];
 all_vars = [x.^3,x.^2.*y,x.^2.*z,x.*y.^2,...
     x.*y.*z,x.*z.^2,y.^3,y.^2.*z,y.*z.^2,z.^3,x.^2,x.*y,x.*z,y.^2,y.*z,z.^2,x,y,z,1]';
-A = FF(-[c(:,7),c(:,8),c(:,9),c(:,10),c(:,5)*x+c(:,15)],prime);
-r_A = rank(A);
 
-if r_A == 5
-    fprintf("Using P(x)\n")
-    Q = A;
-    P = FF([c(:,4).*x+c(:,14),...
-        c(:,6).*x+c(:,16),...
-        c(:,2).*x^2+c(:,12).*x+c(:,18),...
-        c(:,3).*x^2+c(:,13).*x+c(:,19),...
-        c(:,1).*x^3+c(:,11).*x^2+c(:,17).*x+c(:,20)],prime);
-    lin_vars = FF([y^2;z^2;y;z;1],prime);
-    p_var = x;
-else
-    B = -FF([c(:,1),c(:,3),c(:,6),c(:,10),c(:,5)*y+c(:,13)],prime);
-    r_B = rank(B);
-    if r_B == 5
-        fprintf("Using P(y)\n")
-        Q = B;
-        P = FF([c(:,2).*y+c(:,11),...
-            c(:,9).*y+c(:,16),...
-            c(:,4).*y^2+c(:,12).*y+c(:,17),...
-            c(:,8).*y^2+c(:,15).*y+c(:,19),...
-            c(:,7).*y^3+c(:,14).*y^2+c(:,18).*y+c(:,20)],prime);
-        lin_vars = FF([x^2;z^2;x;z;1],prime);
-        p_var = y;
-    else
-        C = -FF([c(:,1),c(:,2),c(:,4),c(:,7),c(:,5)*z+c(:,12)],prime);
-        r_C = rank(C);
-        if r_C == 5
-            fprintf("Using P(z)\n")
-            Q = C;
-            P = FF([c(:,3).*z+c(:,11),...
-                c(:,8).*z+c(:,14),...
-                c(:,6).*z^2+c(:,13).*z+c(:,17),...
-                c(:,9).*z^2+c(:,15).*z+c(:,18),...
-                c(:,10).*z^3+c(:,16).*z^2+c(:,19).*z+c(:,20)],prime);
-            lin_vars = FF([x^2;y^2;x;y;1],prime);
-            p_var = z;
-        else
-            %warning("No valid matrix found!")
-            result = [];
-            return;
-        end
-    end
-end
+[lin_vars, p_var, P2] = split_matrices_Fp(c,prime,size(c,1),x,y,z,verbose=opt.verbose,error=opt.error);
 
-P2 = inv(Q)*P;
-% fprintf("P2:\n%s %s %s %s %s\n%s %s %s %s %s\n%s %s %s %s %s\n%s %s %s %s %s\n%s %s %s %s %s\n",string(P2.value))
 cube_1 = FF(P2.value(1,:),prime)*lin_vars;   %y^3
 quad12 = FF(P2.value(2,:),prime)*lin_vars;   %y^2*z
 quad21 = FF(P2.value(3,:),prime)*lin_vars;   %y*z^2
@@ -172,6 +130,10 @@ for i = 1:numel(p_root)
             result(end,:) = result(end,idx);
         end
     end
+end
+completion_time = toc(t1);
+if opt.log_db
+    log_to_db(c,result,completion_time,0,prime);
 end
 if isempty(result)
     result = [];
