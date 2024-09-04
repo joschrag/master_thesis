@@ -15,10 +15,10 @@ for i=1:size(u_root,2)
     % u_root(:,i) = u_root(order,i);
     % v_root(:,i) = v_root(order,i);
     scatter3(u_root(:,i),v_root(:,i),u_root(:,i).^2,25,'MarkerEdgeColor',"#D73027",...
-        'MarkerFaceColor',"#D73027")
+        'MarkerFaceColor',"#D73027",DisplayName='u^2 solution')
     hold on
     scatter3(u_root(:,i),v_root(:,i),v_root(:,i).^2,25,'MarkerEdgeColor',"#4575B4",...
-        'MarkerFaceColor',"#4575B4")
+        'MarkerFaceColor',"#4575B4",DisplayName='v^2 solution')
 end
 if ~isempty(u_root) && ~isempty(v_root)
     min_u = min(u_root,[],"all");
@@ -48,14 +48,18 @@ else
 end
 s = surf(U,V,double(Z(1)),"EdgeColor","none");
 set(s,'FaceAlpha',0.8,'FaceColor',"#FEE090",'EdgeColor',"none");
+set(s,'DisplayName',"1st subspace component")
 hold on
 s = surf(U,V,U.^2,"EdgeColor","none");
 set(s,'FaceAlpha',0.8,'FaceColor',"#FC8D59",'EdgeColor',"none");
+set(s,'DisplayName',"u^2 surface")
 s = surf(U,V,double(Z(2)),"EdgeColor","none");
 set(s,'FaceAlpha',0.8,'FaceColor',"#91BFDB",'EdgeColor',"none");
+set(s,'DisplayName',"2nd subspace component")
 hold on
 s = surf(U,V,V.^2,"EdgeColor","none");
 set(s,'FaceAlpha',0.8,'FaceColor',"#E0F3F8",'EdgeColor',"none");
+set(s,'DisplayName',"v^2 surface")
 axis(double([ex_u_roots,ex_v_roots]))
 if r~= 1
     for i=1:numel(u_root)
@@ -64,4 +68,5 @@ if r~= 1
 end
 xlabel("u")
 ylabel("v")
+% legend(gca(),"u^2 solution","v^2 solution","u^2 surface","v^2 surface","1st subspace component","2nd subspace component")
 end
