@@ -15,6 +15,7 @@ arguments
     y (1,1) sym = sym("y","real"); % Symbolic variable for y-direction
     z (1,1) sym = sym("z","real"); % Symbolic variable for z-direction
     options.verbose (1,1) {mustBeInteger, mustBeInRange(options.verbose,0,2)} = 0;
+    options.error (1,1) {mustBeNumericOrLogical} = true;
 end
 assert(size(c,2)==10 || size(c,2)==20,"Coefficient matrix has invalid size!")
 if size(c,2)==10
@@ -64,8 +65,17 @@ if m==min_num_rows
             lin_vars = [v(setdiff(1:3,I)).^2;v(setdiff(1:3,I));1];
         end
         P2 = Q\P;
+        if options.verbose >= 2
+            fprintf("Q:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(Q))
+            fprintf("P:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(P))
+            fprintf("P2:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(P2))
+        end
     else
-        error("All Matrices are singular!")
+        if options.error
+            error("All Matrices are singular!")
+        else
+            warning("All Matrices are singular!")
+        end
     end
 else
     if options.verbose > 0

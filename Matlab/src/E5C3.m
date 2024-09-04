@@ -11,7 +11,12 @@ arguments       %1  2   3   4   5   6   7   8   9  10  11  12   13 14 15  16   1
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 0;
     opt.plot_surf {mustBeInRange(opt.plot_surf,0,1)} = 1;
     opt.plot_subspace {mustBeInRange(opt.plot_subspace,0,1)} = 1;
+    opt.plotRange (1,2) {mustBeReal} = [-5,5];
+    opt.tolerance (1,1) {mustBeReal,mustBePositive} = 10^-10;
+    opt.error (1,1) {mustBeNumericOrLogical} = true;
+    opt.log_db (1,1) {mustBeNumericOrLogical} = true;
 end
+t1 = tic();
 x = sym("x","real");
 y = sym("y","real");
 z = sym("z","real");
@@ -19,7 +24,7 @@ vars = [x,y,z];
 var_vec = [x.^3,x.^2.*y,x.^2.*z,x.*y.^2,...
     x.*y.*z,x.*z.^2,y.^3,y.^2.*z,y.*z.^2,z.^3,x.^2,x.*y,x.*z,y.^2,y.*z,z.^2,x,y,z,1]';
 m = size(c,1);
-[lin_vars,p_var,P2] = split_matrices(c,m,x,y,z,verbose=opt.verbose);
+[lin_vars,p_var,P2] = split_matrices(c,m,x,y,z,verbose=opt.verbose,error=opt.error);
 
 cube_1 = P2(1,:)*lin_vars;   %y^3
 quad12 = P2(2,:)*lin_vars;   %y^2*z
@@ -51,15 +56,23 @@ for i=1:numel(p_root)
     M = subs(A2,p_var,p_root(i));
     % vpa(subs(det(A2),p_var,p_root(i)))
     if rank(M) == 5
-        warning("Precision of root is too low!")
+        if opt.error
+            error("Precision of root is too low!")
+        else
+            warning("Precision of root is too low!")
+        end
     end
-    cur_result = solve_subsystem(M,p_root(i),idx);
+    cur_result = solve_subsystem(M,p_root(i),idx,plot_subspace=opt.plot_subspace);
     if ~isempty(cur_result)
         result = [result;cur_result];
     end
 end
+completion_time = toc(t1);
 if opt.plot_surf
     plot_and_color_implicit(result, m, c);
+end
+if opt.log_db
+    log_to_db(c,result,completion_time,opt.tolerance,0)
 end
 equations = c*var_vec;
 if numel(result) > 0

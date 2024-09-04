@@ -7,12 +7,15 @@ arguments
         1,0,1,1,-1,3,7,0,0,-10;...
         1,0,0,1,1,1,-15,0,0,-10;...
         ];
-    opt.verbose (1,1) {mustBeInteger, mustBeInRange(opt.verbose,0,2)} = 0;
+    opt.verbose (1,1) {mustBeInteger, mustBeInRange(opt.verbose,0,2)} = 1;
     opt.plot (1,1) {mustBeNumericOrLogical} = true;
     opt.plotRange (1,2) {mustBeReal} = [-5,5];
     opt.tolerance (1,1) {mustBeReal,mustBePositive} = 10^-10;
+    opt.error (1,1) {mustBeNumericOrLogical} = true;
+    opt.log_db (1,1) {mustBeNumericOrLogical} = true;
 end
 clc;
+t1 = tic();
 x = sym("x","real");
 y = sym("y","real");
 z = sym("z","real");
@@ -38,25 +41,39 @@ sub3 = subs(expand(sub2),old_vars,new_vars);
 A2 = [A_,-b];
 p = det(A2);
 coef = coeffs(p,p_var,"All");
-p_root = sturm(double(coef));
+p_root = roots(coef);
+p_root = p_root(imag(p_root)==0);
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(1)),find(vars==lin_vars(2))]);
 if size(p_root,1) == 0
     if opt.plot
         plot_and_color(c,verbose=opt.verbose,plotRange=opt.plotRange)
     end
-    error("No common intersection points found")
+    if opt.error
+        error("No common intersection points found");
+    else
+        warning("No common intersection points found");
+    end
 end
 result = zeros(numel(p_root),3);
 result(:,1) = p_root;
 for i =1:numel(p_root)
     M = subs(A2,p_var,p_root(i));
-    %vpa(subs(det(A2),x,p_root(i)))
-    [~,S,V] = svd(M);
+    if opt.verbose > 1
+        disp(M)
+        disp(rref(double(M),opt.tolerance))
+    end
+    if rank(double(M),opt.tolerance) > 1
+        [~,S,V] = svd(M);
     [~,index] = min(diag(S));
     result(i,2) = V(1,index)/V(3,index);
     result(i,3) = V(2,index)/V(3,index);
+    else
+        disp(i)
+        opt.plot=1;
+    end    
 end
 result = result(:,idx);
+completion_time = toc(t1);
 if opt.plot
     ax = gca();
     s = scatter3(ax,result(:,1),result(:,2),result(:,3),30,"k","filled");
@@ -80,7 +97,11 @@ if opt.plot
 end
 equations = c*v;
 if numel(result) > 0 && opt.verbose > 0
+    fprintf("Algorithm completed in %.2fs.\n",completion_time);
     print_solutions(result,equations,x,y,z)
+end
+if opt.log_db
+    log_to_db(c,result,completion_time,opt.tolerance,0)
 end
 end
 
