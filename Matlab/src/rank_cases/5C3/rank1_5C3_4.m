@@ -1,4 +1,4 @@
-function        [u_sol,v_sol] = rank1_4(r)
+function        [u_sol,v_sol] = rank1_5C3_4(r)
 arguments
     r (1,4) {mustBeReal}
  end

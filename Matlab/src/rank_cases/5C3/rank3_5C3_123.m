@@ -1,4 +1,4 @@
-function [u_sol,v_sol] = rank3_123(r)
+function [u_sol,v_sol] = rank3_5C3_123(r)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 arguments

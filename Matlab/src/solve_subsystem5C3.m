@@ -1,4 +1,4 @@
-function [result] = solve_subsystem(M,p_root,idx,opt)
+function [result] = solve_subsystem5C3(M,p_root,idx,opt)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 arguments
@@ -25,35 +25,35 @@ base = [-r;eye(5-rank(rM))];
 base = base(output,:);
 switch join(string(col),"")
     case "1"
-        [u_root,v_root] = rank1_1(r);
+        [u_root,v_root] = rank1_5C3_1(r);
     case "2"
-        [u_root,v_root] = rank1_2(r);
+        [u_root,v_root] = rank1_5C3_2(r);
     case "3"
-        [u_root,v_root] = rank1_3(r);
+        [u_root,v_root] = rank1_5C3_3(r);
     case "4"
-        [u_root,v_root] = rank1_4(r);
+        [u_root,v_root] = rank1_5C3_4(r);
     case "12"
-        [u_root,v_root] = rank2_12(r);
+        [u_root,v_root] = rank2_5C3_12(r);
     case "13"
-        [u_root,v_root] = rank2_13(r);
+        [u_root,v_root] = rank2_5C3_13(r);
     case "14"
-        [u_root,v_root] = rank2_14(r);
+        [u_root,v_root] = rank2_5C3_14(r);
     case "23"
-        [u_root,v_root] = rank2_23(r);
+        [u_root,v_root] = rank2_5C3_23(r);
     case "24"
-        [u_root,v_root] = rank2_24(r);
+        [u_root,v_root] = rank2_5C3_24(r);
     case "34"
-        [u_root,v_root] = rank2_34(r);
+        [u_root,v_root] = rank2_5C3_34(r);
     case "123"
-        [u_root,v_root] = rank3_123(r);
+        [u_root,v_root] = rank3_5C3_123(r);
     case "124"
-        [u_root,v_root] = rank3_124(r);
+        [u_root,v_root] = rank3_5C3_124(r);
     case "134"
-        [u_root,v_root] = rank3_134(r);
+        [u_root,v_root] = rank3_5C3_134(r);
     case "234"
-        [u_root,v_root] = rank3_234(r);
+        [u_root,v_root] = rank3_5C3_234(r);
     case "1234"
-        [u_root,v_root] = rank4_1234(r);
+        [u_root,v_root] = rank4_5C3_1234(r);
     otherwise
         return
         % fprintf("System of equations is singular.\n");

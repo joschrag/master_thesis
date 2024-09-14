@@ -1,4 +1,4 @@
-function        [t_sol,u_sol] = rank1_1(r)
+function        [t_sol,u_sol] = rank1_5C3_1(r)
 %RANK1_1 Summary of this function goes here
 %   Detailed explanation goes here
 arguments
