@@ -25,8 +25,11 @@ if ~isempty(result)
 else
     interval = opt.intervals;
 end
-figure
-for i=1:m
+h =  findobj('type','figure');
+n = length(h);
+for j=1:m
+    for i=1:j
+    figure(n+j)
     f = @(x,y,z) sum(repmat(double(c(i,:))',size(x)).*[x.^3; x.^2.*y; x.^2.*z; ...
                                          x.*y.^2; x.*y.*z; x.*z.^2; ...
                                          y.^3; y.^2.*z; y.*z.^2; ...
@@ -34,7 +37,8 @@ for i=1:m
                                          y.^2; y.*z; z.^2; x; y; z; ones(size(x))], 1);
     s = fimplicit3(f,double(interval),"MeshDensity",opt.density(i));
     set(s,"FaceAlpha",0.4,"FaceColor",color_list(i),"EdgeColor","none");
-    hold on
+    hold on;
+    end
 end
 for i=1:size(result,1)
     scatter3(result(i,1),result(i,2),result(i,3),50,"black","filled")
