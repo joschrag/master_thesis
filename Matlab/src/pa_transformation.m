@@ -8,10 +8,10 @@ arguments
     opt.tolerance (1,1) {mustBePositive,mustBeReal} = 10^-10;
     opt.plotRange (1,2) {mustBeReal} = [-5,5];
 end
-A = [coeff_vec(1),coeff_vec(2)/2,coeff_vec(3)/2;...
+A = double([coeff_vec(1),coeff_vec(2)/2,coeff_vec(3)/2;...
     coeff_vec(2)/2,coeff_vec(4),coeff_vec(5)/2;...
-    coeff_vec(3)/2,coeff_vec(5)/2,coeff_vec(6)];
-B = [coeff_vec(7),coeff_vec(8),coeff_vec(9)];
+    coeff_vec(3)/2,coeff_vec(5)/2,coeff_vec(6)]);
+B = double([coeff_vec(7),coeff_vec(8),coeff_vec(9)]);
 res = classify_wolfram(coeff_vec);
 const = coeff_vec(10);
 
