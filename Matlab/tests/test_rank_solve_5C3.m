@@ -1,4 +1,4 @@
-classdef test_rank_solve < matlab.unittest.TestCase
+classdef test_rank_solve_5C3 < matlab.unittest.TestCase
 
     properties (TestParameter)
         testParameter = struct("num_runs",10^3);
@@ -18,7 +18,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:ceil(testCase.testParameter.num_runs/10)
                 c=1;
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [t,u] = rank1_5C3_1(r);
                 t = reshape(t,[],1);
@@ -48,7 +48,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:ceil(testCase.testParameter.num_runs/10)
                 c=2;
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank1_5C3_2(r);
                 if ~isempty(u)
@@ -69,7 +69,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=3;
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank1_5C3_3(r);
                 if ~isempty(u)
@@ -91,7 +91,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=4;
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank1_5C3_4(r);
                 if ~isempty(u)
@@ -113,7 +113,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[1,2];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank2_5C3_12(r);
                 if ~isempty(u)
@@ -128,7 +128,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[1,3];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank2_5C3_13(r);
                 if ~isempty(u)
@@ -143,7 +143,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[1,4];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank2_5C3_14(r);
                 if ~isempty(u)
@@ -158,7 +158,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[2,3];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank2_5C3_23(r);
                 if ~isempty(u)
@@ -173,7 +173,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[2,4];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank2_5C3_24(r);
                 if ~isempty(u)
@@ -188,7 +188,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[3,4];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank2_5C3_34(r);
                 if ~isempty(u)
@@ -203,7 +203,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[1,2,3];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank3_5C3_123(r);
                 if ~isempty(u)
@@ -218,7 +218,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[1,2,4];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank3_5C3_124(r);
                 if ~isempty(u)
@@ -239,7 +239,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[1,3,4];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank3_5C3_134(r);
                 if ~isempty(u)
@@ -260,7 +260,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[2,3,4];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank3_5C3_234(r);
                 if ~isempty(u)
@@ -282,7 +282,7 @@ classdef test_rank_solve < matlab.unittest.TestCase
             rng(0)
             for i=1:testCase.testParameter.num_runs
                 c=[1,2,3,4];
-                [m,r] = rref_matrix(c);
+                [m,r] = rref_matrix(c,5);
                 M = [m;zeros(5-numel(c),5)];
                 [u,v] = rank4_5C3_1234(r);
                 if ~isempty(u)
