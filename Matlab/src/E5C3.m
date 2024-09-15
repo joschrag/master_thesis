@@ -62,7 +62,7 @@ for i=1:numel(p_root)
             warning("Precision of root is too low!")
         end
     end
-    cur_result = solve_subsystem(M,p_root(i),idx,plot_subspace=opt.plot_subspace);
+    cur_result = solve_subsystem5C3(M,p_root(i),idx,plot_subspace=opt.plot_subspace);
     if ~isempty(cur_result)
         result = [result;cur_result];
     end
