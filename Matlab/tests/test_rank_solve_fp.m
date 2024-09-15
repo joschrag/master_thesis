@@ -19,7 +19,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=1;
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank1_1_fp(r,p);
                     if ~isempty(u)
@@ -57,7 +57,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=2;
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank1_2_fp(r,p);
                     if ~isempty(u)
@@ -88,7 +88,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=3;
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank1_3_fp(r,p);
                     if ~isempty(u)
@@ -119,7 +119,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=4;
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank1_4_fp(r,p);
                     if ~isempty(u)
@@ -150,7 +150,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[1,2];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank2_12_fp(r,p);
                     if ~isempty(u)
@@ -181,7 +181,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[1,3];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank2_13_fp(r,p);
                     if ~isempty(u)
@@ -212,7 +212,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[1,4];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank2_14_fp(r,p);
                     if ~isempty(u)
@@ -243,7 +243,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[2,3];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank2_23_fp(r,p);
                     if ~isempty(u)
@@ -274,7 +274,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[2,4];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank2_24_fp(r,p);
                     if ~isempty(u)
@@ -305,7 +305,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[3,4];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank2_34_fp(r,p);
                     if ~isempty(u)
@@ -336,7 +336,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[1,2,3];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank3_123_fp(r,p);
                     if ~isempty(u)
@@ -367,7 +367,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[1,2,4];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank3_124_fp(r,p);
                     if ~isempty(u)
@@ -398,7 +398,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[1,3,4];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank3_134_fp(r,p);
                     if ~isempty(u)
@@ -429,7 +429,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[2,3,4];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank3_234_fp(r,p);
                     if ~isempty(u)
@@ -461,7 +461,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                 rng(p)
                 for i=1:testCase.testParameter.num_runs
                     c=[1,2,3,4];
-                    [m,r] = rref_matrix(c,p);
+                    [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
                     [u,v] = rank4_1234_fp(r,p);
                     if ~isempty(u)
