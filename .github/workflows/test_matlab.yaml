@@ -18,5 +18,4 @@ jobs:
       - name: Run tests
         uses: matlab-actions/run-tests@v2
         with:
-          use-parallel: true
           source-folder: Matlab
