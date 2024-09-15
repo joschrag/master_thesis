@@ -14,7 +14,7 @@ p_3 = rank(e);
 p_4 = rank(E);
 d = det(E);
 eigs = eig(e);
-eigs = (abs(eigs) > 10^-10).*eigs;
+eigs = logical(abs(eigs) > 10^-10).*eigs;
 
 nzero_eigs = eigs(eigs~=0);
 if all(eigs== 0) 
