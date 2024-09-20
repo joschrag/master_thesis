@@ -1,4 +1,4 @@
-classdef test_rank_solve_fp < matlab.unittest.TestCase
+classdef test_rank_solve_5C3_fp < matlab.unittest.TestCase
 
     properties (TestParameter)
         testParameter = struct("num_runs",5);
@@ -21,7 +21,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=1;
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank1_1_fp(r,p);
+                    [u,v] = rank1_5C3_1_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -59,7 +59,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=2;
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank1_2_fp(r,p);
+                    [u,v] = rank1_5C3_2_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -90,7 +90,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=3;
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank1_3_fp(r,p);
+                    [u,v] = rank1_5C3_3_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -121,7 +121,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=4;
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank1_4_fp(r,p);
+                    [u,v] = rank1_5C3_4_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -152,7 +152,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[1,2];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank2_12_fp(r,p);
+                    [u,v] = rank2_5C3_12_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -183,7 +183,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[1,3];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank2_13_fp(r,p);
+                    [u,v] = rank2_5C3_13_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -214,7 +214,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[1,4];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank2_14_fp(r,p);
+                    [u,v] = rank2_5C3_14_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -245,7 +245,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[2,3];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank2_23_fp(r,p);
+                    [u,v] = rank2_5C3_23_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -276,7 +276,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[2,4];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank2_24_fp(r,p);
+                    [u,v] = rank2_5C3_24_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -307,7 +307,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[3,4];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank2_34_fp(r,p);
+                    [u,v] = rank2_5C3_34_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -338,7 +338,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[1,2,3];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank3_123_fp(r,p);
+                    [u,v] = rank3_5C3_123_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -369,7 +369,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[1,2,4];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank3_124_fp(r,p);
+                    [u,v] = rank3_5C3_124_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -400,7 +400,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[1,3,4];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank3_134_fp(r,p);
+                    [u,v] = rank3_5C3_134_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -431,7 +431,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[2,3,4];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank3_234_fp(r,p);
+                    [u,v] = rank3_5C3_234_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
@@ -463,7 +463,7 @@ classdef test_rank_solve_fp < matlab.unittest.TestCase
                     c=[1,2,3,4];
                     [m,r] = rref_matrix(c,5,p);
                     M = FF([m;zeros(5-numel(c),5)],p);
-                    [u,v] = rank4_1234_fp(r,p);
+                    [u,v] = rank4_5C3_1234_fp(r,p);
                     if ~isempty(u)
                         for vec = [u,v]'
                             res = M*FF([vec(1)^2;vec(2)^2;vec(1);vec(2);1],p);
