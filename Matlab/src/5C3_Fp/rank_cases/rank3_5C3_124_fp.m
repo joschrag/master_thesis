@@ -1,0 +1,28 @@
+function [u_sol,v_sol] = rank3_5C3_124_fp(r,prime)
+%UNTITLED2 Summary of this function goes here
+%   Detailed explanation goes here
+arguments
+    r (3,2) {mustBeReal}
+    prime (1,1) {mustBePositive,mustBeInteger}
+end
+
+v_0 = FF(-r(3,2),prime).value;
+
+
+u_0 = get_gf_root([-1,-r(1,1),-r(1,2)],prime);
+
+control = FF(-v_0^2-r(2,1).*u_0-r(2,2),prime).value == 0;
+if isempty(control)
+    v_sol = [];
+    u_sol = [];
+    return
+end
+u_0 = u_0(control);
+tmp = zeros(numel(u_0),2);
+for i=1:numel(u_0)
+    tmp(i,:) = [u_0(i),v_0];
+end
+u_sol = tmp(:,1);
+v_sol = tmp(:,2);
+end
+
