@@ -56,7 +56,11 @@ classdef FF
             if isa(value,"numeric")
                 obj.value = mod(sym(value),order);
             elseif isa(value,"sym")
-                obj.vars = symvar(value);
+                if isempty(vars)
+                    obj.vars = symvar(value);
+                else
+                    obj.vars = vars;
+                end
                 if numel(obj.vars) > 0
                     obj.value = arrayfun(@(x) FF.simplify_mod(x,order,obj.vars),value);
                 else
