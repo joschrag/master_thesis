@@ -22,6 +22,8 @@ if const > 0
 end
 if sign(eig_vals(1)) == sign(const)
     warning("Imaginary parallel planes.")
+    params = {};
+    return
 end
 tmp = 1./sqrt(eig_vals(1)./-const);
 params = get_par_plane_params(tmp(1),P,offsets,plotRange=opt.plotRange);
