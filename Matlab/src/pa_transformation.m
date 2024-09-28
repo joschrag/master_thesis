@@ -13,6 +13,10 @@ A = double([coeff_vec(1),coeff_vec(2)/2,coeff_vec(3)/2;...
     coeff_vec(3)/2,coeff_vec(5)/2,coeff_vec(6)]);
 B = double([coeff_vec(7),coeff_vec(8),coeff_vec(9)]);
 res = classify_wolfram(coeff_vec);
+if res == 0
+    warning("Imaginary quadric!")
+    return
+end
 const = coeff_vec(10);
 
 [P,lambda] = eig(A,"vector");
