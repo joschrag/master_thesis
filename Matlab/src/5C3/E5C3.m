@@ -23,39 +23,26 @@ z = sym("z","real");
 vars = [x,y,z];
 var_vec = [x.^3,x.^2.*y,x.^2.*z,x.*y.^2,...
     x.*y.*z,x.*z.^2,y.^3,y.^2.*z,y.*z.^2,z.^3,x.^2,x.*y,x.*z,y.^2,y.*z,z.^2,x,y,z,1]';
-m = size(c,1);
-[lin_vars,p_var,P2] = split_matrices(c,m,x,y,z,verbose=opt.verbose,error=opt.error);
+try
+    [lin_vars, p_var, P2] = split_matrices_5C3(c, x, y, z,verbose=opt.verbose);
+catch exception
+    if opt.error
+        rethrow(exception)
+    else
+        warning(exception.identifier,"%s",exception.message)
+        return
+    end
+end
 
-cube_1 = P2(1,:)*lin_vars;   %y^3
-quad12 = P2(2,:)*lin_vars;   %y^2*z
-quad21 = P2(3,:)*lin_vars;   %y*z^2
-cube_2 = P2(4,:)*lin_vars;  %z^3
-mixed = P2(5,:)*lin_vars;    %y*z
-
-identities = [(cube_1)*lin_vars(4) - (quad12)*lin_vars(3);...      % (y^3*)z = (y^2*z)*y
-    (cube_2)*lin_vars(3) - (quad21)*lin_vars(4);...                % (z^3)*y = (z^2*y)*z
-    (quad21)*lin_vars(3) - (quad12)*lin_vars(4);...                % (y^2*z)*z = (z^2*y)*y
-    (quad12) - (mixed)*lin_vars(3);...                     % (y^2*z) = (y*z)*y
-    (mixed)*lin_vars(4) - (quad21)];                      % (y*z)*z = (z^2*y)
-
-sub_new = collect(identities);
-old_vars = [lin_vars(3)^3,lin_vars(4)^3,lin_vars(3)^2*lin_vars(4),lin_vars(3)*lin_vars(4)^2,lin_vars(3)*lin_vars(4)];
-new_vars = collect([cube_1,cube_2,quad12,quad21,mixed],lin_vars(3:4));
-sub_new = expand(subs(expand(sub_new),old_vars,new_vars));
-u = sym("u","real");
-v = sym("v","real");
-sub_final = subs(sub_new,lin_vars(1:2),[u;v]);
-[A_,b] = equationsToMatrix(sub_final,[u;v;lin_vars(3:4)]);
-A2 = [A_,-b];
-coef = coeffs(det(A2),p_var,"All");
+A = substitute_identities_5C3(P2,lin_vars);
+coef = coeffs(det(A),p_var,"All");
 p_root = roots(coef);
 p_root = unique(p_root(abs(imag(p_root))<10^-10));
 result = [];
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(3)),find(vars==lin_vars(4))]);
 for i=1:numel(p_root)
-    M = subs(A2,p_var,p_root(i));
-    % vpa(subs(det(A2),p_var,p_root(i)))
-    if rank(M) == 5
+    M = subs(A,p_var,p_root(i));
+    if rank(double(M),opt.tolerance) == 5
         if opt.error
             error("Precision of root is too low!")
         else
@@ -70,7 +57,7 @@ end
 completion_time = toc(t1);
 fprintf("Algorithm completed in %.2fs.\n",completion_time);
 if opt.plot_surf
-    plot_and_color_implicit(result, m, c);
+    plot_and_color_implicit(result, 5, c);
 end
 if opt.log_db
     log_to_db(c,result,completion_time,opt.tolerance,0)

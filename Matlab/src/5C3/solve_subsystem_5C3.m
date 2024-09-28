@@ -63,6 +63,6 @@ if ~isempty(u_root)
     result = result(:,idx);
 end
 if opt.plot_subspace
-    plot_subspace(u_root,v_root,rank(rM),base)
+    plot_subspace(u_root,v_root,col,base)
 end
 end
