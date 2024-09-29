@@ -1,5 +1,5 @@
 function mustBeSizeFF(obj,obj_size)
-% Test for equal size
+%MUSTBESIZEFF Validate that FF instance value is of given size.
 if size(obj.value)~=obj_size
     eid = "FF:validate:sizeEquals";
     msg = "Size of FF value does not match specified size!\nSize of obj: %s\nSize specified: %s";

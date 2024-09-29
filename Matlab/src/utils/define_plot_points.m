@@ -1,6 +1,6 @@
 function [points] = define_plot_points(range)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+%DEFINE_PLOT_POINTS Fill the given range with intervals.
+%   Intervals are packed more tightly between [-5,5] and less so beyond that.
 arguments
     range (1,2) {mustBeReal};
 end

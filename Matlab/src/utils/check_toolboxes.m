@@ -1,4 +1,5 @@
 function opt = check_toolboxes(opt)
+%CHECK_TOOLBOXES Check what toolboxes are installed and adjust options accordingly.
 arguments
     opt struct;
 end

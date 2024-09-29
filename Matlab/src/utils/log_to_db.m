@@ -1,6 +1,12 @@
-function [] = log_to_db(c,result,completion_time,tolerance,modulus)
-%LOG_TO_DB Summary of this function goes here
-%   Detailed explanation goes here
+function log_to_db(C,result,completion_time,tolerance,modulus)
+%LOG_TO_DB Log run results to sqlite database.
+arguments
+    C (:,:) double {mustBeReal};
+    result (:,3);
+    completion_time (1,1) double;
+    tolerance (1,1) {mustBeReal};
+    modulus (1,1) {mustBeInteger,mustBeNonnegative};
+end
 S = dbstack(1);
 caller = S.name;
 dbfile = "db.sqlite";
@@ -14,7 +20,7 @@ for row = double(result)'
         "solution_x","solution_y","solution_z"]);
     sqlwrite(conn,"Solutions",data);
 end
-for row = c'
+for row = C'
     data = table(str_to_hash(time),string(mat2str(row')),'VariableNames',["ID", ...
         "coefficient_list",]);
     sqlwrite(conn,"Coefficients",data);

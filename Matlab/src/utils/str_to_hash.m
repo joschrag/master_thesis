@@ -1,6 +1,5 @@
 function [hashStr] = str_to_hash(text)
-%STR_TO_HASH Summary of this function goes here
-%   Detailed explanation goes here
+%STR_TO_HASH Create a hash from given text.
 if ~isa(text,"string")
     text = string(text);
 end
