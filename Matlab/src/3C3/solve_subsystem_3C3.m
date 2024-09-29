@@ -1,4 +1,4 @@
-function [result] = solve_subsystem3C3(M,p_root,idx,opt)
+function [result] = solve_subsystem_3C3(M,p_root,idx,opt)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 arguments
@@ -78,6 +78,6 @@ if ~isempty(u_root)
     result = result(:,idx);
 end
 if opt.plot_subspace
-    plot_subspace(u_root,v_root,rank(rM),base)
+    plot_subspace3C3(u_root,v_root,col,base)
 end
 end
