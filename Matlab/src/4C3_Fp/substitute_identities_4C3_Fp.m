@@ -8,11 +8,11 @@ arguments
     lin_vars (6,1) sym;
     prime (1,1) {mustBePrime};
 end
-
-cube_1 = FF(P2.value(1,:),prime)*FF(lin_vars,prime);   %y^3
-quad1 = FF(P2.value(2,:),prime)*FF(lin_vars,prime);   %y^2*z
-quad2 = FF(P2.value(3,:),prime)*FF(lin_vars,prime);   %y*z^2
-cube_2 = FF(P2.value(4,:),prime)*FF(lin_vars,prime);  %z^3
+cube_1 = FF(P2.value(1,:)*lin_vars,prime);   %y^3
+quad1 = FF(P2.value(2,:)*lin_vars,prime);   %y^2*z
+quad2 = FF(P2.value(3,:)*lin_vars,prime);   %y*z^2
+cube_2 = FF(P2.value(4,:)*lin_vars,prime);  %z^3
+% Create identities and directly perform first substitution
 identities = [cube_1*cube_2 - quad1*quad2;...
     (cube_1)*FF(lin_vars(5)^2,prime) - (quad2)*FF(lin_vars(4)^2,prime);...                % (z^3)*y = (z^2*y)*z
     (cube_2)*FF(lin_vars(4)^2,prime) - (quad1)*FF(lin_vars(5)^2,prime);...                % (y^2*z)*z = (z^2*y)*y
