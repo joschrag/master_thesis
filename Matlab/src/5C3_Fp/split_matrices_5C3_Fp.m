@@ -38,11 +38,6 @@ for I=1:3
             C(:,p_idx(I,8)).*p_var^2+C(:,p_idx(I,9)).*p_var+C(:,p_idx(I,10)),...
             C(:,p_idx(I,11)).*p_var^3+C(:,p_idx(I,12)).*p_var^2+C(:,p_idx(I,13)).*p_var+C(:,20)],prime);
         P2 = inv(Q)*P;%#ok<MINV>
-        if opt.verbose >= 2
-            fprintf("Q:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(Q.value))
-            fprintf("P:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(P.value))
-            fprintf("P2:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(P2.value))
-        end
         return
     end
     error("No matrix splitting possible.\n")
