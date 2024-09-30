@@ -34,7 +34,7 @@ catch exception
     end
 end
 
-A = substitute_identities3C3(P2,lin_vars);
+A = substitute_identities_3C3(P2,lin_vars);
 coef = coeffs(det(A),p_var,"All");
 p_root = roots(coef);
 p_root = unique(p_root(abs(imag(p_root))<10^-10));
