@@ -11,6 +11,7 @@ arguments
     opt.error (1,1) {mustBeNumericOrLogical} = true;
     opt.log_db (1,1) {mustBeNumericOrLogical} = true;
 end
+result = [];
 opt = check_toolboxes(opt);
 t1 = tic;
 x = sym("x","integer");
@@ -44,22 +45,26 @@ if isempty(pol)
 end
 p_root = get_gf_root(pol,prime);
 % Determine variable indices to reorder solutions
-[~,idx] = sort([find(vars==p_var),find(vars==lin_vars.value(1)),find(vars==lin_vars.value(2))]);
+[~,idx] = sort([find(vars==p_var),find(vars==lin_vars(1)),find(vars==lin_vars(2))]);
 result = [];
 equations = C*v;
 for i = 1:numel(p_root)
     p_0 = p_root(i);
     M = subs(A,p_var,p_0);
-    cur_result = solve_subsystem_E3Q3_Fp(M,p_0,prime);
+    cur_result = solve_subsystem_E3Q3_Fp(M,p_0,prime,equations,p_var,lin_vars(1:2));
     if ~isempty(cur_result)
-        result = [result;cur_result];
+        result = [result;cur_result]; %#ok<AGROW>
     end
 end
-result = uint64(result(:,idx));
-completion_time = toc(t1);
-fprintf("Algorithm completed in %.2fs.\n",completion_time);
-% Output solutions to console
 if ~isempty(result)
+    result = uint64(result(:,idx));
+end
+completion_time = toc(t1);
+if opt.verbose > 0
+    fprintf("Algorithm completed in %.2fs.\n",completion_time);
+end
+% Output solutions to console
+if ~isempty(result) && opt.verbose > 0
     print_solutions(result,equations,x,y,z,prime)
 end
 % Log run details to database
