@@ -6,9 +6,9 @@ arguments
 end
 % Obtain solutions from equations
 v_root = get_gf_root([-1,-r(1,1),-r(1,2)],prime);
-w_root = FF(repmat(-r(3,2),size(u0)),prime).value;
+w_root = FF(repmat(-r(3,2),size(v_root)),prime).value;
 % Remove roots not satysfying the conditions
-control = FF(-w_root^2-r(2,1).*v_root-r(2,2),prime).value == 0;
+control = FF(-w_root.^2-r(2,1).*v_root-r(2,2),prime).value == 0;
 v_sol = v_root(control);
 w_sol = w_root(control);
 end
