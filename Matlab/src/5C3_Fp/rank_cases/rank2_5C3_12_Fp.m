@@ -1,14 +1,14 @@
-function [u_sol,v_sol] = rank2_5C3_12_fp(r,prime)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+function [u_sol,v_sol] = rank2_5C3_12_Fp(r,prime)
+%RANK2_5C3_12_FP Solve the resulting subsystem of equations for the case R12.
 arguments
     r (2,3) {mustBeReal,mustBeInteger}
-    prime (1,1) {mustBePositive,mustBeInteger}
+    prime (1,1) {mustBePrime}
 end
 u = sym("t",["real","integer"]);
 v = sym("u",["real","integer"]);
 u_sol = [];
 v_sol = [];
+% Obtain results from equations
 if r(1,2) ~= 0
     v_0 = FF(-(u^2+r(1,1)*u+r(1,3)),prime,u)*FF(r(1,2),prime)^(-1);
     pol_2 = FF(-subs(r(2,1)*u+r(2,2)*v+v^2+r(2,3),v,v_0.value),prime);
@@ -38,7 +38,7 @@ if r(1,2) == 0 && r(2,1) == 0
     u_sol = [u_sol;tmp(:,1)];
     v_sol = [v_sol;tmp(:,2)];
 end
-
+% Remove duplicate solutions
 single_sols = unique([v_sol,u_sol],"rows");
 if isempty(single_sols)
     v_sol = [];
