@@ -35,7 +35,7 @@ if any(ranks==3)
     % Set the variable for the coefficient space and set the variables in the
     % second group
     p_var = v(I);
-    lin_vars = FF([v(setdiff(1:3,I));1],prime);
+    lin_vars = [v(setdiff(1:3,I));1];
     % Build the polynomial matrix P based on the choice of matrix beforehand
     P = FF([...
         C(:,p_idx(I,1)).*p_var+C(:,p_idx(I,2)),...
@@ -43,11 +43,6 @@ if any(ranks==3)
         C(:,p_idx(I,5)).*p_var^2+C(:,p_idx(I,6)).*p_var+C(:,10)...
         ],prime);
     P2 = inv(Q{I})*P; %#ok<MINV>
-    if opt.verbose >= 2
-        fprintf("Q:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(Q{I}.value))
-        fprintf("P:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(P.value))
-        fprintf("P2:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(P2.value))
-    end
 else
     error("All Matrices are singular!")
 end
