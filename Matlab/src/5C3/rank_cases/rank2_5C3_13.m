@@ -1,18 +1,18 @@
-function [u_sol,v_sol] = rank2_5C3_13(r)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+function [v_sol,w_sol] = rank2_5C3_13(r)
+%RANK2_5C3_13 Solve the resulting subsystem of equations for the case R13.
 arguments
     r (2,3) {mustBeReal}
 end
-u = sym("u","real");
+% Obtain solutions from equations
 v = sym("v","real");
-u0 = -r(2,2)*v-r(2,3);
-v_pol = subs(-r(1,1)*v^2-r(1,2)*v-r(1,3)-u^2,u,u0);
-v_sol = roots(coeffs(v_pol,v,"All"));
-v_sol = v_sol(imag(v_sol)==0);
-if ~isempty(v_sol)
-    u_sol = -(r(2,2).*v_sol+r(2,3));
+w = sym("w","real");
+v0 = -r(2,2)*w-r(2,3);
+w_pol = subs(-r(1,1)*w^2-r(1,2)*w-r(1,3)-v^2,v,v0);
+w_sol = roots(coeffs(w_pol,w,"All"));
+w_sol = w_sol(imag(w_sol)==0);
+if ~isempty(w_sol)
+    v_sol = -(r(2,2).*w_sol+r(2,3));
 else
-    u_sol = [];
+    v_sol = [];
 end
 end

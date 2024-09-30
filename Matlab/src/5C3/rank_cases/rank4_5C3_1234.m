@@ -1,17 +1,15 @@
-function [u_sol,v_sol] = rank4_1234(r)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+function [v_sol,w_sol] = rank4_5C3_1234(r)
+%RANK4_5C3_1234 Solve the resulting subsystem of equations for the case R1234.
 arguments
     r (4,1) {mustBeReal}
 end
-
-
+% Obtain solutions from equations
 if abs(r(1,1) + r(3,1)^2) < 10^-10 && ...
         abs(r(2,1) + r(4,1)^2) < 10^-10
-    u_sol = -r(3,1);
-    v_sol = -r(4,1);
+    v_sol = -r(3,1);
+    w_sol = -r(4,1);
 else
-    u_sol = [];
     v_sol = [];
+    w_sol = [];
 end
 end

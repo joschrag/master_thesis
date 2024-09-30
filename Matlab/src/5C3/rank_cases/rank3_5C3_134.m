@@ -1,16 +1,15 @@
-function [u_sol,v_sol] = rank3_5C3_134(r)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+function [v_sol,w_sol] = rank3_5C3_134(r)
+%RANK3_5C3_134 Solve the resulting subsystem of equations for the case R134.
 arguments
     r (3,2) {mustBeReal}
 end
-
+% Obtain solutions from equations
 if abs(-r(1,1)*r(3,2)^2-r(1,2)-r(2,2)^2) < 10^-10
-    v_sol = -r(3,2);
-    u_sol = -r(2,2);
+    w_sol = -r(3,2);
+    v_sol = -r(2,2);
 else
+    w_sol = [];
     v_sol = [];
-    u_sol = [];
     return
 end
 end

@@ -1,25 +1,19 @@
-function [u_sol,v_sol] = rank3_5C3_124(r)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+function [v_sol,w_sol] = rank3_5C3_124(r)
+%RANK3_5C3_124 Solve the resulting subsystem of equations for the case R124.
 arguments
     r (3,2) {mustBeReal}
 end
-
-v_0 = -r(3,2);
-u_0 = roots([-1,-r(1,1),-r(1,2)]);
-u_0 = u_0(imag(u_0)==0);
-control = abs(-v_0^2-r(2,1).*u_0-r(2,2)) < 10^-10;
+% Obtain solutions from equations
+w_0 = -r(3,2);
+v_0 = roots([-1,-r(1,1),-r(1,2)]);
+v_0 = v_0(imag(v_0)==0);
+control = abs(-w_0^2-r(2,1).*v_0-r(2,2)) < 10^-10;
 if ~any(control)
+    w_sol = [];
     v_sol = [];
-    u_sol = [];
     return
 end
-u_0 = u_0(control);
-tmp = zeros(numel(u_0),2);
-for i=1:numel(u_0)
-    tmp(i,:) = [u_0(i),v_0];
-end
-u_sol = tmp(:,1);
-v_sol = tmp(:,2);
+v_sol = v_0(control);
+w_sol = repmat(w_0,size(v_0));
 end
 
