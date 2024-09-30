@@ -1,4 +1,4 @@
-function [lin_vars, p_var, P2] = split_matrices_4C3(c, x, y, z, opt)
+function [lin_vars, p_var, P2] = split_matrices_4C3(C, x, y, z, opt)
 %SPLIT_MATRICES_4C3 Handles the matrix splitting and multiplication part of the algorithm.
 %
 %   [LIN_VARS, P_VAR, P2] = SPLIT_MATRICES_4C3(C, X, Y, Z, opt) splits the matrix C
@@ -6,7 +6,7 @@ function [lin_vars, p_var, P2] = split_matrices_4C3(c, x, y, z, opt)
 %   P2 = inv(Q)*P is computed. If it passes the criteria, the matrix and the
 %   combinations of variables for the approach are returned.
 arguments
-    c (4,20) {mustBeReal};
+    C (4,20) {mustBeReal};
     x (1,1) sym = sym("x","real");
     y (1,1) sym = sym("y","real");
     z (1,1) sym = sym("z","real");
@@ -21,7 +21,7 @@ Q = cell(1,3);
 ranks = zeros(1,3);
 var_idx = [1,2,3;2,1,3;3,1,2];
 for i=1:3
-    Q{i} = -[c(:,q_idx(i,1)),c(:,q_idx(i,2)),c(:,q_idx(i,3)),c(:,q_idx(i,4))];
+    Q{i} = -[C(:,q_idx(i,1)),C(:,q_idx(i,2)),C(:,q_idx(i,3)),C(:,q_idx(i,4))];
     ranks(i) = rank(Q{i});
 end
 zero_idx = [4,5,6,14,15,16;...
@@ -29,7 +29,10 @@ zero_idx = [4,5,6,14,15,16;...
     3,5,8,11,12,14];
 if any(ranks==4)
     for I = find(ranks==4)
-        if all(c(:,zero_idx(I,:))==0)
+        % Check if coefficient conditions for algorithm are met
+        if all(C(:,zero_idx(I,:))==0)
+            % Set the variable for the coefficient space and set the variables in the
+            % second group
             p_var = vars(var_idx(I,1));
             lin_var_idx = var_idx(I,2:3);
             if opt.verbose > 0
@@ -37,9 +40,10 @@ if any(ranks==4)
             end
             lin_vars = [vars(lin_var_idx(1))^2,vars(lin_var_idx(1))*vars(lin_var_idx(2)),vars(lin_var_idx(2)).^2,vars(lin_var_idx),1]';
             p_var_pow = [1;p_var;p_var^2;p_var^3];
+            % Build the polynomial matrix P based on the choice of matrix beforehand
             P = sym.zeros(4,6);
             for j=1:6
-                P(:,j) = c(:,complete_idx{I,j})*p_var_pow(numel(complete_idx{I,j}):-1:1);
+                P(:,j) = C(:,complete_idx{I,j})*p_var_pow(numel(complete_idx{I,j}):-1:1);
             end
             P2 = Q{I}\P;
             return

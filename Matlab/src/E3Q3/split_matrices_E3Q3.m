@@ -51,11 +51,6 @@ if any(ranks==3)
         C(:,p_idx(I,5)).*p_var^2+C(:,p_idx(I,6)).*p_var+C(:,10)...
         ];
     P2 = Q{I}\P;
-    if opt.verbose >= 2
-        fprintf("Q:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(Q{I}))
-        fprintf("P:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(P))
-        fprintf("P2:\t %s, %s, %s\n  \t%s, %s, %s\n  \t%s, %s, %s\n",string(P2))
-    end
 else
     error("All Matrices are singular!")
 end

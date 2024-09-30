@@ -27,14 +27,19 @@ for i=1:3
 end
 if any(ranks==4)
     for I = find(ranks==4)
+        % Check if coefficient conditions for algorithm are met
         if all(C(:,[complete_idx{I,1:3}])==0)
+            % Set the variable for the coefficient space and set the variables in the
+            % second group
             p_var = vars(var_idx(I,1));
             lin_var_idx = var_idx(I,2:3);
             if opt.verbose > 0
-                fprintf("Using P(%s) with G_1 = {%s,%s,%s}\n",string(vars(I)),vars(lin_var_idx(1)).^3,vars(lin_var_idx(1)).^2*vars(lin_var_idx(2)),vars(lin_var_idx(1))*vars(lin_var_idx(2)))
+                fprintf("Using P(%s) with G_1 = {%s,%s,%s}\n",...
+                    vars(I),vars(lin_var_idx(1)).^3,vars(lin_var_idx(1)).^2*vars(lin_var_idx(2)),vars(lin_var_idx(1))*vars(lin_var_idx(2)))
             end
             lin_vars = [vars(lin_var_idx(1))^2,vars(lin_var_idx(1))*vars(lin_var_idx(2)),vars(lin_var_idx(2)).^2,vars(lin_var_idx),1]';
             p_var_pow = [1;p_var;p_var^2;p_var^3];
+            % Build the polynomial matrix P based on the choice of matrix beforehand
             P = sym.zeros(4,6);
             for j=1:6
                 P(:,j) = C(:,complete_idx{I,j})*p_var_pow(numel(complete_idx{I,j}):-1:1);

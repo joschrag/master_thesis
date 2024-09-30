@@ -30,7 +30,7 @@ for I=1:3
         % Set the variable for the coefficient space and set the variables in the
         % second group
         p_var = v(I);
-        lin_vars = FF([v(setdiff(1:3,I)).^2;v(setdiff(1:3,I));1],prime);
+        lin_vars = [v(setdiff(1:3,I)).^2;v(setdiff(1:3,I));1];
         % Build the polynomial matrix P based on the choice of matrix beforehand
         P  = FF([C(:,p_idx(I,1)).*p_var+C(:,p_idx(I,2)),...
             C(:,p_idx(I,3)).*p_var+C(:,p_idx(I,4)),...

@@ -1,4 +1,4 @@
-function [lin_vars, p_var, P2] = split_matrices_3C3(c, x, y, z, opt)
+function [lin_vars, p_var, P2] = split_matrices_3C3(C, x, y, z, opt)
 %SPLIT_MATRICES_3C3 Handles the matrix splitting and multiplication part of the algorithm.
 %
 %   [LIN_VARS, P_VAR, P2] = SPLIT_MATRICES_3C3(C, X, Y, Z, opt) splits the matrix C
@@ -6,7 +6,7 @@ function [lin_vars, p_var, P2] = split_matrices_3C3(c, x, y, z, opt)
 %   P2 = inv(Q)*P is computed. If it passes the criteria, the matrix and the
 %   combinations of variables for the approach are returned.
 arguments
-    c (3,20) {mustBeReal};
+    C (3,20) {mustBeReal};
     x (1,1) sym = sym("x","real");
     y (1,1) sym = sym("y","real");
     z (1,1) sym = sym("z","real");
@@ -27,44 +27,49 @@ q_idx = [7,8,5,15;...
     1,2,5,12;...
     4,7,5,12];    %indices of cubic monomials of lin_vars
 var_ind_vec = [1:3;1,3,2;2,1,3;2,3,1;3,1,2;3,2,1];
-assert(all(c(:,5)==zeros(3,1)))
+assert(all(C(:,5)==zeros(3,1)))
 Q = cell(1,6);
 ranks = zeros(1,6);
 conds = zeros(1,6);
 var_idx = zeros(6,3);
 for i=1:6
-    Q{i} = -[c(:,q_idx(i,1)),c(:,q_idx(i,2)),c(:,q_idx(i,3))*x+c(:,q_idx(i,4))];
+    Q{i} = -[C(:,q_idx(i,1)),C(:,q_idx(i,2)),C(:,q_idx(i,3))*x+C(:,q_idx(i,4))];
     ranks(i) = rank(Q{i});
     conds(i) = real(cond(Q{i}));
     var_idx(i,:) = var_ind_vec(i,:);
 end
-valid_P2 = false;
-
 if any(ranks==3)
     for I = find(ranks==3)
-        p_var = vars(var_idx(I,1));
-        lin_var_idx = var_idx(I,2:3);
-        all_lin_vars = [vars(lin_var_idx(1))*vars(lin_var_idx(2)).^2,vars(lin_var_idx(2)).^3,vars(lin_var_idx(1))^2,vars(lin_var_idx(2)).^2,vars(lin_var_idx),1]';
-        p_var_pow = [1;p_var;p_var^2;p_var^3];
-        P = sym.zeros(3,7);
-        for j=1:7
-            P(:,j) = c(:,complete_idx{I,j})*p_var_pow(numel(complete_idx{I,j}):-1:1);
-        end
-        lin_vars = all_lin_vars;
-        P2 = Q{I}\P;
-        if all(all(P2(:,1:6)==sym(0)))
+        % Check if coefficient conditions for algorithm are met
+        if all(C(:,[complete_idx{I,1:6}])==0)
+            % Set the variable for the coefficient space and set the variables in the
+            % second group
+            p_var = vars(var_idx(I,1));
+            lin_var_idx = var_idx(I,2:3);
             if opt.verbose > 0
-                fprintf("Using P(%s) with G_1 = {%s,%s,%s}\n",string(p_var),vars(lin_var_idx(1)).^3,vars(lin_var_idx(1)).^2*vars(lin_var_idx(2)),vars(lin_var_idx(1))*vars(lin_var_idx(2)))
+                fprintf("Using P(%s) with G_1 = {%s,%s,%s}\n",string(vars(I)),vars(lin_var_idx(1)).^3,vars(lin_var_idx(1)).^2*vars(lin_var_idx(2)),vars(lin_var_idx(1))*vars(lin_var_idx(2)))
             end
-            valid_P2 = true;
-            break
+            lin_vars = [vars(lin_var_idx(1))*vars(lin_var_idx(2))^2,vars(lin_var_idx(2)).^3,vars(lin_var_idx(1))^2,vars(lin_var_idx(2)).^2,vars(lin_var_idx),1]';
+            p_var_pow = [1;p_var;p_var^2;p_var^3];
+            % Build the polynomial matrix P based on the choice of matrix beforehand
+            P = sym.zeros(3,7);
+            for j=1:7
+                P(:,j) = C(:,complete_idx{I,j})*p_var_pow(numel(complete_idx{I,j}):-1:1);
+            end
+            if opt.verbose > 1
+                disp(lin_vars)
+                disp(P)
+            end
+            P2 = Q{I}\P;
+            if opt.verbose > 1
+                fprintf("P2:\n")
+                disp(P2)
+            end
+            return
         end
     end
 else
-    error("All Matrices are singular!")
+    error("All matrices singular!")
 end
-
-if ~valid_P2
-    error("Substitution not possible!")
-end
+error("No substitution possible!")
 end
