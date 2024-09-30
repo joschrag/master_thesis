@@ -9,7 +9,7 @@ arguments
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
 end
 result = [];
-if isequaln(M,zeros(6))
+if rank(M)==0
     warning("Zero matrix for p_root %f",p_root)
     return
 end

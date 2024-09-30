@@ -9,7 +9,7 @@ arguments
     opt.tolerance (1,1) {mustBeReal,mustBePositive} = 10^-10;
 end
 result = [];
-if isequaln(M,zeros(6))
+if rank(M)==0
     warning("Zero matrix for p_root %i",p_root)
     return
 end
