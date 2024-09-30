@@ -34,9 +34,11 @@ A = substitute_identities_E3Q3(P2,lin_vars);
 coef = coeffs(det(A),p_var,"All");
 p_root = unique(roots(coef));
 p_root = p_root(imag(p_root)==0);
+if opt.verbose > 1
+    fprintf("p_root: %s\n",mat2str(p_root))
+end
 % Determine variable indices to reorder solutions
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(1)),find(vars==lin_vars(2))]);
-result = [];
 equations = C*v;
 for i =1:numel(p_root)
     M = subs(A,p_var,p_root(i));

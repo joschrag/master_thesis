@@ -35,7 +35,9 @@ A = substitute_identities_4C3(P2,lin_vars);
 coef = coeffs(det(A),p_var,"All");
 p_root = roots(coef);
 p_root = unique(p_root(abs(imag(p_root))<10^-10));
-result = [];
+if opt.verbose > 1
+    fprintf("p_root: %s\n",mat2str(p_root))
+end
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(4)),find(vars==lin_vars(5))]);
 for i=1:numel(p_root)
     M = subs(A,p_var,p_root(i));

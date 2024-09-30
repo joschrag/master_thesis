@@ -41,6 +41,9 @@ if isempty(pol)
     end
 end
 p_root = get_gf_root(pol,prime);
+if opt.verbose > 1
+    fprintf("p_root: %s\n",mat2str(p_root))
+end
 % Determine variable indices to reorder solutions
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(4)),find(vars==lin_vars(5))]);
 for i=1:numel(p_root)
