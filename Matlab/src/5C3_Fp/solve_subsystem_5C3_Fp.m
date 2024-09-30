@@ -7,10 +7,10 @@ arguments
     p_root (1,1) {mustBeInteger};
     prime (1,1) {mustBePrime};
 end
+result = [];
 if isequaln(M.value,zeros(5))
     return
 end
-result = [];
 rM = rref(M);
 % Construct array of indepedent columns
 m = zeros(1,rank(rM));
