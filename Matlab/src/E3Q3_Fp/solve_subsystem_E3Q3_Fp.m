@@ -1,4 +1,4 @@
-function result = solve_subsystem_E3Q3_Fp(M,p_root,prime,equations,p_var,lin_vars)
+function result = solve_subsystem_E3Q3_Fp(M,p_root,prime,equations,p_var,lin_vars,opt)
 %SOLVE_SUBSYSTEM_E3Q3_FP Solve the resulting system of equations for all cases.
 %   For all cases of rref(M) this function solves the system of equations and
 %   returns the solution.
@@ -9,21 +9,33 @@ arguments
     equations (3,1) sym;
     p_var (1,1) sym;
     lin_vars (2,1) sym;
+    opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
 end
 result = [];
 if isequaln(M.value,zeros(3))
+    warning("Zero matrix for p_root %i",p_root)
     return
 end
-
-rM = rref(M);
-% Construct array of indepedent columns
-m = zeros(1,rank(rM));
-for j=1:rank(rM)
-    m(j) = find(rM(j,:),1,"first");
+if rank(M) == 3
+    warning("Precision of root %i is too low!",p_root)
+    return
 end
-r = vpa(rM(1:rank(rM),setdiff(1:3,m)));
+rM = rref(M);
+if rank(M) ~= rank(rM)
+    warning("Numerical error calculating rref matrix for p_root %i",p_root)
+    return
+end
+% Construct array of indepedent columns
+col = zeros(1,rank(rM));
+for j=1:rank(rM)
+    col(j) = find(rM(j,:),1,"first");
+end
+r = vpa(rM(1:rank(rM),setdiff(1:3,col)));
+if opt.verbose
+    fprintf("R%s\n",join(string(col),""))
+end
 % Solve each of the cases accordingly
-switch join(string(m),"")
+switch join(string(col),"")
     case "1"
         for eq = subs(equations,[p_var;lin_vars(1:2)],[p_root;-r(1).*lin_vars(2)-r(2);lin_vars(2)])'
             r_root = get_gf_root(coeffs(eq,lin_vars(2),"All"),prime);

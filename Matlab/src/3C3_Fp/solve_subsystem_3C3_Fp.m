@@ -1,19 +1,26 @@
-function [result] = solve_subsystem3C3_Fp(M,p_root,idx,prime)
+function [result] = solve_subsystem_3C3_Fp(M,p_root,prime,opt)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 arguments
     M (1,1) FF;
     p_root (1,1) sym {mustBeReal};
-    idx (1,3) {mustBeInteger};
     prime (1,1) {mustBeInteger,mustBePositive};
+    opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
 end
 result = [];
-if rank(M) == 0
-    warning("Zero matrix for root %i",p_root)
+if isequaln(M.value,zeros(6))
+    warning("Zero matrix for p_root %i",p_root)
     return
 end
-
+if rank(M) == 6
+    warning("Precision of root %i is too low!",p_root)
+    return
+end
 rM = rref(M);
+if rank(M) ~= rank(rM)
+    warning("Numerical error calculating rref matrix for p_root %i",p_root)
+    return
+end
 col = zeros(1,rank(rM));
 for j=1:rank(rM)
     col(j) = find(rM(j,:),1,"first");
@@ -24,9 +31,10 @@ if rank(rM) ~= rank(M)
     warning("Numerical error!")
     return
 end
-
 r = rM(1:rank(rM),setdiff(vec,col));
-disp(join(string(col),""))
+if opt.verbose
+    fprintf("R%s\n",join(string(col),""))
+end
 switch join(string(col),"")
     case "1"
         [u_root,v_root] = rank1_3C3_1_Fp(r,prime);
@@ -70,8 +78,8 @@ switch join(string(col),"")
         return
         % fprintf("System of equations is singular.\n");
 end
+% Add solutions to result vector
 if ~isempty(u_root)
     result=[repmat(p_root,numel(u_root),1),reshape(u_root,[],1),reshape(v_root,[],1)];
-    result = result(:,idx);
 end
 end

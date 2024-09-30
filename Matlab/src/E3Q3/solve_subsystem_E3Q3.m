@@ -10,20 +10,33 @@ arguments
     lin_vars (3,1) sym;
     opt.show_lines (1,1) {mustBeNumericOrLogical} = false;
     opt.tolerance (1,1) {mustBeReal,mustBePositive} = 10^-10;
+    opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
 end
 result = [];
 if isequaln(M,zeros(3))
+    warning("Zero matrix for p_root %i",p_root)
+    return
+end
+if rank(double(M),opt.tolerance) == 3
+    warning("Precision of root %f is too low!",p_root)
     return
 end
 switch rank(double(M),opt.tolerance)
     % If rank(M)=1 go through different cases and solve based on rref matrix
     case 1
         rM = rref(double(M), opt.tolerance);
+        if rank(M) ~= rank(rM)
+            warning("Numerical error calculating rref matrix for p_root %i",p_root)
+            return
+        end
         col = zeros(1,rank(rM));
         for j=1:rank(rM)
             col(j) = find(rM(j,:),1,"first");
         end
         r = vpa(rM(1:rank(rM),setdiff(1:3,col)));
+        if opt.verbose
+            fprintf("R%s\n",join(string(col),""))
+        end
         switch join(string(col),"")
             case "1"
                 r_root = [];
