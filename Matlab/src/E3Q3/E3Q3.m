@@ -40,20 +40,12 @@ result = [];
 equations = C*v;
 for i =1:numel(p_root)
     M = subs(A,p_var,p_root(i));
-    if rank(double(M),opt.tolerance) == 3
-        if opt.error
-            error("Precision of root is too low!")
-        else
-            warning("Precision of root is too low!")
-            continue
-        end
-    end
     if opt.verbose > 1
         disp(M)
         disp(rref(double(M),opt.tolerance))
     end
     cur_result = solve_subsystem_E3Q3(M,p_root(i),equations,p_var,lin_vars,...
-        tolerance=opt.tolerance,show_lines=opt.show_lines);
+        tolerance=opt.tolerance,show_lines=opt.show_lines,verbose=opt.verbose);
     if ~isempty(cur_result)
         result = [result;cur_result]; %#ok<AGROW>
     end

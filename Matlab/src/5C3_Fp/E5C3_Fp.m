@@ -49,7 +49,7 @@ equations = C*var_vec;
 for i = 1:numel(p_root)
     p_0 = p_root(i);
     M = FF(vpa(subs(A.value,p_var,p_0)),prime);
-    cur_result = solve_subsystem_5C3_Fp(M,p_0,prime);
+    cur_result = solve_subsystem_5C3_Fp(M,p_0,prime,verbose=opt.verbose);
     if ~isempty(cur_result)
         result = [result;cur_result]; %#ok<AGROW>
     end

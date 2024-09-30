@@ -39,22 +39,17 @@ p_root = unique(p_root(abs(imag(p_root))<10^-10));
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(5)),find(vars==lin_vars(6))]);
 for i=1:numel(p_root)
     M = subs(A,p_var,p_root(i));
-    if rank(double(M),opt.tolerance) == 6
-        if opt.error
-            error("Precision of root is too low!")
-        else
-            warning("Precision of root is too low!")
-            continue
-        end
-    end
     if opt.verbose > 1
         disp(M)
         disp(rref(double(M),opt.tolerance))
     end
-    cur_result = solve_subsystem_3C3(M,p_root(i),idx,plot_subspace=opt.plot_subspace,tolerance=opt.tolerance);
+    cur_result = solve_subsystem_3C3(M,p_root(i),plot_subspace=opt.plot_subspace,tolerance=opt.tolerance,verbose=opt.verbose);
     if ~isempty(cur_result)
         result = [result;cur_result]; %#ok<AGROW>
     end
+end
+if ~isempty(result)
+    result = result(:,idx);
 end
 completion_time = toc(t1);
 fprintf("Algorithm completed in %.2fs.\n",completion_time);

@@ -48,7 +48,7 @@ equations = C*v;
 for i = 1:numel(p_root)
     p_0 = p_root(i);
     M = subs(A,p_var,p_0);
-    cur_result = solve_subsystem_E3Q3_Fp(M,p_0,prime,equations,p_var,lin_vars(1:2));
+    cur_result = solve_subsystem_E3Q3_Fp(M,p_0,prime,equations,p_var,lin_vars(1:2),verbose=opt.verbose);
     if ~isempty(cur_result)
         result = [result;cur_result]; %#ok<AGROW>
     end

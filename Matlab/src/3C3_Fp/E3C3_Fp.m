@@ -48,7 +48,7 @@ equations = C*var_vec;
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(5)),find(vars==lin_vars(6))]);
 for i=1:numel(p_root)
     M = FF(subs(A,p_var,p_root(i)),prime);
-    cur_result = solve_subsystem_3C3_Fp(M,p_root(i),prime);
+    cur_result = solve_subsystem_3C3_Fp(M,p_root(i),prime,verbose=opt.verbose);
     if ~isempty(cur_result)
         result = [result;cur_result]; %#ok<AGROW>
     end

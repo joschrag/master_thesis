@@ -41,19 +41,11 @@ result = [];
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(3)),find(vars==lin_vars(4))]);
 for i=1:numel(p_root)
     M = subs(A,p_var,p_root(i));
-    if rank(double(M),opt.tolerance) == 5
-        if opt.error
-            error("Precision of root is too low!")
-        else
-            warning("Precision of root is too low!")
-            continue
-        end
-    end
     if opt.verbose > 1
         disp(M)
         disp(rref(double(M),opt.tolerance))
     end
-    cur_result = solve_subsystem5C3(M,p_root(i),idx,plot_subspace=opt.plot_subspace);
+    cur_result = solve_subsystem_5C3(M,p_root(i),idx,plot_subspace=opt.plot_subspace,verbose=opt.verbose,tolerance=opt.tolerance);
     if ~isempty(cur_result)
         result = [result;cur_result]; %#ok<AGROW>
     end
