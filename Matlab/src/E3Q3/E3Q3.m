@@ -11,16 +11,17 @@ arguments
     opt.plotRange (1,2) {mustBeReal} = [-5,5];
     opt.tolerance (1,1) {mustBeReal,mustBePositive} = 10^-10;
     opt.error (1,1) {mustBeNumericOrLogical} = true;
-    opt.log_db (1,1) {mustBeNumericOrLogical} = true;
+    opt.log_db (1,1) {mustBeNumericOrLogical} = false;
     opt.show_lines (1,1) {mustBeNumericOrLogical} = false;
 end
 opt = check_toolboxes(opt);
-t1 = tic();
+t1 = tic;
 x = sym("x","real");
 y = sym("y","real");
 z = sym("z","real");
 vars = [x,y,z];
 v = [x^2,x*y,x*z,y^2,y*z,z^2,x,y,z,1]';
+result = [];
 % Raise error or output warning if split_matrices fails
 try
     [lin_vars, p_var, P2] = split_matrices_E3Q3(C, x, y, z,verbose=opt.verbose);
@@ -43,6 +44,14 @@ result = [];
 equations = C*v;
 for i =1:numel(p_root)
     M = subs(A,p_var,p_root(i));
+    if rank(double(M),opt.tolerance) == 3
+        if opt.error
+            error("Precision of root is too low!")
+        else
+            warning("Precision of root is too low!")
+            continue
+        end
+    end
     if opt.verbose > 1
         disp(M)
         disp(rref(double(M),opt.tolerance))
@@ -50,7 +59,7 @@ for i =1:numel(p_root)
     cur_result = solve_subsystem_E3Q3(M,p_root(i),equations,p_var,lin_vars,...
         tolerance=opt.tolerance,show_lines=opt.show_lines);
     if ~isempty(cur_result)
-        result = [result;cur_result];
+        result = [result;cur_result]; %#ok<AGROW>
     end
 end
 if ~isempty(result)
@@ -76,7 +85,7 @@ if opt.plot
 end
 fprintf("Algorithm completed in %.2fs.\n",completion_time);
 % Output solutions to console
-if numel(result) > 0 && opt.verbose > 0
+if ~isempty(result) && opt.verbose
     print_solutions(result,equations,x,y,z)
 end
 % Log run details to database
@@ -84,4 +93,3 @@ if opt.log_db
     log_to_db(C,result,completion_time,opt.tolerance,0)
 end
 end
-
