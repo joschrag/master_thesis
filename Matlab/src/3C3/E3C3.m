@@ -1,10 +1,7 @@
 function [result] = E3C3(C,opt)
 %E3C3 Main function for the 3C3 implementation.
 arguments
-    C (3,20) = [5,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,-15,0,0,-5;...
-        0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,10,0,0,-2;...
-        -1,0,0,0,0,0,0,0,0,0,0,0,0,0,-1,0,3,0,0,-4;...
-        ];
+    C (3,20) {mustBeReal};
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
     opt.plot_surf {mustBeInRange(opt.plot_surf,0,1)} = 1;
     opt.plot_subspace {mustBeInRange(opt.plot_subspace,0,1)} = 0;

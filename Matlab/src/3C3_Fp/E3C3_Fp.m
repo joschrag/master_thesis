@@ -2,13 +2,11 @@ function [result] = E3C3_Fp(C,prime,opt)
 %E3C3 Summary of this function goes here
 %   Detailed explanation goes here
 arguments
-    C (3,20) = [     3,     0,     0 ,    0,     0,     0,    -1,     0 ,    0 ,    0,     4,     0,     0,  0,     0,     0,     2,     0,     0,     2;...
-        2,     0,    0,    0,     0,     0,     0,    -1,     0,     0,     3,     0,     0,  0,     0,     0,     4,     0,     0,     2;...
-        1,     0,     0,     0,    0,    0,     0,     0,    0,     0,     0,     0,     0,  0,    -1,     0,     3,     0,     0,     4];
-    prime (1,1) {mustBePrime} = nextprime(4);
+    C (3,20) {mustBeInteger};
+    prime (1,1) {mustBePrime};
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
     opt.error (1,1) {mustBeNumericOrLogical} = true;
-    opt.log_db (1,1) {mustBeNumericOrLogical} = true;
+    opt.log_db (1,1) {mustBeNumericOrLogical} = false;
 end
 opt = check_toolboxes(opt);
 t1 = tic;
@@ -50,15 +48,18 @@ equations = C*var_vec;
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(5)),find(vars==lin_vars(6))]);
 for i=1:numel(p_root)
     M = FF(subs(A,p_var,p_root(i)),prime);
-    cur_result = solve_subsystem_3C3_Fp(M,p_root(i),idx,prime);
+    cur_result = solve_subsystem_3C3_Fp(M,p_root(i),prime);
     if ~isempty(cur_result)
-        result = [result;cur_result];
+        result = [result;cur_result]; %#ok<AGROW>
     end
+end
+if ~isempty(result)
+    result = uint64(result(:,idx));
 end
 completion_time = toc(t1);
 fprintf("Algorithm completed in %.2fs.\n",completion_time);
 % Output solutions to console
-if ~isempty(result)
+if ~isempty(result) && opt.verbose
     print_solutions(result,equations,x,y,z,prime)
 end
 % Log run details to database

@@ -2,16 +2,12 @@ function [result] = E3Q3_Fp(C,prime,opt)
 %E3Q3 Summary of this function goes here
 %   Detailed explanation goes here
 arguments
-    C (:,10) {mustBeInteger} = [1, 2, 1, 0, 1, 1, 2, 0, 0, -4;...
-        1, 1, 3, 2, 1, -1, 2, 0, 2, -5;...
-        1, -1, 1, 1, 0, 1, -1, 0, 3, -6;
-        ];
-    prime (1,1) {mustBePrime} = nextprime(6);
+    C (:,10) {mustBeInteger};
+    prime (1,1) {mustBePrime};
     opt.verbose (1,1) {mustBeInteger, mustBeInRange(opt.verbose,0,2)} = 1;
     opt.error (1,1) {mustBeNumericOrLogical} = true;
-    opt.log_db (1,1) {mustBeNumericOrLogical} = true;
+    opt.log_db (1,1) {mustBeNumericOrLogical} = false;
 end
-result = [];
 opt = check_toolboxes(opt);
 t1 = tic;
 x = sym("x","integer");
@@ -19,6 +15,7 @@ y = sym("y","integer");
 z = sym("z","integer");
 vars = [x,y,z];
 v = [x^2,x*y,x*z,y^2,y*z,z^2,x,y,z,1]';
+result = [];
 % Raise error or output warning if split_matrices fails
 try
     [lin_vars, p_var, P2] = split_matrices_E3Q3_Fp(C,prime,x,y,z,verbose=opt.verbose);
@@ -64,7 +61,7 @@ if opt.verbose > 0
     fprintf("Algorithm completed in %.2fs.\n",completion_time);
 end
 % Output solutions to console
-if ~isempty(result) && opt.verbose > 0
+if ~isempty(result) && opt.verbose
     print_solutions(result,equations,x,y,z,prime)
 end
 % Log run details to database
@@ -72,4 +69,3 @@ if opt.log_db
     log_to_db(C,result,completion_time,0,prime);
 end
 end
-
