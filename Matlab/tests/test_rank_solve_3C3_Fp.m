@@ -1,17 +1,17 @@
-classdef test_rank_solve_3C3_fp < matlab.unittest.TestCase
-
+classdef test_rank_solve_3C3_Fp < matlab.unittest.TestCase
+    
     properties (TestParameter)
         testParameter = struct("num_runs",10^2);
     end
-
+    
     methods(TestClassSetup)
         % Shared setup for the entire test class
     end
-
+    
     methods(TestMethodSetup)
         % Setup for each test
     end
-
+    
     methods(Test)
         % Test methods
         function test_r123(testCase)
@@ -142,7 +142,7 @@ classdef test_rank_solve_3C3_fp < matlab.unittest.TestCase
                 end
             end
         end
-
+        
         function test_r135(testCase)
             for p =[3,5,7,11]
                 rng(p)
