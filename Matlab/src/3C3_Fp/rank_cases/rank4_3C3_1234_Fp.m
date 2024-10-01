@@ -2,7 +2,7 @@ function [v_sol,w_sol] = rank4_3C3_1234_Fp(r,prime)
 %RANK_3C3_1234_FP Solve the resulting subsystem of equations for the case R1234.
 arguments
     r (4,2) {mustBeReal}
-    prime (1,1) {mustBeInteger,mustBePositive}
+    prime (1,1) {mustBePrime}
 end
 % Obtain root candidates from equations
 w_root = get_gf_root([-1,-r(3,1),-r(3,2)],prime);
