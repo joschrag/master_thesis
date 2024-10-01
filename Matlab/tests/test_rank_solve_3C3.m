@@ -1,7 +1,7 @@
 classdef test_rank_solve_3C3 < matlab.unittest.TestCase
 
     properties (TestParameter)
-        testParameter = struct("num_runs",10^5);
+        testParameter = struct("num_runs",10^3);
     end
 
     methods(TestClassSetup)

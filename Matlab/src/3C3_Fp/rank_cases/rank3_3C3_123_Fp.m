@@ -2,7 +2,7 @@ function [v_sol,w_sol] = rank3_3C3_123_Fp(r,prime)
 %RANK_3C3_123_FP Solve the resulting subsystem of equations for the case R123.
 arguments
     r (3,3) {mustBeReal}
-    prime (1,1) {mustBePrime}
+    prime (1,1) {mustBePrimeOrZero}
 end
 v = sym("v","integer");
 w = sym("w","integer");

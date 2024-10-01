@@ -2,7 +2,7 @@ function [v_sol,w_sol] = rank3_3C3_145_Fp(r,prime)
 %RANK_3C3_145_FP Solve the resulting subsystem of equations for the case R145.
 arguments
     r (3,3) {mustBeReal}
-    prime (1,1) {mustBePrime}
+    prime (1,1) {mustBePrimeOrZero}
 end
 % Obtain root candidates from equations
 w_root = FF(-r(3,3),prime).value;

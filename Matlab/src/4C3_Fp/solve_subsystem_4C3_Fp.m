@@ -33,33 +33,39 @@ if opt.verbose
 end
 switch join(string(col),"")
     case "1"
-        [u_root,v_root] = rank1_4C3_1_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "2"
-        [u_root,v_root] = rank1_4C3_2_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "3"
-        [u_root,v_root] = rank1_4C3_3_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "4"
-        [u_root,v_root] = rank1_4C3_4_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "12"
-        [u_root,v_root] = rank2_4C3_12_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "13"
-        [u_root,v_root] = rank2_4C3_13_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "14"
-        [u_root,v_root] = rank2_4C3_14_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "23"
-        [u_root,v_root] = rank2_4C3_23_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "24"
-        [u_root,v_root] = rank2_4C3_24_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "34"
-        [u_root,v_root] = rank2_4C3_34_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "123"
-        [u_root,v_root] = rank3_4C3_123_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "124"
-        [u_root,v_root] = rank3_4C3_124_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "134"
-        [u_root,v_root] = rank3_4C3_134_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "234"
-        [u_root,v_root] = rank3_4C3_234_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
+    case "235"
+        warning("Function to solve R%s not implemented!",join(string(col),""))
+    case "245"
+        warning("Function to solve R%s not implemented!",join(string(col),""))
+    case "345"
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "1234"
         [u_root,v_root] = rank4_4C3_1234_Fp(r,prime);
     case "1245"
