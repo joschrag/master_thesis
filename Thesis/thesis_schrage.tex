@@ -230,7 +230,7 @@ labelformat=brace, position=top]{subcaption}
 	In vielen Anwendungsfeldern der Mathematik kommen Problemstellungen vor, welche in Form eines Gleichungssystems aus drei Polynomen in drei Unbekannten (3Q3) formuliert werden können. Für den Fall von drei quadratischen Polynomen existieren bereits verschiedene Algorithmen zur Lösung der Gleichungssysteme.\\
 	Das Ziel dieser Masterthesis ist es den E3Q3-Algorithmus von Kukelova für allgemeine Körper zu formulieren und über den reellen Zahlen sowie endlichen Körpern mit Primordnung zu implementieren. Außerdem soll der Ansatz des E3Q3-Algorithmus auf Systeme kubischer Gleichungen übertragen werden.\\
 	Dazu wurde der E3Q3-Algorithmus mithilfe der algebraischen Geometrie verallgemeinert und das Vorgehen auf zunächst fünf kubische Gleichungen (5C3) übertragen. Mit weiteren Voraussetzungen an die Polynome konnte die Anzahl zuerst auf vier Gleichungen (4C3) und schließlich auf drei Gleichungen (3C3) reduziert werden.\\
-	Jeder dieser vier Algorithmen wurde in MATLAB über den reellen Zahlen und endlichen Körpern mit Primordnung implementiert und getestet. Für den Fall mit drei Gleichungen konnte zusätzlich zu dem implementierten Algorithmus ein Weiterer für eine andere Familie an kubischen Gleichungssystemen formuliert werden.
+	Jeder dieser vier Algorithmen wurde in MATLAB über den reellen Zahlen und endlichen Körpern mit Primordnung implementiert und jeweils für beide an Beispielen getestet. Für den Fall mit drei Gleichungen konnte zusätzlich zu dem implementierten Algorithmus ein zweites Verfahren für eine andere Familie an kubischen Gleichungssystemen formuliert werden.
 	\begin{figure}[H]
 		\includegraphics[width=0.8\textwidth]{"images/e3q3_example1_zoom.png"}
 		\caption*{Schnittpunkte dreier Ellipsoide als Ergebnis des E3Q3-Algorithmus}
@@ -247,7 +247,7 @@ labelformat=brace, position=top]{subcaption}
 	\pagestyle{fancy}
 	\pagenumbering{arabic} 
 	\section{Motivation}\label{chp:Motivation}
-	In vielen Anwendungsfeldern der Mathematik kommen Problemstellungen vor, welche in Form eines Gleichungssystems aus drei Polynomen in drei Unbekannten (3Q3) formuliert werden können. Für den Fall von drei quadratischen Polynomen existieren bereits verschiedene Algorithmen zur Lösung der Gleichungssysteme. Diese Algorithmen sind in Bereichen wie der Computervision und der Robotik von großer Bedeutung, da sie beispielsweise zur Modellierung von Kamerapositionen oder Bewegungsabläufen verwendet werden. Auch in anderen Disziplinen, in denen geometrische Zusammenhänge eine Rolle spielen, finden diese Methoden Anwendung.\\
+	In vielen Anwendungsfeldern der Mathematik kommen Problemstellungen vor, welche in Form eines Gleichungssystems aus drei Polynomen zweiten Grades in drei Unbekannten (3Q3) formuliert werden können. Für diesen Fall existieren bereits verschiedene Algorithmen zur Lösung der Gleichungssysteme. Diese sind in Bereichen wie der Computervision und der Robotik von großer Bedeutung, da sie beispielsweise zur Modellierung von Kamerapositionen oder Bewegungsabläufen verwendet werden. Auch in anderen Disziplinen, in denen geometrische Zusammenhänge eine Rolle spielen, finden diese Methoden Anwendung.\\
 	
 	Aufgrund der Anwendungsfelder sind diese Algorithmen für die reellen Zahlen formuliert, jedoch lässt sich der E3Q3-Algorithmus von Kukelova et al. \cite{kukelova2016efficient} mithilfe von algebraischer Geometrie auf beliebige Körper anwenden.\\
 	
@@ -284,7 +284,7 @@ labelformat=brace, position=top]{subcaption}
 		\caption{Geometrie zweier 3Q3-Probleme über den reellen Zahlen.}
 	\end{figure}
 	\subsection{Begriffe der algebraischen Geometrie}
-	Aufgrund dieser geometrischen Interpretation des 3Q3-Problems werden wir das Gleichungssystem nun mithilfe der algebraischen Geometrie untersuchen. Dazu formulieren wir zuerst das 3Q3-Problem mit den entsprechenden Begriffen neu, dabei orientieren wir uns an Kunz \cite{kunz2012introduction,kunz2013}.
+	Aufgrund dieser geometrischen Interpretation des 3Q3-Problems werden wir das Gleichungssystem nun mithilfe der algebraischen Geometrie untersuchen. Dazu formulieren wir zuerst das 3Q3-Problem mit den entsprechenden Begriffen neu und orientieren uns dabei an Kunz \cite{kunz2012introduction,kunz2013}.
 	
 	\begin{definition}[Algebraisches Gleichungssystem {\cite{kunz2013}}]\label{def:alg_gs}
 		Sei $K$ ein Körper, $m,n \in \N_{0}$ und $f_1,\ldots,f_m \in K\left[X_{1},\ldots,X_n\right]$ Polynome in den Unbestimmten $X_1,\ldots,X_n$. Ein algebraisches Gleichungssystem besitzt dann die Form
@@ -364,7 +364,7 @@ labelformat=brace, position=top]{subcaption}
 		\{p \subset K[X_1,\ldots,X_n] \colon J \subseteq p, p \ \text{maximal}\}
 	\end{equation*}
 	zu bestimmen.\\
-	Zwischen Prim- und Primäridealen besteht nach Kunz \cite{kunz2013} außerdem die folgende Beziehung.
+	Zwischen Prim-, Primäridealen und maximalen Idealen bestehen nach Kunz \cite{kunz2013,kunz2012introduction} außerdem die folgenden Beziehungen.
 	\begin{lemma}\label{cor:prim_max}
 		Es sei $I$ ein primäres Ideal eines kommutativen Ringes $R$, dann ist $\sqrt{I}$ prim.
 	\end{lemma}
@@ -383,6 +383,9 @@ labelformat=brace, position=top]{subcaption}
 		\end{enumerate}
 		Die Primideale $\sqrt{q_i}$ (aber nicht die Ideale $q_i$) sind dabei durch $I$ eindeutig bestimmt. Die Ideale $q_i$ heißen Primärkomponenten von $I$.
 	\end{theorem}
+	\begin{proof}
+		Siehe Kunz \cite{kunz2012introduction}.
+	\end{proof}
 	\begin{definition}
 		Eine Primärkomponente $q_i$ eines Ideal $I \subset K[X_1,\ldots,X_n]$ heißt isoliert, falls das Primideal $\sqrt{q_i}$ in keinem der Primideale $\sqrt{q_j}$ enthalten ist.
 	\end{definition}
@@ -596,7 +599,7 @@ labelformat=brace, position=top]{subcaption}
 			\item Da $K[X_1,X_2,X_3] = K[X_1][X_2,X_3] = K[X_2][X_1,X_3] = K[X_3][X_1,X_2]$ gilt, erhalten wir drei verschiedene Wege den Algorithmus durchzuführen.
 			\item Die geforderte Regularität der Matrix $A$ bedeutet, dass die drei Polynome echte quadratische Polynome über $K[X_1][X_2,X_3]$ sind, deren quadratische Koeffizienten $(c_{i4},c_{i5},c_{i6})$ für $i \in \{1,2,3\}$ linear unabhängig sein müssen.
 			
-			\item Das Vorkommen der Lösungen als Nullstellen eines Polynom achten Grades lässt sich durch Satz \ref{prop:bezout} auch mit algebraischer Geometrie erklären. Da durch die geforderte Regularität der Matrix $M(X_1) \in K[X_1]^{3 \times 3}$ unendlich viele Lösungen ausgeschlossen werden, ergibt sich aus Satz \ref{prop:bezout} die maximale Anzahl an Lösungen als $2^3=8$. Der Satz hat außerdem zur Folge, dass \[2 \cdot \text{NS}_{1} + \text{NS}_{2}  \leq 8\] gelten muss, wobei $\text{NS}_{j}$ die Anzahl der Nullstellen ist, für welche sich $\text{rank}\left(\tilde{M}\right) =j$ ergibt.
+			\item Das Vorkommen der Lösungen als Nullstellen eines Polynom achten Grades lässt sich durch Satz \ref{prop:bezout} auch mit algebraischer Geometrie erklären. Da durch die geforderte Regularität der Matrix $M(X_1) \in K[X_1]^{3 \times 3}$ unendlich viele Lösungen ausgeschlossen werden, ergibt sich aus Satz \ref{prop:bezout} die maximale Anzahl an Lösungen als $2^3=8$.
 			\item Ist $\tilde{M}$ eine reelle Matrix vom Rang 2, so können wir die Lösungen mithilfe der Eigenvektoren ermitteln. Dazu berechnen wir die Singulärwertzerlegung $\tilde{M}=U \, S\, V^{\top}$ und wählen $\left[v_{1},v_{2},v_{3} \right]^{\top} $ als die Spalte von $V$ in der der kleinste Singulärwert in $S$ steht. Die Lösungen erhalten wir dann als $\tilde{x}_{2} = v_1/v_3$ und $\tilde{x}_{3} = v_2/v_3$.
 			Nach Kukelova \cite{kukelova2016efficient} bietet dies eine numerisch stabilere Alternative um die Lösungen zu ermitteln.
 		\end{enumerate}
@@ -679,6 +682,8 @@ labelformat=brace, position=top]{subcaption}
 				\includegraphics[width=\textwidth]{"images/e3q3_example2.png"}
 				\subcaption{Die Ellipse, der elliptische und hyperbolische Paraboloid aus System \eqref{eqn:example3}.}
 			\end{subfigure}
+		\end{figure}
+					\begin{figure}[H]\ContinuedFloat
 			\begin{subfigure}[b]{0.8\textwidth}
 				\includegraphics[width=\textwidth]{"images/e3q3_example2_zoom.png"}
 				\subcaption{Die Schnittpunkte der drei Quadriken aus System \eqref{eqn:example3}.}
@@ -852,12 +857,12 @@ Nach einer weiteren Substitution werden die Identitäten dann in Polynome überf
 	
 	\begin{equation*}\label{eqn:4C3id}
 		\begin{alignedat}{4}
-			X_{3}^3&	\left( X_{2}^3\right)  &=& \left( X_{2}^2X_{3}\right) 	\left( X_{2}X_{3}^2\right),&\quad \deg_{\text{sub}}=4 \\
-			X_{3}&\left( X_{2}^3\right) &=&\left( X_{2}^2X_{3}\right) X_{2},&\quad \deg_{\text{sub}}=3\\
-			X_{3}^2&	\left( X_{2}^3\right)  &=& \left(  X_{2}X_{3}^2\right) 	X_{2}^2,&\quad \deg_{\text{sub}}=4\\
-			X_{2}&	\left( X_{3}^3\right)  &=& \left( X_{2}X_{3}^2\right) 	X_{3},&\quad \deg_{\text{sub}}=3\\
-			X_{2}^2&	\left( X_{3}^3\right)  &=& \left( X_{2}^2X_{3}\right) 	X_{3}^2,&\quad \deg_{\text{sub}}=4\\
-			X_{3}&	\left( X_{2}^2X_{3}\right)  &=& \left( X_{2}X_{3}^2\right) 	X_{2},&\quad \deg_{\text{sub}}=3,\\
+			X_{3}^3&	\left( X_{2}^3\right)  &=& \left( X_{2}^2X_{3}\right) 	\left( X_{2}X_{3}^2\right)&\quad \text{und} \deg_{\text{sub}}=4, \\
+			X_{3}&\left( X_{2}^3\right) &=&\left( X_{2}^2X_{3}\right) X_{2}&\quad\text{und} \deg_{\text{sub}}=3,\\
+			X_{3}^2&	\left( X_{2}^3\right)  &=& \left(  X_{2}X_{3}^2\right) 	X_{2}^2&\quad\text{und} \deg_{\text{sub}}=4,\\
+			X_{2}&	\left( X_{3}^3\right)  &=& \left( X_{2}X_{3}^2\right) 	X_{3}&\quad\text{und} \deg_{\text{sub}}=3,\\
+			X_{2}^2&	\left( X_{3}^3\right)  &=& \left( X_{2}^2X_{3}\right) 	X_{3}^2&\quad\text{und} \deg_{\text{sub}}=4,\\
+			X_{3}&	\left( X_{2}^2X_{3}\right)  &=& \left( X_{2}X_{3}^2\right) 	X_{2}&\quad\text{und} \deg_{\text{sub}}=3,\\
 		\end{alignedat}
 	\end{equation*}
 	wobei die vier Monome durch Polynome zweiten Grades ersetzt werden und $\deg_{\text{sub}}$ den totalen Grad der Polynome nach Substitution angibt.\\
