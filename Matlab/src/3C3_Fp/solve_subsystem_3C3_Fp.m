@@ -4,7 +4,7 @@ function [result] = solve_subsystem_3C3_Fp(M,p_root,prime,opt)
 arguments
     M (1,1) FF;
     p_root (1,1) sym {mustBeReal};
-    prime (1,1) {mustBeInteger,mustBePositive};
+    prime (1,1) {mustBePrime};
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
 end
 result = [];
@@ -37,25 +37,25 @@ if opt.verbose
 end
 switch join(string(col),"")
     case "1"
-        [u_root,v_root] = rank1_3C3_1_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "2"
-        [u_root,v_root] = rank1_3C3_2_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "3"
-        [u_root,v_root] = rank1_3C3_3_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "4"
-        [u_root,v_root] = rank1_3C3_4_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "12"
-        [u_root,v_root] = rank2_3C3_12_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "13"
-        [u_root,v_root] = rank2_3C3_13_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "14"
-        [u_root,v_root] = rank2_3C3_14_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "23"
-        [u_root,v_root] = rank2_3C3_23_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "24"
-        [u_root,v_root] = rank2_3C3_24_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "34"
-        [u_root,v_root] = rank2_3C3_34_Fp(r,prime);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "123"
         [u_root,v_root] = rank3_3C3_123_Fp(r,prime);
     case "124"

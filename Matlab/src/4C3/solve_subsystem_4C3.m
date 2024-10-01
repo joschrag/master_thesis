@@ -34,33 +34,39 @@ if opt.verbose
 end
 switch join(string(col),"")
     case "1"
-        [u_root,v_root] = rank1_4C3_1(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "2"
-        [u_root,v_root] = rank1_4C3_2(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "3"
-        [u_root,v_root] = rank1_4C3_3(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "4"
-        [u_root,v_root] = rank1_4C3_4(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "12"
-        [u_root,v_root] = rank2_4C3_12(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "13"
-        [u_root,v_root] = rank2_4C3_13(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "14"
-        [u_root,v_root] = rank2_4C3_14(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "23"
-        [u_root,v_root] = rank2_4C3_23(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "24"
-        [u_root,v_root] = rank2_4C3_24(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "34"
-        [u_root,v_root] = rank2_4C3_34(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "123"
-        [u_root,v_root] = rank3_4C3_123(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "124"
-        [u_root,v_root] = rank3_4C3_124(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "134"
-        [u_root,v_root] = rank3_4C3_134(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "234"
-        [u_root,v_root] = rank3_4C3_234(r);
+        warning("Function to solve R%s not implemented!",join(string(col),""))
+    case "235"
+        warning("Function to solve R%s not implemented!",join(string(col),""))
+    case "245"
+        warning("Function to solve R%s not implemented!",join(string(col),""))
+    case "345"
+        warning("Function to solve R%s not implemented!",join(string(col),""))
     case "1234"
         [u_root,v_root] = rank4_4C3_1234(r);
     case "1245"
