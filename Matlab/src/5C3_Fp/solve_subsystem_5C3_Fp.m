@@ -13,12 +13,8 @@ if rank(M)==0
     warning("Zero matrix for p_root %i",p_root)
     return
 end
-if rank(M) == 5
-    warning("Precision of root %i is too low!",p_root)
-    return
-end
 rM = rref(M);
-if rank(M) ~= rank(rM)
+if rank(M) ~= rank(rM) && rank(M) < 5
     warning("Numerical error calculating rref matrix for p_root %i",p_root)
     return
 end
