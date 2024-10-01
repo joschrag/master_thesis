@@ -2,7 +2,7 @@ function [v_sol,w_sol] = rank3_5C3_123_Fp(r,prime)
 %RANK3_5C3_123_FP Solve the resulting subsystem of equations for the case R123.
 arguments
     r (3,2) {mustBeReal}
-    prime (1,1) {mustBePrime}
+    prime (1,1) {mustBePrimeOrZero,mustBePositive}
 end
 % Obtain solution candidates from equations
 w_sol = get_gf_root([-1,-r(2,:)],prime);

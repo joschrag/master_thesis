@@ -5,7 +5,7 @@ function result = solve_subsystem_5C3_Fp(M,p_root,prime,opt)
 arguments
     M FF {mustBeSizeFF(M,[5,5])};
     p_root (1,1) {mustBeInteger};
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero,mustBePositive};
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
 end
 result = [];

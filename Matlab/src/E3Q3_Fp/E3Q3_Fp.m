@@ -3,7 +3,7 @@ function [result] = E3Q3_Fp(C,prime,opt)
 %   Detailed explanation goes here
 arguments
     C (:,10) {mustBeInteger};
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero,mustBePositive};
     opt.verbose (1,1) {mustBeInteger, mustBeInRange(opt.verbose,0,2)} = 1;
     opt.error (1,1) {mustBeNumericOrLogical} = true;
     opt.log_db (1,1) {mustBeNumericOrLogical} = false;

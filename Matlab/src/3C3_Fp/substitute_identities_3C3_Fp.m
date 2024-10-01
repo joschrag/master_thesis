@@ -6,7 +6,7 @@ function A = substitute_identities_3C3_Fp(P2,lin_vars,prime)
 arguments
     P2 FF {mustBeSizeFF(P2,[3,7])};
     lin_vars (7,1) sym;
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero,mustBePositive};
 end
 
 cube = FF(P2.value(1,:)*lin_vars,prime);  %y^3

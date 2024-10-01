@@ -2,7 +2,7 @@ function result = E5C3_Fp(C,prime,opt)
 %E5C3_Fp Implements the E3Q3 algorithm over finite fields of prime order.
 arguments
     C (5,20) {mustBeInteger};
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero,mustBePositive};
     opt.verbose (1,1) {mustBeInteger, mustBeInRange(opt.verbose,0,2)} = 1;
     opt.error (1,1) {mustBeNumericOrLogical} = true;
     opt.log_db (1,1) {mustBeNumericOrLogical} = false;
@@ -42,6 +42,9 @@ if isempty(pol)
     end
 end
 p_root = get_gf_root(pol,prime);
+if opt.verbose > 1
+    fprintf("p_root: %s\n",mat2str(p_root))
+end
 % Determine variable indices to reorder solutions
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(3)),find(vars==lin_vars(4))]);
 result = [];

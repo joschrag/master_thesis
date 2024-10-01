@@ -2,7 +2,7 @@ function [v_sol,w_sol] = rank2_5C3_24_Fp(r,prime)
 %RANK2_5C3_24_FP Solve the resulting subsystem of equations for the case R24.
 arguments
     r (2,3) {mustBeReal,mustBeInteger}
-    prime (1,1) {mustBePrime}
+    prime (1,1) {mustBePrimeOrZero,mustBePositive}
 end
 % Obtain solutions from equations based on coefficients
 if r(1,2) == 0

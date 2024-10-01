@@ -2,7 +2,7 @@ function [v_sol,w_sol] = rank3_5C3_134_Fp(r,prime)
 %RANK3_5C3_134_FP Solve the resulting subsystem of equations for the case R134.
 arguments
     r (3,2) {mustBeReal}
-    prime (1,1) {mustBePrime}
+    prime (1,1) {mustBePrimeOrZero,mustBePositive}
 end
 % Obtain solutions from equations
 w_root = FF(-r(3,2),prime).value;

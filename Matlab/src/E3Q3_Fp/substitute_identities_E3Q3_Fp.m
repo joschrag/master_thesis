@@ -6,7 +6,7 @@ function A = substitute_identities_E3Q3_Fp(P2,lin_vars,prime)
 arguments
     P2 FF {mustBeSizeFF(P2,[3,3])};
     lin_vars (3,1) sym;
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero,mustBePositive};
 end
 % Compute substitution values
 quad_1 = FF(P2.value(1,:),prime)*FF(lin_vars,prime);

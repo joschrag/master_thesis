@@ -1,7 +1,7 @@
 function [result] = E4C3_Fp(C,prime,opt)
 arguments       %1  2   3   4   5   6   7   8   9  10  11  12   13 14 15  16   17  18  19  20
     C (4,20) {mustBeInteger};
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero,mustBePositive};
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
     opt.error (1,1) {mustBeNumericOrLogical} = true;
     opt.log_db (1,1) {mustBeNumericOrLogical} = false;

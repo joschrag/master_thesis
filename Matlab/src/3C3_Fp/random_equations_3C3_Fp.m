@@ -3,7 +3,7 @@ function [c] = random_equations_3C3_Fp(coeff_var,prime)
 %   Detailed explanation goes here
 arguments
     coeff_var (1,1) {mustBeMember(coeff_var,[1,2,3])}
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero,mustBePositive};
 end
 q = [...
     1,7,8,11,15,17,20;...

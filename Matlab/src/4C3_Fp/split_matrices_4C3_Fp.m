@@ -7,7 +7,7 @@ function [lin_vars, p_var, P2] = split_matrices_4C3_Fp(C, prime, x, y, z, opt)
 %   combinations of variables for the approach are returned.
 arguments
     C (4,20) {mustBeReal};
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero,mustBePositive};
     x (1,1) sym = sym("x","real");
     y (1,1) sym = sym("y","real");
     z (1,1) sym = sym("z","real");
