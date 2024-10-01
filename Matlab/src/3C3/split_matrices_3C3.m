@@ -47,7 +47,7 @@ if any(ranks==3)
             p_var = vars(var_idx(I,1));
             lin_var_idx = var_idx(I,2:3);
             if opt.verbose > 0
-                fprintf("Using P(%s) with G_1 = {%s,%s,%s}\n",string(vars(I)),vars(lin_var_idx(1)).^3,vars(lin_var_idx(1)).^2*vars(lin_var_idx(2)),vars(lin_var_idx(1))*vars(lin_var_idx(2)))
+                fprintf("Using P(%s) with G_1 = {%s,%s,%s}\n",string(p_var),vars(lin_var_idx(1)).^3,vars(lin_var_idx(1)).^2*vars(lin_var_idx(2)),vars(lin_var_idx(1))*vars(lin_var_idx(2)))
             end
             lin_vars = [vars(lin_var_idx(1))*vars(lin_var_idx(2))^2,vars(lin_var_idx(2)).^3,vars(lin_var_idx(1))^2,vars(lin_var_idx(2)).^2,vars(lin_var_idx),1]';
             p_var_pow = [1;p_var;p_var^2;p_var^3];
