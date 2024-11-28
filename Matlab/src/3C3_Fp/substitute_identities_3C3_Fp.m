@@ -37,5 +37,5 @@ for i=1:6
 end
 % Create matrix form from equations
 [A_,b] = equationsToMatrix(get_value(identities),[u;v;w;lin_vars(5:6)]);
-A = [A_,-b];
+A = FF([A_,-b],prime);
 end

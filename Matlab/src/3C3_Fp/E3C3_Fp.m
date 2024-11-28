@@ -50,7 +50,7 @@ if opt.verbose > 1
     fprintf("p_root: %s\n",mat2str(p_root))
 end
 for i=1:numel(p_root)
-    M = FF(subs(A,p_var,p_root(i)),prime);
+    M = FF(subs(A.value,p_var,p_root(i)),prime);
     cur_result = solve_subsystem_3C3_Fp(M,p_root(i),prime,verbose=opt.verbose);
     if ~isempty(cur_result)
         result = [result;cur_result]; %#ok<AGROW>
