@@ -1,7 +1,6 @@
 \documentclass[a4paper,oneside, 11pt, openany% ,draft
 ]{article}
 \usepackage[a4paper]{geometry}
-\usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
 \usepackage{amsmath}
@@ -2466,9 +2465,9 @@ Analog zu dem Vorgehen in Abschnitt \ref{sec:E3Q3} betrachten wir $3$ Gleichunge
 		\end{pmatrix}
 		=
 		\begin{pmatrix}[2]
-			p'_{11}&p'_{12}& p'_{13}& p'_{14}& p'_{15}& p'_{16}\\
-			p'_{21}&p'_{22}& p'_{23}& p'_{24}& p'_{25}& p'_{26}\\
-			p'_{31}&p'_{32}& p'_{33}& p'_{34}& p'_{35}& p'_{36}\\
+			p'_{11}&p'_{12}& p'_{13}& p'_{14}& p'_{15}& p'_{16}& p'_{17}\\
+			p'_{21}&p'_{22}& p'_{23}& p'_{24}& p'_{25}& p'_{26}& p'_{27}\\
+			p'_{31}&p'_{32}& p'_{33}& p'_{34}& p'_{35}& p'_{36}& p'_{37}\\
 		\end{pmatrix}
 		\begin{pmatrix}
 			X_{2}X_{3}^2\\
@@ -2485,11 +2484,11 @@ Analog zu dem Vorgehen in Abschnitt \ref{sec:E3Q3} betrachten wir $3$ Gleichunge
 	Diese Bedingungen führen also auf das Gleichungssystem
 	\begin{equation}
 		A^{-1} \cdot \begin{pmatrix}[1.75]
-			\vert & \vert & \vert \\
-			p_{i,1}&p_{i,2}& p_{i,3}\\
-			\vert & \vert & \vert
+			\vert & \vert & \vert & \vert & \vert & \vert\\
+			p_{i,1}&p_{i,2}& p_{i,3}&p_{i,4}&p_{i,5}& p_{i,6}\\
+			\vert & \vert & \vert & \vert & \vert & \vert
 		\end{pmatrix}
-		= 0_{K^{4 \times 3}}.
+		= 0_{K^{3 \times 6}}.
 	\end{equation}
 	Für die Matrix $A^{-1}$ gilt aber \begin{equation*}
 		\det{\left(A^{-1}\right)} \neq 0,
