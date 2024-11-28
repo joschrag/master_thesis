@@ -3,7 +3,7 @@ arguments
     p {mustBePrimeOrZero} = 0;
     mode {mustBeTextScalar} = "3Q3"
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
-    opt.stream = rng("default");
+    opt.stream = RandStream('mt19937ar','NormalTransform','Ziggurat');
 end
 if p==0
     x0 = 5*rand(opt.stream)-2.5;
