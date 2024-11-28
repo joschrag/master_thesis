@@ -4,7 +4,7 @@ function [result] = solve_subsystem_3C3_Fp(M,p_root,prime,opt)
 arguments
     M (1,1) FF;
     p_root (1,1) sym {mustBeReal};
-    prime (1,1) {mustBePrime};
+    prime (1,1) {mustBePrimeOrZero};
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
 end
 result = [];
