@@ -1,7 +1,7 @@
 function [v_sol,w_sol] = rank3_3C3_145(r)
 %RANK_3C3_145 Solve the resulting subsystem of equations for the case R145.
 arguments
-    r (3,3) {mustBeReal}
+    r (3,3) 
 end
 % Obtain root candidates from equations
 w_root = -r(3,3);

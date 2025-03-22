@@ -2,7 +2,7 @@ function [v_sol,w_sol] = rank4_3C3_2345(r)
 %RANK5_12345 Solve the resulting subsystem of equations for the case R123.
 %   Detailed explanation goes here
 arguments
-    r (4,2) {mustBeReal}
+    r (4,2) 
 end
 % Obtain root candidates from equations
 v_root = -r(3,2);

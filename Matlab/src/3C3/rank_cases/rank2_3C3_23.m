@@ -1,7 +1,8 @@
-function [v_sol,w_sol] = rank2_3C3_23(r)
+function [v_sol,w_sol] = rank2_3C3_23(r,complex)
     %RANK_3C3_23 Solve the resulting subsystem of equations for the case R23.
     arguments
-        r (2,4) {mustBeReal}
+        r (2,4) 
+        complex (1,1) {mustBeNumericOrLogical} = false;
     end
     v = sym("v","real");
     w = sym("w","real");
@@ -13,19 +14,27 @@ function [v_sol,w_sol] = rank2_3C3_23(r)
         eq = r(2,2)*v+r(2,3)*w+r(2,4)+w^2;
         w_0 = -(v^2+r(1,2)*v+r(1,4))/r(1,3);
         v_root = roots(coeffs(subs(eq,w,w_0),w,"All"));
-        v_sol =  v_root(abs(imag(v_root))<10^-10);
+        if ~complex
+        v_root =  v_root(abs(imag(v_root))<10^-10);
+        end
+        v_sol = v_root;
         w_sol = subs(w_0,v,v_sol);
     elseif r(2,2) ~= 0
         eq = r(1,2)*v+r(1,3)*w+r(1,4)+v^2;
         v_0 = -(w^2+r(2,3)*w+r(2,4))/r(2,2);
         w_root = roots(coeffs(subs(eq,v,v_0),w,"All"));
-        w_sol =  w_root(abs(imag(w_root))<10^-10);
+        if ~complex
+            w_root =  w_root(abs(imag(w_root))<10^-10);
+        end
+        w_sol = w_root;
         v_sol = subs(v_0,w,w_sol);
     else
         v_root = roots([1,r(1,2),r(1,4)]);
         w_root = roots([1,r(2,3),r(2,4)]);
+        if ~complex
         v_root =  v_root(abs(imag(v_root))<10^-10);
         w_root =  w_root(abs(imag(w_root))<10^-10);
+        end
         if ~isempty(v_root) & ~isempty(w_root)
             [v_sol,w_sol] = meshgrid(v_root,w_root);
             v_sol = v_sol(:);

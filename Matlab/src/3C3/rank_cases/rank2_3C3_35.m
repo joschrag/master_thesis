@@ -1,7 +1,7 @@
 function [v_sol,w_sol] = rank2_3C3_35(r)
     %RANK_3C3_23 Solve the resulting subsystem of equations for the case R23.
     arguments
-        r (2,4) {mustBeReal}
+        r (2,4) 
     end
     v_sol = [];
     w_sol = [];

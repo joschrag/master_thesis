@@ -53,6 +53,4 @@ u = sym("u",[4,1],"real");
 sub_final = subs(sub_new,lin_vars(1:4),u);
 [A_,b] = equationsToMatrix(sub_final,[u(2:4);lin_vars(5:6)]);
 A = [A_,-b];
-rank(A)
-det(A)
 end

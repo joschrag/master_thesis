@@ -9,6 +9,7 @@ arguments
     opt.tolerance (1,1) {mustBeReal,mustBePositive} = 10^-10;
     opt.error (1,1) {mustBeNumericOrLogical} = true;
     opt.log_db (1,1) {mustBeNumericOrLogical} = false;
+    opt.complex (1,1) {mustBeNumericOrLogical} = false;
 end
 opt = check_toolboxes(opt);
 t1 = tic;
@@ -35,7 +36,12 @@ A = substitute_identities_3C3(P2,lin_vars,prc);
 % Compute p_var solutions
 coef = coeffs(numden(det(A)),p_var,"All");
 p_root = roots(coef);
-p_root = unique(p_root(abs(imag(p_root))<10^-10));
+if ~opt.complex
+    p_root = p_root(abs(imag(p_root))<10^-10);
+else
+    p_root(abs(imag(p_root))<10^-10) = p_root(abs(imag(p_root))<10^-10);
+end
+p_root = unique(p_root);
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(5)),find(vars==lin_vars(6))]);
 for i=1:numel(p_root)
     M = subs(A,p_var,p_root(i));
@@ -43,7 +49,7 @@ for i=1:numel(p_root)
         disp(M)
         disp(rref(double(M),opt.tolerance))
     end
-    cur_result = solve_subsystem_3C3(M,p_root(i),plot_subspace=opt.plot_subspace,tolerance=opt.tolerance,verbose=opt.verbose);
+    cur_result = solve_subsystem_3C3(M,p_root(i),plot_subspace=opt.plot_subspace,tolerance=opt.tolerance,verbose=opt.verbose,complex=opt.complex);
     if ~isempty(cur_result)
         result = [result;cur_result]; %#ok<AGROW>
     end
