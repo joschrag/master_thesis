@@ -2,8 +2,8 @@ function [result] = solve_subsystem_3C3(M,p_root,opt)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 arguments
-    M (6,6) sym {mustBeReal};
-    p_root (1,1) sym {mustBeReal};
+    M (6,6) sym;
+    p_root (1,1) sym;
     opt.plot_subspace {mustBeInRange(opt.plot_subspace,0,1)} = 1;
     opt.tolerance {mustBeReal,mustBePositive} = 10^-10;
     opt.verbose {mustBeInRange(opt.verbose,0,2)} = 1;
@@ -54,17 +54,25 @@ switch join(string(col),"")
     case "4"
         warning("Function to solve R%s not implemented!",join(string(col),""))
     case "12"
-        warning("Function to solve R%s not implemented!",join(string(col),""))
+        [u_root,v_root] = rank3_3C3_12(r);
     case "13"
-        warning("Function to solve R%s not implemented!",join(string(col),""))
+        [u_root,v_root] = rank3_3C3_13(r);
     case "14"
-        warning("Function to solve R%s not implemented!",join(string(col),""))
+        [u_root,v_root] = rank3_3C3_14(r);
+    case "15"
+        [u_root,v_root] = rank3_3C3_15(r);
     case "23"
-        warning("Function to solve R%s not implemented!",join(string(col),""))
+        [u_root,v_root] = rank3_3C3_23(r);
     case "24"
-        warning("Function to solve R%s not implemented!",join(string(col),""))
+        [u_root,v_root] = rank3_3C3_24(r);
+    case "25"
+        [u_root,v_root] = rank3_3C3_25(r);
     case "34"
-        warning("Function to solve R%s not implemented!",join(string(col),""))
+        [u_root,v_root] = rank3_3C3_34(r);
+    case "35"
+        [u_root,v_root] = rank3_3C3_35(r);
+    case "45"
+        [u_root,v_root] = rank3_3C3_45(r);
     case "123"
         [u_root,v_root] = rank3_3C3_123(r);
     case "124"

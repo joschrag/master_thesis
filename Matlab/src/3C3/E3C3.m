@@ -21,7 +21,7 @@ var_vec = [x.^3,x.^2.*y,x.^2.*z,x.*y.^2,...
 result = [];
 % Raise error or output warning if split_matrices fails
 try
-    [lin_vars,p_var,P2] = split_matrices_3C3(C,x,y,z,verbose=opt.verbose,error=opt.error);
+    [lin_vars,p_var,P2,prc] = split_matrices_3C3(C,x,y,z,verbose=opt.verbose,error=opt.error);
 catch exception
     if opt.error
         rethrow(exception)
@@ -31,9 +31,9 @@ catch exception
     end
 end
 
-A = substitute_identities_3C3(P2,lin_vars);
+A = substitute_identities_3C3(P2,lin_vars,prc);
 % Compute p_var solutions
-coef = coeffs(det(A),p_var,"All");
+coef = coeffs(numden(det(A)),p_var,"All");
 p_root = roots(coef);
 p_root = unique(p_root(abs(imag(p_root))<10^-10));
 [~,idx] = sort([find(vars==p_var),find(vars==lin_vars(5)),find(vars==lin_vars(6))]);
@@ -54,7 +54,7 @@ end
 completion_time = toc(t1);
 fprintf("Algorithm completed in %.2fs.\n",completion_time);
 if opt.plot_surf
-    plot_and_color_implicit(result,3,C)
+    plot_and_color_implicit(result,3,C,tolerance=opt.tolerance)
 end
 equations = C*var_vec;
 % Output solutions to console
