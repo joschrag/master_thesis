@@ -13,7 +13,216 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
     end
 
     methods(Test)
-        % Test methods
+        function test_r12(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[1,2];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_12(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r13(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[1,3];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_13(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r14(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[1,4];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_14(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r15(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[1,5];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_15(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r23(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[2,3];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_23(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r24(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[2,4];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_24(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r25(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[2,5];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_25(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r34(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[3,4];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_34(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r35(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[3,5];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_35(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
+        function test_r45(testCase)
+            rng(0)
+            for i=1:testCase.testParameter.num_runs
+                c=[4,5];
+                [m,r] = rref_matrix(c,6,mode="integer");
+                M = [m;zeros(6-numel(c),6)];
+                [u,v] = rank2_3C3_45(r);
+                if ~isempty(u)
+                    for vec = [u,v]'
+                        res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
+                        if any(res > 10^-10)
+                            disp(res)
+                            disp(r)
+                            disp(M)
+                            disp(vec)
+                        end
+                        testCase.verifyEqual(double(res),[0;0;0;0;0;0],AbsTol=ones(6,1).*10^-10)
+                    end
+                end
+            end
+        end
         function test_r123(testCase)
             rng(0)
             for i=1:testCase.testParameter.num_runs
@@ -24,7 +233,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -45,7 +254,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -66,7 +275,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -87,7 +296,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -108,7 +317,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -129,7 +338,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -150,7 +359,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -171,7 +380,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -192,7 +401,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -213,7 +422,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -234,7 +443,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -255,7 +464,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -276,7 +485,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -297,7 +506,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
@@ -318,7 +527,7 @@ classdef test_rank_solve_3C3 < matlab.unittest.TestCase
                 if ~isempty(u)
                     for vec = [u,v]'
                         res = M*[vec(2)^3;vec(1)^2;vec(2)^2;vec(1);vec(2);1];
-                        if any(res)
+                        if any(res > 10^-10)
                             disp(res)
                             disp(r)
                             disp(M)
