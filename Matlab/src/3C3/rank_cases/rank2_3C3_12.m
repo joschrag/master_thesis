@@ -29,8 +29,8 @@ function [v_sol,w_sol] = rank2_3C3_12(r,complex)
                 v_root = v_root(abs(imag(v_root))<10^-10);
             end
             if ~isempty(w_root) & ~isempty(v_root)
-                w_sol = [w_sol;repmat(sol,size(tmp_v))];
-                v_sol = [v_sol;tmp_v];
+                w_sol = [w_sol;repmat(sol,size(v_root))];
+                v_sol = [v_sol;v_root];
             end
         end
     end
